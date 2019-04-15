@@ -95,13 +95,16 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                     //verify modal is closed
                     DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("modal-open")));
                 }
-            }
+                else
+                {
+                    ExitForDownloadCompletedModal();
+                }
 
-            TakeSurveyIfVisible(isShowSurveyInvitationModal);
-
-            if (isShowSurveyInvitationModal)
-            {
-                isShowSurveyInvitationModal = false;
+                if (isShowSurveyInvitationModal)
+                {
+                    TakeSurveyIfVisible(isShowSurveyInvitationModal);
+                    isShowSurveyInvitationModal = false;
+                }
             }
 
             //wait until all download buttons are show checked icon
@@ -117,24 +120,19 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             }
 
             makeSureAllOutputsAreDownloaded(downloadButtons.Count);
-
-            //DisplayCompletedDownloadModal();
         }
 
-        private void DisplayCompletedDownloadModal()
+        private void ExitForDownloadCompletedModal()
         {
-            GetDownloadDesignButtons().ForEach(btn =>
+            var modalEle = Driver.WaitUntilPresentedElement(_modalOpen, BaseConfiguration.LongTimeout);
+            if (modalEle != null)
             {
-                btn.Click();
-
-                //Open modal
-                var modalEle = Driver.WaitUntilPresentedElement(_modalOpen, BaseConfiguration.ShortTimeout);
-                Driver.SwitchTo().Frame(modalEle);
+               // Driver.SwitchTo().Frame(modalEle);
                 Driver.GetElement(_completedModalCloseBtn).Click();
 
-                Driver.SwitchToParent();
+                //Driver.SwitchToParent();
                 Driver.WaitUntilElementIsNoLongerFound(_modalOpen, BaseConfiguration.ShortTimeout);
-            });
+            }
         }
 
         public void SubmitApprovalWorkflow()
@@ -167,7 +165,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                     Driver.SwitchTo().Frame(surveyWindowEle);
                     Driver.GetElement(_surveySubmitBtn).Click();
 
-                    Driver.WaitUntilElementIsNoLongerFound(_surveySubmitBtn, BaseConfiguration.ShortTimeout);
+                    // Driver.WaitUntilElementIsNoLongerFound(_surveySubmitBtn, BaseConfiguration.ShortTimeout);
                     Driver.GetElement(_closeModalBtn).Click();
 
                     Driver.SwitchToParent();
