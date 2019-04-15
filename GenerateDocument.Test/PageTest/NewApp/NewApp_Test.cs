@@ -257,7 +257,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             Assert.IsTrue(!string.IsNullOrEmpty(designName) && designName.IsEquals(name), "Design name is displayed correctly");
 
-            var downloadOptionsCount = _oneDesign.DownloadButtons().Count;
+            var downloadOptionsCount = _oneDesign.GetDownloadDesignButtons().Count;
 
             Assert.IsTrue(downloadOptionsCount >= 1, "Download options should be available");
 
@@ -271,7 +271,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             var namePart = isKit ? $"{name}_{componentName}_" : $"{name}_";
 
-            var downloadedFileNames = _oneDesign.DownloadButtons().Select(x => $"{namePart}{x.Text}".CorrectFileNameOnWindows().Trim()).ToArray();
+            var downloadedFileNames = _oneDesign.GetDownloadDesignButtons().Select(x => $"{namePart}{x.Text}".CorrectFileNameOnWindows().Trim()).ToArray();
 
             Assert.IsTrue(VerifyDownloadFileNames(downloadedFileNames));
         }

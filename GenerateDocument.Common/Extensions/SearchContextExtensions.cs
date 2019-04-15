@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GenerateDocument.Common.Helpers;
 using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
@@ -47,6 +48,18 @@ namespace GenerateDocument.Common.Extensions
         public static IList<IWebElement> GetElements(this ISearchContext element, ElementLocator locator, Func<IWebElement, bool> condition)
         {
             return element.FindElements(locator.ToBy()).Where(condition).ToList();
+        }
+
+        public static IList<IWebElement> GetElements(this ISearchContext element, ElementLocator locator, int minNumberOfElements)
+        {
+            IList<IWebElement> elements = null;
+
+            WaitHelper.Wait(
+                () => (elements = GetElements(element, locator, e => e.Displayed && e.Enabled).ToList()).Count >= minNumberOfElements,
+                TimeSpan.FromSeconds(BaseConfiguration.LongTimeout),
+                "Timeout while getting elements");
+
+            return elements;
         }
 
         public static IWebDriver ToDriver(this ISearchContext element)

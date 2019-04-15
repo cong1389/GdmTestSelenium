@@ -16,7 +16,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         private ElementLocator
             _modalOpen = new ElementLocator(Locator.XPath, "//body[@class='modal-open']"),
             _surveyWindow = new ElementLocator(Locator.XPath, "//iframe[@id='surveyWindow']"),
-            _takeSurveyBtn = new ElementLocator(Locator.XPath, "//button[@ng-click='openSurveyForm()']"),
+            _takeTheSurveyButton = new ElementLocator(Locator.XPath, "//button[@ng-click='openSurveyForm()']"),
             _surveySubmitBtn = new ElementLocator(Locator.Id, "surveySubmitBtn"),
             _lastPage = new ElementLocator(Locator.Id, "lastPage"),
             _closeModalBtn = new ElementLocator(Locator.Id, "closeModalBtn"),
@@ -27,10 +27,10 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         public OneDesign(DriverContext driverContext) : base(driverContext)
         {
         }
-        
-        public List<IWebElement> DownloadButtons()
+
+        public List<IWebElement> GetDownloadDesignButtons()
         {
-            return DriverContext.Driver.GetElements(_downloadDesignButtons).ToList();
+            return DriverContext.Driver.GetElements(_downloadDesignButtons, 1).ToList();
         }
 
         public string GetDesignName(string expectedName = null)
@@ -65,7 +65,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                 return designName;
             }
         }
-        
+
         public string GetSelectedComponentName(bool isKit)
         {
             if (!isKit)
@@ -76,7 +76,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public void DownloadDesign(bool needToPublishFirst, ref bool isShowSurveyInvitationModal)
         {
-            var downloadButtons = DownloadButtons();
+            var downloadButtons = GetDownloadDesignButtons();
 
             foreach (var button in downloadButtons)
             {
@@ -97,7 +97,8 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                 }
             }
 
-            //TakeSurveyIfVisible(isShowSurveyInvitationModal);//TODO
+            TakeSurveyIfVisible(isShowSurveyInvitationModal);
+
             if (isShowSurveyInvitationModal)
             {
                 isShowSurveyInvitationModal = false;
@@ -122,7 +123,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         private void DisplayCompletedDownloadModal()
         {
-            DownloadButtons().ForEach(btn =>
+            GetDownloadDesignButtons().ForEach(btn =>
             {
                 btn.Click();
 
@@ -158,21 +159,24 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             {
                 Driver.WaitUntilPresentedElement(_modalOpen, BaseConfiguration.LongTimeout);
                 Driver.IsElementPresent(_modalOpen);
-                Driver.GetElement(_takeSurveyBtn).Click();
+                Driver.GetElement(_takeTheSurveyButton).Click();
 
                 var surveyWindowEle = Driver.WaitUntilPresentedElement(_surveyWindow, BaseConfiguration.ShortTimeout);
-                Driver.SwitchTo().Frame(surveyWindowEle);
-                Driver.GetElement(_surveySubmitBtn).Click();
+                if (surveyWindowEle != null)
+                {
+                    Driver.SwitchTo().Frame(surveyWindowEle);
+                    Driver.GetElement(_surveySubmitBtn).Click();
 
-                Driver.WaitUntilElementIsNoLongerFound(_surveySubmitBtn, BaseConfiguration.ShortTimeout);
-                Driver.GetElement(_closeModalBtn).Click();
+                    Driver.WaitUntilElementIsNoLongerFound(_surveySubmitBtn, BaseConfiguration.ShortTimeout);
+                    Driver.GetElement(_closeModalBtn).Click();
 
-                Driver.SwitchToParent();
+                    Driver.SwitchToParent();
 
-                Driver.WaitUntilElementIsNoLongerFound(_mopinionActiveClass, BaseConfiguration.ShortTimeout);
+                    Driver.WaitUntilElementIsNoLongerFound(_mopinionActiveClass, BaseConfiguration.ShortTimeout);
+                }
             }
         }
-        
+
         public string RenameDesign(string name)
         {
             DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[contains(@class, 'fblw-timeline-item')]")));
@@ -219,7 +223,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
             return string.Empty;
         }
-        
+
         public bool CheckShowFullLessDesignNameActionLinkVisibility(bool visibilityExpectation, bool needShowFullName = true)
         {
             DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[contains(@class, 'fblw-timeline-item')]")));
