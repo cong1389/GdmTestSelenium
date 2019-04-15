@@ -231,7 +231,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
         private void SubmitForApprovalStep(string name)
         {
-            _myDesign.CheckGoToActions(name);
+            _myDesign.GoToActions(name);
 
             var designName = _oneDesign.GetDesignName(name);
 
@@ -251,7 +251,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
         private void PlaceOrderStep(string name, bool isKit, bool needToPublishFirst = true)
         {
-            _myDesign.CheckGoToActions(name);
+            _myDesign.GoToActions(name);
 
             var designName = _oneDesign.GetDesignName();
 

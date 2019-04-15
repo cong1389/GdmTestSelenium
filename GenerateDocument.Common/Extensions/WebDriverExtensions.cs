@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.UI;
 
@@ -52,6 +53,11 @@ namespace GenerateDocument.Common.Extensions
             }
 
             return driver.GetElement(locator);
+        }
+
+        public static Actions Actions(this IWebDriver driver)
+        {
+            return new Actions(driver);
         }
 
         public static void ScrollToView(this IWebDriver driver, IWebElement element)

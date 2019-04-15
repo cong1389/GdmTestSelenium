@@ -17,6 +17,8 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         private readonly ElementLocator
             _browseTemplateCatalog = new ElementLocator(Locator.XPath, "//button[@ng-click='browseTemplateCatalog()']"),
             _dataDocumentName = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']"),
+            _dataThumbnailBox = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']"),
+            _dataMenuGoTo = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//ul//li//a[@name='go']"),
             _kitLable = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='caption']//div[@class='caption-container']//span[contains(@class, 'kit-label')]");
 
 
@@ -112,10 +114,6 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             var element = Driver.WaitUntilPresentedElement(_kitLable.Format(designName), BaseConfiguration.LongTimeout);
 
             return element.Text;
-            // DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath($"//div[@data-documentname='{designName}']")));
-
-            //var element = DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(
-            //return element.Text;
         }
 
         public string GetRetiredOrDeletedLabel(string designName)
@@ -256,21 +254,26 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             return CheckDesignExists(copiedDesignName);
         }
 
-        public void CheckGoToActions(string documentName)
+        public void GoToActions(string documentName)
         {
-            if (DriverContext.Driver.IsUrlEndsWith("onedesign"))
-                return;
+            var thumbnailBoxEle = Driver.WaitUntilPresentedElement(_dataThumbnailBox.Format(documentName), BaseConfiguration.LongTimeout);
+            Driver.Actions().MoveToElement(thumbnailBoxEle).Perform();
 
-            DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.Id("products")));
-            var element = DriverContext.BrowserWait(35).Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//div[@data-documentname='{documentName}']//div[@class='thumbnail']")));
+            Driver.GetElement(_dataMenuGoTo.Format(documentName)).Click();
 
-            var actions = new Actions(DriverContext.Driver);
-            actions.MoveToElement(element).Perform();
+            //if (DriverContext.Driver.IsUrlEndsWith("onedesign"))
+            //    return;
 
-            DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//div[@data-documentname='{documentName}']//div[@class='thumbnail']//div[@class='content-wrapper']//ul//li//a[@name='go']"))).Click();
+            //DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.Id("products")));
+            //var element = DriverContext.BrowserWait(35).Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//div[@data-documentname='{documentName}']//div[@class='thumbnail']")));
+
+            //var actions = new Actions(DriverContext.Driver);
+            //actions.MoveToElement(element).Perform();
+
+            //DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//div[@data-documentname='{documentName}']//div[@class='thumbnail']//div[@class='content-wrapper']//ul//li//a[@name='go']"))).Click();
 
 
-            DriverContext.BrowserWait().Until(ExpectedConditions.UrlContains("onedesign"));
+            //DriverContext.BrowserWait().Until(ExpectedConditions.UrlContains("onedesign"));
         }
 
         public bool CheckDeleteDocumentAction(string documentName)

@@ -52,7 +52,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             VerifyDesignStatus(newDesignNameForSecondTimeRename, ifApproved: settings["IsApproved"]);
 
-            _myDesign.CheckGoToActions(newDesignNameForSecondTimeRename);
+            _myDesign.GoToActions(newDesignNameForSecondTimeRename);
 
             _designNamePrefix = Guid.NewGuid().ToString();
 
