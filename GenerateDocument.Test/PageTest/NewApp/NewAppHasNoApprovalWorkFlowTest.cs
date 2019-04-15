@@ -152,14 +152,12 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             Assert.IsTrue(_myDesign.CheckDesignCloneable(designName) && _myDesign.DoCopyDesign(designName, copiedDesignName), "It is able to clone new design from single design or kit design");
         }
-        
+
         [Test]
         [TestCaseSource(nameof(WorkflowTestResources), new object[] { false, null })]
         public void DesignOutputs_SuccessfullyDownloaded_WithoutConfirm_WhenProductHadNewReleaseWithMaintainOriginalOption(string templateName, Dictionary<string, bool> settings)
         {
             LoginStep(_returnPage);
-
-            // _myDesign.GoToActions("[AUTOTEST][SWF] A4 Poster_e6d74c29-d1af-44fe-9597-125e28ba8876");//TODO
 
             CreateDocumentStep(templateName);
 
@@ -167,6 +165,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifUnpublished: true);
 
             PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
+
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}");
 
             DeletedOutputFiles();
