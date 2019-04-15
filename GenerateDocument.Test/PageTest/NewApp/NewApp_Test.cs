@@ -317,7 +317,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             _myDesign.NavigateTo();
 
-            DriverContext.Driver.RefreshPage();
+          //  DriverContext.Driver.RefreshPage();
 
             var status = _myDesign.GetDesignStatus(designName);
 

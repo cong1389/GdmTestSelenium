@@ -19,6 +19,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             _dataDocumentName = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']"),
             _dataThumbnailBox = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']"),
             _dataMenuGoTo = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//ul//li//a[@name='go']"),
+            _designStatus = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//div[contains(@class, 'design-info')]//span"),
             _kitLable = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='caption']//div[@class='caption-container']//span[contains(@class, 'kit-label')]");
 
 
@@ -72,40 +73,46 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         public string GetDesignStatus(string designName)
         {
             var result = string.Empty;
-            void getStatus(string name)
-            {
-                var i = 0;
-                do
-                {
-                    try
-                    {
-                        DriverContext.BrowserWait()
-                             .Until(ExpectedConditions.ElementIsVisible(
-                                 By.XPath($"//div[@data-documentname='{name}']")));
 
-                        var element = DriverContext.BrowserWait(3).Until(ExpectedConditions.ElementIsVisible(
-                            By.XPath(
-                                $"//div[@data-documentname='{name}']//div[@class='thumbnail']//div[@class='content-wrapper']//div[contains(@class, 'design-info')]//span")));
+            Driver.WaitUntilPresentedElement(_dataDocumentName.Format(designName), BaseConfiguration.LongTimeout);
+            var designStatusEle = Driver.WaitUntilPresentedElement(_designStatus.Format(designName), BaseConfiguration.LongTimeout);
+            
+            return designStatusEle?.Text;
 
-                        result = element.Text;
+            //void getStatus(string name)
+            //{
+            //    var i = 0;
+            //    do
+            //    {
+            //        try
+            //        {
+            //            DriverContext.BrowserWait()
+            //                 .Until(ExpectedConditions.ElementIsVisible(
+            //                     By.XPath($"//div[@data-documentname='{name}']")));
 
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Design name: {designName}; exception details: {ex}");
-                    }
+            //            var element = DriverContext.BrowserWait(3).Until(ExpectedConditions.ElementIsVisible(
+            //                By.XPath(
+            //                    $"//div[@data-documentname='{name}']//div[@class='thumbnail']//div[@class='content-wrapper']//div[contains(@class, 'design-info')]//span")));
 
-                    i++;
+            //            result = element.Text;
 
-                    DriverContext.Driver.RefreshPage();
+            //            break;
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Console.WriteLine($"Design name: {designName}; exception details: {ex}");
+            //        }
 
-                } while (i < 3);
-            }
+            //        i++;
 
-            getStatus(designName);
+            //        DriverContext.Driver.RefreshPage();
 
-            return result;
+            //    } while (i < 3);
+            //}
+
+            //getStatus(designName);
+
+            //return result;
         }
 
         public string GetDesignType(string designName)
