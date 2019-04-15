@@ -39,14 +39,14 @@ namespace GenerateDocument.Common.Extensions
             return element.FindElement(by);
         }
 
-        public static IList<IWebElement> GetElements(this ISearchContext element, ElementLocator locator, Func<IWebElement, bool> condition)
-        {
-            return element.FindElements(locator.ToBy()).Where(condition).ToList();
-        }
-
         public static IList<IWebElement> GetElements(this ISearchContext element, ElementLocator locator)
         {
             return element.FindElements(locator.ToBy()).Where(e => e.Displayed && e.Enabled).ToList();
+        }
+
+        public static IList<IWebElement> GetElements(this ISearchContext element, ElementLocator locator, Func<IWebElement, bool> condition)
+        {
+            return element.FindElements(locator.ToBy()).Where(condition).ToList();
         }
 
         public static IWebDriver ToDriver(this ISearchContext element)

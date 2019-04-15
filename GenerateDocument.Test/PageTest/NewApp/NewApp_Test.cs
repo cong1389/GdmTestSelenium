@@ -1,21 +1,18 @@
-﻿using GenerateDocument.Test.Extensions;
+﻿using GenerateDocument.Common.Extensions;
+using GenerateDocument.Test.Extensions;
+using GenerateDocument.Test.PageObjects;
+using GenerateDocument.Test.PageObjects.BackEnd;
+using GenerateDocument.Test.PageObjects.FrontEnd;
+using GenerateDocument.Test.PageObjects.NewApp;
+using GenerateDocument.Test.Utilities;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using GenerateDocument.Common.Types;
-using GenerateDocument.Test.PageObjects;
-using GenerateDocument.Test.PageObjects.BackEnd;
-using GenerateDocument.Test.PageObjects.FrontEnd;
-using GenerateDocument.Test.PageObjects.NewApp;
-using GenerateDocument.Test.Utilities;
-using GenerateDocument.Test.WrapperFactory;
 using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
-using GenerateDocument.Common.Extensions;
 
 namespace GenerateDocument.Test.PageTest.NewApp
 {
@@ -23,7 +20,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
     public partial class NewApp_Test : PageTestBase
     {
         private PageCommonAction _action;
-        private UserLogin _userLoginPage;
         private MyDesign _myDesign;
         private OneDesign _oneDesign;
         private UserContentStart _userContentStart;
@@ -42,15 +38,13 @@ namespace GenerateDocument.Test.PageTest.NewApp
         private bool _isShowSurveyInvitationModal = true;
         private bool _isShowPolicyAgreementModal = true;
 
-        private IDictionary<string, string[]> _designsByStatuses = new Dictionary<string, string[]>();
-
         [SetUp]
         public void Init()
         {
             _designNamePrefix = Guid.NewGuid().ToString();
 
             _action = new PageCommonAction(DriverContext.Driver);
-            _userLoginPage = new UserLogin(DriverContext);
+            new UserLogin(DriverContext);
             _myDesign = new MyDesign(DriverContext);
             _userContentStart = new UserContentStart(DriverContext.Driver);
             _userEditFormFilling = new UserEditFormFilling(DriverContext.Driver);
@@ -62,26 +56,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _adminLogin = new AdminLogin(DriverContext);
             _adminProducts = new AdminProducts(DriverContext.Driver);
             _adminProductDetails = new AdminProductDetails(DriverContext.Driver);
-        }
-
-        private static IEnumerable<Dictionary<string, string>> SetupProductData(bool isLongDesign)
-        {
-            if (isLongDesign)
-            {
-                yield return new Dictionary<string, string>
-                {
-                    ["ProductName"] = "[AUTOTEST][SWF] A4 Poster",
-                    ["ProductDescription"] = $"[AUTOTEST][SWF][KIT] Invitation + A4 Poster_{ TestUtil.RandomName(5)}"
-                };
-            }
-            else
-            {
-                yield return new Dictionary<string, string>
-                {
-                    ["ProductName"] = "[AUTOTEST][SWF] A4 Poster",
-                    ["ProductDescription"] = TestUtil.RandomName(4)
-                };
-            }
         }
 
         private static IEnumerable<object> WorkflowTestResources(bool hasApprovalWorkflow, bool? isApproved = null)
@@ -429,10 +403,5 @@ namespace GenerateDocument.Test.PageTest.NewApp
             }
         }
 
-        public enum ReleaseOptionsType
-        {
-            UpdateForMaintainOnly,
-            UpdateAndConvertToLatestRelease
-        }
     }
 }

@@ -21,34 +21,16 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             _lastPage = new ElementLocator(Locator.Id, "lastPage"),
             _closeModalBtn = new ElementLocator(Locator.Id, "closeModalBtn"),
             _mopinionActiveClass = new ElementLocator(Locator.ClassName, "mopinion-slider-active"),
-            _completedModalCloseBtn = new ElementLocator(Locator.XPath, "//a[@ng-click='$dismiss()']");
+            _completedModalCloseBtn = new ElementLocator(Locator.XPath, "//a[@ng-click='$dismiss()']"),
+            _downloadDesignButtons = new ElementLocator(Locator.XPath, "//div[@id='componentInfo']//ul[@class='product-activities']//li//button[@ng-click='downloadDesign(action.jobName)']");
 
         public OneDesign(DriverContext driverContext) : base(driverContext)
         {
         }
-
-        public IWebElement HyperlinkMoreOfDesignsName
-        {
-            get
-            {
-                return DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.Id("designTitleDisplayMngLink")));
-            }
-        }
-
-        public IWebElement DesignTitle
-        {
-            get
-            {
-                return Driver.FindElement(By.Id("designTitle"));
-            }
-        }
-
+        
         public List<IWebElement> DownloadButtons()
         {
-            var downloadButtons = DriverContext.BrowserWait().Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(
-                By.XPath("//div[@id='componentInfo']//ul[@class='product-activities']//li//button[@ng-click='downloadDesign(action.jobName)']")));
-
-            return downloadButtons.ToList();
+            return DriverContext.Driver.GetElements(_downloadDesignButtons).ToList();
         }
 
         public string GetDesignName(string expectedName = null)
@@ -83,23 +65,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                 return designName;
             }
         }
-
-        public string CheckValidDesignNameWhenRenaming(string designName)
-        {
-            var renameButton = DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.LinkText("Rename")));
-            renameButton.Click();
-
-            DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.ClassName("modal-open")));
-
-            var textField = DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.Name("designName")));
-            textField.Clear();
-            textField.SendKeys(designName);
-
-            //wait until it's show error message if invalid design name
-
-            return string.Empty;
-        }
-
+        
         public string GetSelectedComponentName(bool isKit)
         {
             if (!isKit)
@@ -206,12 +172,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                 Driver.WaitUntilElementIsNoLongerFound(_mopinionActiveClass, BaseConfiguration.ShortTimeout);
             }
         }
-
-        public void BackToMyDesign()
-        {
-            DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div[@class='rmui-breadcrumb']//a[contains(@href, '#/designs')]"))).Click();
-        }
-
+        
         public string RenameDesign(string name)
         {
             DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[contains(@class, 'fblw-timeline-item')]")));
@@ -258,26 +219,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
             return string.Empty;
         }
-
-        public bool HasClassShowMore()
-        {
-            return DesignTitle.GetAttribute("class").Contains("showLess");
-        }
-
-        public bool IsDisplayedHyperlinkMore()
-        {
-            return DriverContext.BrowserWait().Until(ExpectedConditions.ElementExists(By.Id("designTitleDisplayMngLink"))).Displayed;
-        }
-
-        public bool CheckIfItIsLongText()
-        {
-            var designNameElement = DriverContext.BrowserWait()
-                .Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='product-title']//h2")));
-
-
-            return false;
-        }
-
+        
         public bool CheckShowFullLessDesignNameActionLinkVisibility(bool visibilityExpectation, bool needShowFullName = true)
         {
             DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[contains(@class, 'fblw-timeline-item')]")));
@@ -323,9 +265,5 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         }
 
-        public void Navigate(string url = "")
-        {
-            Driver.Navigate().GoToUrl(url);
-        }
     }
 }
