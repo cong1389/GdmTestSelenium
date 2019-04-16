@@ -88,6 +88,12 @@ namespace GenerateDocument.Common.Extensions
             driver.Manage().Cookies.DeleteAllCookies();
         }
 
+        public static bool CheckExistedCookie(this IWebDriver driver, string cookieName)
+        {
+            var cookie = driver.Manage().Cookies.GetCookieNamed(cookieName);
+            return cookie != null;
+        }
+
         public static bool IsAbleToAccessPage(this IWebDriver driver, string url)
         {
             driver.Navigate().GoToUrl(url);

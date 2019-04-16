@@ -72,47 +72,12 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public string GetDesignStatus(string designName)
         {
-            var result = string.Empty;
+            DriverContext.Driver.RefreshPage();
 
             Driver.WaitUntilPresentedElement(_dataDocumentName.Format(designName), BaseConfiguration.LongTimeout);
             var designStatusEle = Driver.WaitUntilPresentedElement(_designStatus.Format(designName), BaseConfiguration.LongTimeout);
             
             return designStatusEle?.Text;
-
-            //void getStatus(string name)
-            //{
-            //    var i = 0;
-            //    do
-            //    {
-            //        try
-            //        {
-            //            DriverContext.BrowserWait()
-            //                 .Until(ExpectedConditions.ElementIsVisible(
-            //                     By.XPath($"//div[@data-documentname='{name}']")));
-
-            //            var element = DriverContext.BrowserWait(3).Until(ExpectedConditions.ElementIsVisible(
-            //                By.XPath(
-            //                    $"//div[@data-documentname='{name}']//div[@class='thumbnail']//div[@class='content-wrapper']//div[contains(@class, 'design-info')]//span")));
-
-            //            result = element.Text;
-
-            //            break;
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Console.WriteLine($"Design name: {designName}; exception details: {ex}");
-            //        }
-
-            //        i++;
-
-            //        DriverContext.Driver.RefreshPage();
-
-            //    } while (i < 3);
-            //}
-
-            //getStatus(designName);
-
-            //return result;
         }
 
         public string GetDesignType(string designName)
@@ -263,10 +228,16 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public void GoToActions(string documentName)
         {
-            var thumbnailBoxEle = Driver.WaitUntilPresentedElement(_dataThumbnailBox.Format(documentName), BaseConfiguration.LongTimeout);
-            Driver.Actions().MoveToElement(thumbnailBoxEle).Perform();
+            Console.WriteLine($"documentName: {documentName}");
+            var isthumbnailBoxEle = Driver.IsElementPresent(_dataThumbnailBox.Format(documentName));
+            if (isthumbnailBoxEle != null)
+            {
+                var thumbnailBoxEle = Driver.WaitUntilPresentedElement(_dataThumbnailBox.Format(documentName), BaseConfiguration.LongTimeout);
+                Driver.Actions().MoveToElement(thumbnailBoxEle).Perform();
 
-            Driver.GetElement(_dataMenuGoTo.Format(documentName)).Click();
+                Driver.GetElement(_dataMenuGoTo.Format(documentName)).Click();
+            }
+           
 
             //if (DriverContext.Driver.IsUrlEndsWith("onedesign"))
             //    return;

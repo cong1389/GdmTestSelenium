@@ -1,6 +1,8 @@
 ﻿using GenerateDocument.Test.PageObjects.NewApp;
 using NUnit.Framework;
 using System.Collections.Generic;
+using GenerateDocument.Common.Helpers;
+using GenerateDocument.Test.WrapperFactory;
 
 namespace GenerateDocument.Test.PageTest.NewApp
 {
@@ -15,6 +17,8 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifUnpublished: true);
 
+            _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
+
             SubmitForApprovalStep($"{templateName}_{_designNamePrefix}");
 
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifUnreviewed: true);
@@ -27,9 +31,11 @@ namespace GenerateDocument.Test.PageTest.NewApp
             {
                 LoginStep(_returnPage);
 
-                CreateDocumentStep(templateName);//TODO
+                CreateDocumentStep(templateName);
 
                 VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifUnpublished: true);
+
+                _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
 
                 SubmitForApprovalStep($"{templateName}_{_designNamePrefix}");
 
@@ -37,11 +43,13 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
                 VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifApproved: settings["IsApproved"]);
 
+                _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
+
                 PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"], false);
             }
             finally
             {
-                DeletedOutputFiles();
+                FilesHelper.DeleteAllFiles(ConfigInfo.NewAppTestDir);
             }
 
         }
@@ -54,6 +62,8 @@ namespace GenerateDocument.Test.PageTest.NewApp
             CreateDocumentStep(templateName);
 
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifUnpublished: true);
+
+            _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
 
             SubmitForApprovalStep($"{templateName}_{_designNamePrefix}");
 

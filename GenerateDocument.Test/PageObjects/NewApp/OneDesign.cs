@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using GenerateDocument.Common.Helpers;
 using GenerateDocument.Common.Types;
+using GenerateDocument.Test.WrapperFactory;
 
 namespace GenerateDocument.Test.PageObjects.NewApp
 {
@@ -74,7 +76,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             return DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='dropdown']//button"))).Text.Trim();
         }
 
-        public void DownloadDesign(bool needToPublishFirst, ref bool isShowSurveyInvitationModal)
+        public void DownloadDesign(bool needToPublishFirst, ref bool isShowSurveyInvitationModal, string designName = null)
         {
             var downloadButtons = GetDownloadDesignButtons();
 
@@ -95,16 +97,22 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                     //verify modal is closed
                     DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("modal-open")));
                 }
-                else
-                {
-                    ExitForDownloadCompletedModal();
-                }
+            }
 
-                if (isShowSurveyInvitationModal)
-                {
-                    TakeSurveyIfVisible(isShowSurveyInvitationModal);
-                    isShowSurveyInvitationModal = false;
-                }
+            if (Driver.CheckExistedCookie($"MSFeedbackSent{ConfigInfo.MopinionFormId}"))
+            {
+                ExitForDownloadCompletedModal();
+            }
+            else
+            {
+                TakeSurveyIfVisible(isShowSurveyInvitationModal);
+            }
+
+            //FilesHelper.WaitForFileOfGivenName(BaseConfiguration.LongTimeout, designName, BaseConfiguration.NewAppTestDir, true);
+
+            if (isShowSurveyInvitationModal)
+            {
+                isShowSurveyInvitationModal = false;
             }
 
             //wait until all download buttons are show checked icon
@@ -127,7 +135,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             var modalEle = Driver.WaitUntilPresentedElement(_modalOpen, BaseConfiguration.LongTimeout);
             if (modalEle != null)
             {
-               // Driver.SwitchTo().Frame(modalEle);
+                // Driver.SwitchTo().Frame(modalEle);
                 Driver.GetElement(_completedModalCloseBtn).Click();
 
                 //Driver.SwitchToParent();
@@ -156,8 +164,9 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             if (visibility)
             {
                 Driver.WaitUntilPresentedElement(_modalOpen, BaseConfiguration.LongTimeout);
-                Driver.IsElementPresent(_modalOpen);
-                Driver.GetElement(_takeTheSurveyButton).Click();
+
+                var takeTheSurveyButton = Driver.WaitUntilPresentedElement(_takeTheSurveyButton, BaseConfiguration.LongTimeout);
+                takeTheSurveyButton.Click();
 
                 var surveyWindowEle = Driver.WaitUntilPresentedElement(_surveyWindow, BaseConfiguration.ShortTimeout);
                 if (surveyWindowEle != null)

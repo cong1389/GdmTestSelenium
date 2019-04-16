@@ -10,6 +10,7 @@ using static GenerateDocument.Test.Utilities.PageCommon;
 using GenerateDocument.Test.WrapperFactory;
 using GenerateDocument.Test.Extensions;
 using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Helpers;
 
 namespace GenerateDocument.Test.PageTest.NewApp
 {
@@ -26,6 +27,8 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
                 VerifyDesignType($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
                 VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifUnpublished: true);
+
+                _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
 
                 PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
             }
@@ -164,11 +167,13 @@ namespace GenerateDocument.Test.PageTest.NewApp
             VerifyDesignType($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifUnpublished: true);
 
+            _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
+
             PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
 
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}");
 
-            DeletedOutputFiles();
+            FilesHelper.DeleteAllFiles(ConfigInfo.NewAppTestDir);
 
             AdminLoginStep(AdminAccount);
 
@@ -190,10 +195,9 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}");
 
+            _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
+
             PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"], false);
-
-            DeletedOutputFiles();
-
         }
 
         [Test, TestCaseSource(nameof(WorkflowTestResources), new object[] { false, null })]
@@ -208,10 +212,11 @@ namespace GenerateDocument.Test.PageTest.NewApp
                 VerifyDesignType($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
                 VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifUnpublished: true);
 
-                PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
-                VerifyDesignStatus($"{templateName}_{_designNamePrefix}");
+                _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
 
-                DeletedOutputFiles();
+                PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
+
+                VerifyDesignStatus($"{templateName}_{_designNamePrefix}");
 
                 AdminLoginStep(AdminAccount);
 
@@ -233,9 +238,11 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
                 VerifyDesignStatus($"{templateName}_{_designNamePrefix}");
 
+                _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
+
                 PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
 
-                DeletedOutputFiles();
+                FilesHelper.DeleteAllFiles(ConfigInfo.NewAppTestDir);
             }
             finally
             {

@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using GenerateDocument.Common.Helpers;
+using GenerateDocument.Test.WrapperFactory;
 using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.PageTest.NewApp
@@ -231,7 +233,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
         private void SubmitForApprovalStep(string name)
         {
-            _myDesign.GoToActions(name);
+            //_myDesign.GoToActions(name);
 
             var designName = _oneDesign.GetDesignName(name);
 
@@ -251,21 +253,20 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
         private void PlaceOrderStep(string name, bool isKit, bool needToPublishFirst = true)
         {
-            _myDesign.GoToActions(name);
+            //_myDesign.GoToActions(name);
 
             var designName = _oneDesign.GetDesignName();
-
             Assert.IsTrue(!string.IsNullOrEmpty(designName) && designName.IsEquals(name), "Design name is displayed correctly");
 
-            var downloadOptionsCount = _oneDesign.GetDownloadDesignButtons().Count;
+            var countButtons = _oneDesign.GetDownloadDesignButtons().Count;
+            Assert.IsTrue(countButtons >= 1, "Download options should be available");
 
-            Assert.IsTrue(downloadOptionsCount >= 1, "Download options should be available");
+            FilesHelper.DeleteAllFiles(ConfigInfo.NewAppTestDir);
+            _oneDesign.DownloadDesign(needToPublishFirst, ref _isShowSurveyInvitationModal, name);
 
-            _oneDesign.DownloadDesign(needToPublishFirst, ref _isShowSurveyInvitationModal);
-
-            var downloadedFilesCount = CountDownloadFiles(downloadOptionsCount);
-
-            Assert.IsTrue(downloadedFilesCount == downloadOptionsCount, $"Files downloaded successfully; files count: {downloadedFilesCount}");
+            var downloadedFilesCount = FilesHelper.CountFiles(NewAppTestDir);
+            //var downloadedFilesCount = CountDownloadFiles(downloadOptionsCount);
+            Assert.IsTrue(downloadedFilesCount == countButtons, $"Files downloaded successfully; files count: {downloadedFilesCount}");
 
             var componentName = $"{_oneDesign.GetSelectedComponentName(isKit)}";
 
@@ -316,8 +317,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
         private void VerifyDesignStatus(string designName, bool? ifUnpublished = null, bool? ifApproved = null, bool? ifUnreviewed = null, bool? ifRejected = null)
         {
             _myDesign.NavigateTo();
-
-          //  DriverContext.Driver.RefreshPage();
 
             var status = _myDesign.GetDesignStatus(designName);
 
@@ -394,14 +393,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             return result;
         }
 
-        private void DeletedOutputFiles()
-        {
-            var dir = new DirectoryInfo(NewAppTestDir);
-            foreach (var file in dir.GetFiles())
-            {
-                file.Delete();
-            }
-        }
+
 
     }
 }
