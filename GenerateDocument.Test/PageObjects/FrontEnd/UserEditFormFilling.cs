@@ -14,13 +14,13 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         private readonly ElementLocator
             _optionsLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}']"),
             _optionsContain = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
-
             _uploadLogoButton = new ElementLocator(Locator.XPath, "//span[contains(@id, '_ContentPlaceHolderStepArea_InputFields_LinkButton482')]"),
-
             _uploadImageTextbox = new ElementLocator(Locator.XPath, "//input[@id='{0}']"),
             _uploadImageButton = new ElementLocator(Locator.XPath, "//div[contains(@id,'{0}')]//a"),
-
             _modalLarge = new ElementLocator(Locator.XPath, "//div[@class='modal modal--large']"),
+            _chooseFileButtonOfModal = new ElementLocator(Locator.XPath, "//x-upload-file//input[@type='file']"),
+            _uploadButtonOfModal = new ElementLocator(Locator.XPath, "il_upload_btn-upload"),
+            _textAreaField = new ElementLocator(Locator.XPath, "//div[contains(@id, '_ContentPlaceHolderStepArea_InputFields_InputFields')]//textarea"),
             _imageEditArea = new ElementLocator(Locator.XPath, "//table[contains(@id, '_ContentPlaceHolderStepArea__UserImageEdit1__ModalPopUp1_tablePopUpArea')]");
 
 
@@ -104,7 +104,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             Driver.ScrollToView(groupEle);
             groupEle.Click();
 
-            Driver.WaitUntilPresentedElement(_optionsContain.Format("div1"), BaseConfiguration.LongTimeout);
+            //Driver.WaitUntilPresentedElement(_optionsContain.Format("div1"), BaseConfiguration.LongTimeout);
         }
 
         public void ClickToViewTextOptions(bool clickToOpen = true)
@@ -139,7 +139,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                 DriverContext.BrowserWait().Until(x => !GetImageOptionContent().Displayed);
             }
         }
-        
+
         public void ClickToUploadFirstImageOptionFile(string path)
         {
             Driver.ScrollToView(UploadFirstImageButton);
@@ -162,7 +162,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             InputFile.SendKeys(path);
             ClickToSubmitFileUpload();
 
-             if (Driver.IsElementPresent(_imageEditArea))
+            if (Driver.IsElementPresent(_imageEditArea))
             {
                 EditImage();
             }
@@ -177,7 +177,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public void ClickToUploadFirstSupportingLogo(string path)
         {
-            var uploadBtnEle= Driver.GetElement(_uploadImageButton.Format("DIV_841"));
+            var uploadBtnEle = Driver.GetElement(_uploadImageButton.Format("DIV_841"));
             Driver.ScrollToView(uploadBtnEle);
             uploadBtnEle.Click();
 
@@ -217,8 +217,9 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             Driver.ScrollToView(uploadBtnEle);
             uploadBtnEle.Click();
 
-            InputFile.SendKeys(path);
-            ClickToSubmitFileUpload();
+            Driver.WaitUntilPresentedElement(_modalLarge, BaseConfiguration.LongTimeout);
+            Driver.GetElement(_chooseFileButtonOfModal, e => e.Displayed).SendKeys(path);
+            Driver.GetElement(_uploadButtonOfModal).Click();
 
             Driver.WaitUntilElementIsNoLongerFound(_modalLarge, BaseConfiguration.LongTimeout);
 
@@ -269,7 +270,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             var logoTextboxEle = Driver.GetElement(_uploadImageTextbox.Format("FIELD_842_IMGNAME"), e => e.Displayed);
             Driver.ScrollToView(logoTextboxEle);
-          
+
             return logoTextboxEle.GetAttribute("value");
         }
 
@@ -320,7 +321,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             imageEditorButton.Click();
             DriverContext.BrowserWait(30).Until(ExpectedConditions.StalenessOf(imageEditorButton));
         }
-        
+
         public List<IWebElement> GetDesignOptionLayoutRadios()
         {
             return DriverContext.BrowserWait(20).Until(d =>
@@ -329,7 +330,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                 return elements.Count > 0 ? elements.ToList() : null;
             });
         }
-        
+
         private IWebElement GetImageOptionContent()
         {
             return DriverContext.BrowserWait().Until(ExpectedConditions.ElementExists(By.Id("div4")));
@@ -350,5 +351,13 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             return selectElement.Selected;
         }
 
+        public UserEditFormFilling ExpandOptions(string optionsName)
+        {
+            var groupEle = Driver.GetElement(_optionsLabel.Format(optionsName));
+            Driver.ScrollToView(groupEle);
+            groupEle.Click();
+
+            return this;
+        }
     }
 }
