@@ -45,18 +45,12 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             }
         }
 
-        public void ClickToContinueAnywayWithoutRequiredFieldButton()
-        {
-            ContinueAnywayWithoutRequiredFieldButton.Click();
-        }
+       
 
         public void ClickToBypassCompleteRequiredFields()
         {
             var requiredFieldsEle = Driver.WaitUntilPresentedElement(completeRequiredFields, BaseConfiguration.LongTimeout);
-            if (requiredFieldsEle != null)
-            {
-                ClickToContinueAnywayWithoutRequiredFieldButton();
-            }
+            requiredFieldsEle?.Click();
         }
     }
 }

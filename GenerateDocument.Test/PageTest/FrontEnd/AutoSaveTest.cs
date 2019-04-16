@@ -58,7 +58,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _adminProductRetired = new AdminProductRetired(DriverContext.Driver);
             _adminExtensions = new AdminExtensions(DriverContext.Driver);
 
-            _myDesign= new MyDesign(DriverContext);
+            _myDesign = new MyDesign(DriverContext);
             _oneDesign = new OneDesign(DriverContext);
         }
 
@@ -97,7 +97,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             UserSiteLoginStep();
 
             _myDesign.CreateDesign();
-            
+
             var documentBefore = _userContentStart.SearchDocument(setupProduct["ProductName"]);
             Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
             _userContentStart.SelectDocument(documentBefore.Id);
@@ -114,6 +114,26 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _userEditFinish.ClickToGenerateDocument();
 
             Assert.IsTrue(_oneDesign.GetDesignName().IsEquals(setupProduct["ProductDescription"].EncodeSpecialCharacters()));
+        }
+
+        [Test]
+        public void ConditionalControls_SuccessAutoSave()
+        {
+            UserSiteLoginStep();
+
+            _myDesign.CreateDesign();
+
+            var documentBefore = _userContentStart.SearchDocument("[AUTOTEST] Social Media Post");
+            Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
+            _userContentStart.SelectDocument(documentBefore.Id);
+
+            _userEditFormFilling.ExpandOptions("Layout options")
+                .SelectByValue("FIELD_1024", "Fundraiser");
+            Assert.IsTrue(_action.GetNotifyMessage);
+
+            _userEditFormFilling.ExpandOptions("Image and Text options")
+                .SelectByValue("FIELD_1045", "Visit our Just Giving page:");
+            Assert.IsTrue(_action.GetNotifyMessage);
         }
 
         private void UserSiteLoginStep()

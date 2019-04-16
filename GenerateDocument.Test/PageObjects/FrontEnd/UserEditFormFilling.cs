@@ -6,6 +6,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GenerateDocument.Common.WebElements;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
@@ -21,7 +22,8 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             _chooseFileButtonOfModal = new ElementLocator(Locator.XPath, "//x-upload-file//input[@type='file']"),
             _uploadButtonOfModal = new ElementLocator(Locator.XPath, "il_upload_btn-upload"),
             _textAreaField = new ElementLocator(Locator.XPath, "//div[contains(@id, '_ContentPlaceHolderStepArea_InputFields_InputFields')]//textarea"),
-            _imageEditArea = new ElementLocator(Locator.XPath, "//table[contains(@id, '_ContentPlaceHolderStepArea__UserImageEdit1__ModalPopUp1_tablePopUpArea')]");
+            _imageEditArea = new ElementLocator(Locator.XPath, "//table[contains(@id, '_ContentPlaceHolderStepArea__UserImageEdit1__ModalPopUp1_tablePopUpArea')]"),
+            _dropDownLocator = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//select[@id='{0}']");
 
 
         public UserEditFormFilling(DriverContext driverContext) : base(driverContext)
@@ -210,16 +212,14 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             //    EditImage();
             //}
         }
-
         public void UploadDesignOptionFile(string path)
         {
             var uploadBtnEle = Driver.GetElement(_uploadLogoButton);
             Driver.ScrollToView(uploadBtnEle);
             uploadBtnEle.Click();
 
-            Driver.WaitUntilPresentedElement(_modalLarge, BaseConfiguration.LongTimeout);
-            Driver.GetElement(_chooseFileButtonOfModal, e => e.Displayed).SendKeys(path);
-            Driver.GetElement(_uploadButtonOfModal).Click();
+            InputFile.SendKeys(path);
+            ClickToSubmitFileUpload();
 
             Driver.WaitUntilElementIsNoLongerFound(_modalLarge, BaseConfiguration.LongTimeout);
 
@@ -356,6 +356,14 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             var groupEle = Driver.GetElement(_optionsLabel.Format(optionsName));
             Driver.ScrollToView(groupEle);
             groupEle.Click();
+
+            return this;
+        }
+
+        public UserEditFormFilling SelectByValue(string ctrId, string value)
+        {
+            Select drpEle = Driver.GetElement<Select>(_dropDownLocator.Format(ctrId));
+            drpEle.SelectedByValue(value);
 
             return this;
         }

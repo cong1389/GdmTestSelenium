@@ -23,6 +23,11 @@ namespace GenerateDocument.Common.Extensions
             return GetElement(element, locator, BaseConfiguration.LongTimeout, condition);
         }
 
+        public static IWebElement GetElement(this ISearchContext element, ElementLocator locator, double timeout)
+        {
+            return element.GetElement(locator, timeout, e => e.Displayed & e.Enabled);
+        }
+
         public static IWebElement GetElement(this ISearchContext element, ElementLocator locator, double timeout, Func<IWebElement, bool> condition)
         {
             var driver = ToDriver(element);
@@ -66,6 +71,33 @@ namespace GenerateDocument.Common.Extensions
         {
             var wrapsDriver = element as IWrapsDriver;
             return wrapsDriver == null ? (IWebDriver)element : wrapsDriver.WrappedDriver;
+        }
+
+        public static T GetElement<T>(this ISearchContext searchContext, ElementLocator locator)
+            where T : class, IWebElement
+        {
+            IWebElement webElemement = searchContext.GetElement(locator);
+            return webElemement.As<T>();
+        }
+
+        public static T GetElement<T>(this ISearchContext searchContext, ElementLocator locator, double timeout)
+            where T : class, IWebElement
+        {
+            IWebElement webElemement = searchContext.GetElement(locator, timeout);
+            return webElemement.As<T>();
+        }
+
+        private static T As<T>(this IWebElement webElement)
+            where T : class, IWebElement
+        {
+            var constructor = typeof(T).GetConstructor(new[] { typeof(IWebElement) });
+
+            if (constructor != null)
+            {
+                return constructor.Invoke(new object[] { webElement }) as T;
+            }
+
+            throw new ArgumentNullException($"Constructor for type {typeof(T)} is null.");
         }
     }
 }
