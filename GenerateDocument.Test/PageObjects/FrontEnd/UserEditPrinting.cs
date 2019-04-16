@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Types;
 using GenerateDocument.Test.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
@@ -8,9 +10,11 @@ using OpenQA.Selenium.Support.UI;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
-    public class UserEditPrinting : PageObject
+    public class UserEditPrinting : PageBaseObject
     {
-        public UserEditPrinting(IWebDriver browser) : base(browser)
+        private readonly ElementLocator completeRequiredFields = new ElementLocator(Locator.XPath, "//div[@class='warningAreaMessageWarning']");
+
+        public UserEditPrinting(DriverContext driverContext) : base(driverContext)
         {
         }
 
@@ -19,12 +23,12 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public void ClickToNextStep()
         {
-            if (!Browser.IsUrlEndsWith("usereditprinting"))
+            if (!Driver.IsUrlEndsWith("usereditprinting"))
                 return;
 
-            var webDriver = BrowserWait();
+            var webDriver = DriverContext.BrowserWait();
             var element = webDriver.Until(ExpectedConditions.ElementToBeClickable(By.Id("ctl00_ctl00_ContentPlaceHolderBody_StepArea1_StepNextN1_TheLabelButton")));
-            ScrollToView(element);
+            Driver.ScrollToView(element);
             element.Click();
             webDriver.Until(ExpectedConditions.StalenessOf(element));
         }
@@ -33,7 +37,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             try
             {
-                return BrowserWait(5).Until(ExpectedConditions.ElementIsVisible(By.ClassName("warningAreaMessageWarning"))) != null;
+                return DriverContext.BrowserWait(5).Until(ExpectedConditions.ElementIsVisible(By.ClassName("warningAreaMessageWarning"))) != null;
             }
             catch
             {
@@ -48,7 +52,8 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public void ClickToBypassCompleteRequiredFields()
         {
-            if (NeedToCompleteRequiredFields())
+            var requiredFieldsEle = Driver.WaitUntilPresentedElement(completeRequiredFields, BaseConfiguration.LongTimeout);
+            if (requiredFieldsEle != null)
             {
                 ClickToContinueAnywayWithoutRequiredFieldButton();
             }
