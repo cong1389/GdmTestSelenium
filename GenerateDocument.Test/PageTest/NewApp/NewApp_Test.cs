@@ -47,8 +47,8 @@ namespace GenerateDocument.Test.PageTest.NewApp
             new UserLogin(DriverContext);
             _myDesign = new MyDesign(DriverContext);
             _userContentStart = new UserContentStart(DriverContext.Driver);
-            _userEditFormFilling = new UserEditFormFilling(DriverContext.Driver);
-            _userEditPrinting = new UserEditPrinting(DriverContext.Driver);
+            _userEditFormFilling = new UserEditFormFilling(DriverContext);
+            _userEditPrinting = new UserEditPrinting(DriverContext);
             _userEditFinish = new UserEditFinish(DriverContext.Driver);
             _oneDesign = new OneDesign(DriverContext);
             _userContentApprovals = new UserContentApprovals(DriverContext.Driver);

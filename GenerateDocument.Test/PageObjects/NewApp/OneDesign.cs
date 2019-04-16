@@ -131,7 +131,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                 Driver.GetElement(_completedModalCloseBtn).Click();
 
                 //Driver.SwitchToParent();
-                Driver.WaitUntilElementIsNoLongerFound(_modalOpen, BaseConfiguration.ShortTimeout);
+                //Driver.WaitUntilElementIsNoLongerFound(_modalOpen, BaseConfiguration.ShortTimeout);
             }
         }
 

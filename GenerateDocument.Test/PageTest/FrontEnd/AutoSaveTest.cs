@@ -30,6 +30,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         private AdminOptionField _adminOptionField;
         private AdminProductRetired _adminProductRetired;
 
+        private MyDesign _myDesign;
         private OneDesign _oneDesign;
 
         private const string ImageFolderRelativePath = @"Content\imageTest";
@@ -47,8 +48,8 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         {
             _action = new PageCommonAction(DriverContext.Driver);
             _userContentStart = new UserContentStart(DriverContext.Driver);
-            _userEditFormFilling = new UserEditFormFilling(DriverContext.Driver);
-            _userEditPrinting = new UserEditPrinting(DriverContext.Driver);
+            _userEditFormFilling = new UserEditFormFilling(DriverContext);
+            _userEditPrinting = new UserEditPrinting(DriverContext);
             _userEditFinish = new UserEditFinish(DriverContext.Driver);
             _adminProducts = new AdminProducts(DriverContext.Driver);
             _adminProductDetails = new AdminProductDetails(DriverContext.Driver);
@@ -57,6 +58,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _adminProductRetired = new AdminProductRetired(DriverContext.Driver);
             _adminExtensions = new AdminExtensions(DriverContext.Driver);
 
+            _myDesign= new MyDesign(DriverContext);
             _oneDesign = new OneDesign(DriverContext);
         }
 
@@ -68,23 +70,23 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                 ["ProductDescription"] = TestUtil.RandomName(4)
             };
 
-            yield return new Dictionary<string, string>
-            {
-                ["ProductName"] = "[AUTOTEST][SWF] A4 Poster",
-                ["ProductDescription"] = $"<script>alert('lll' {TestUtil.RandomName(5)}ttribute=\")</ script > valid attribute = \" <valid><!-- \"'<>& --></valid><valid>"
-            };
+            //yield return new Dictionary<string, string>
+            //{
+            //    ["ProductName"] = "[AUTOTEST][SWF] A4 Poster",
+            //    ["ProductDescription"] = $"<script>alert('lll' {TestUtil.RandomName(5)}ttribute=\")</ script > valid attribute = \" <valid><!-- \"'<>& --></valid><valid>"
+            //};
 
-            yield return new Dictionary<string, string>
-            {
-                ["ProductName"] = "[AUTOTEST][SWF] A4 Poster",
-                ["ProductDescription"] = $"<valid><!-- <{TestUtil.RandomName(5)}>& --></valid>"
-            };
+            //yield return new Dictionary<string, string>
+            //{
+            //    ["ProductName"] = "[AUTOTEST][SWF] A4 Poster",
+            //    ["ProductDescription"] = $"<valid><!-- <{TestUtil.RandomName(5)}>& --></valid>"
+            //};
 
-            yield return new Dictionary<string, string>
-            {
-                ["ProductName"] = "[AUTOTEST][SWF] A4 Poster",
-                ["ProductDescription"] = $"<valid><![CDATA[\"'<{TestUtil.RandomName(5)}>&]]></valid>"
-            };
+            //yield return new Dictionary<string, string>
+            //{
+            //    ["ProductName"] = "[AUTOTEST][SWF] A4 Poster",
+            //    ["ProductDescription"] = $"<valid><![CDATA[\"'<{TestUtil.RandomName(5)}>&]]></valid>"
+            //};
         }
 
         [Test, TestCaseSource(nameof(SetupProductData))]
@@ -94,10 +96,10 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             UserSiteLoginStep();
 
-            _userContentStart.NavigateTo();
+            _myDesign.CreateDesign();
+            
             var documentBefore = _userContentStart.SearchDocument(setupProduct["ProductName"]);
             Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
-
             _userContentStart.SelectDocument(documentBefore.Id);
 
             CheckAutoSaveForViewDesignOptions();
@@ -187,7 +189,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             var fields = new List<AutoSaveField>();
             var displayedTextareas = _userEditFormFilling.GetAllDisplayedTextareas();
-
             Assert.IsTrue(displayedTextareas.Any());
 
             foreach (var item in displayedTextareas)
@@ -224,10 +225,18 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             Assert.IsTrue(_userEditFormFilling.IsSecondSupportingLogoSectionDisplayed());
 
             var firstImagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImageFolderRelativePath, FooterOptionFirstImage);
-            UploadImage(FooterOptionFirstImage, firstImagePath, () => _userEditFormFilling.ClickToUploadFirstSupportingLogo(firstImagePath), () => _userEditFormFilling.ClickToViewFooterOptions(true), _userEditFormFilling.GetFirstSupportingLogoValue);
+            UploadImage(FooterOptionFirstImage
+                , firstImagePath
+                , () => _userEditFormFilling.ClickToUploadFirstSupportingLogo(firstImagePath)
+                , () => _userEditFormFilling.ClickToViewFooterOptions(true)
+                , _userEditFormFilling.GetFirstSupportingLogoValue);
 
             var secondImagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImageFolderRelativePath, FooterOptionSecondImage);
-            UploadImage(FooterOptionSecondImage, secondImagePath, () => _userEditFormFilling.ClickToUploadSecondSupportingLogo(secondImagePath), () => _userEditFormFilling.ClickToViewFooterOptions(true), _userEditFormFilling.GetSecondSupportingLogoValue);
+            UploadImage(FooterOptionSecondImage
+                , secondImagePath
+                , () => _userEditFormFilling.ClickToUploadSecondSupportingLogo(secondImagePath)
+                , () => _userEditFormFilling.ClickToViewFooterOptions(true)
+                , _userEditFormFilling.GetSecondSupportingLogoValue);
         }
 
         private void UploadDesignOptionFile()
@@ -236,7 +245,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImageFolderRelativePath, DesignOptionImage);
             Assert.IsTrue(File.Exists(path));
-
             _userEditFormFilling.UploadDesignOptionFile(path);
 
             _userEditFormFilling.ClickToViewDesignOptions();
@@ -279,6 +287,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             Func<string, string> getExtension = (string fileName) => fileName.Substring(fileName.LastIndexOf("."));
 
+            Console.WriteLine($"getNameOfFile: {getNameOfFile}");
             var nameOfUploadedImage = getNameOfFile.Invoke(uploadedImageName);
             var nameOfExpectedImage = getNameOfFile.Invoke(expectedImageName);
 
