@@ -21,7 +21,7 @@ namespace GenerateDocument.Common.Helpers
 
             if (!result)
             {
-                throw new Exception(string.Format(CultureInfo.CurrentCulture, "Timeout after {0} second(s), {1}", timeout.TotalSeconds, message));
+                throw new Exception($"Timeout after {timeout.TotalSeconds} second(s), {message}");
             }
         }
 
@@ -50,8 +50,7 @@ namespace GenerateDocument.Common.Helpers
                             {
                                 return condition();
                             }
-                        },
-                              canceller.Token);
+                        },canceller.Token);
                 }
 
                 Thread.Sleep(sleepInterval);

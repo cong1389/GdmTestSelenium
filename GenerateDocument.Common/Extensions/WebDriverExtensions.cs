@@ -39,6 +39,11 @@ namespace GenerateDocument.Common.Extensions
             wait.Until(x => x.GetElements(locator).Count == 0);
         }
 
+        public static IWebElement WaitUntilPresentedElement(this IWebDriver driver, ElementLocator locator)
+        {
+            return WaitUntilPresentedElement(driver, locator, BaseConfiguration.LongTimeout);
+        }
+
         public static IWebElement WaitUntilPresentedElement(this IWebDriver driver, ElementLocator locator, double timeout)
         {
             try
@@ -47,12 +52,21 @@ namespace GenerateDocument.Common.Extensions
 
                 wait.Until(x => x.GetElements(locator).Count > 0);
             }
+            catch (NoSuchElementException)
+            {
+                return null;
+            }
             catch (WebDriverTimeoutException)
             {
                 throw new Exception($"Do not find element: {locator.Value}");
             }
 
             return driver.GetElement(locator);
+        }
+
+        public static bool WaitUntilPresentedUrl(this IWebDriver driver, string url)
+        {
+            return WaitUntilPresentedUrl(driver, url, BaseConfiguration.LongTimeout);
         }
 
         public static bool WaitUntilPresentedUrl(this IWebDriver driver, string url, double timeout)

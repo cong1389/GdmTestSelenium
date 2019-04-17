@@ -73,10 +73,15 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         {
             DriverContext.Driver.RefreshPage();
 
-            Driver.WaitUntilPresentedElement(_dataDocumentName.Format(designName), BaseConfiguration.LongTimeout);
-            var designStatusEle = Driver.WaitUntilPresentedElement(_designStatus.Format(designName), BaseConfiguration.LongTimeout);
-            
-            return designStatusEle?.Text;
+            Driver.WaitUntilPresentedElement(_dataDocumentName.Format(designName));
+
+            if (Driver.IsElementPresent(_designStatus.Format(designName)))
+            {
+                var designStatusEle = Driver.GetElement(_designStatus.Format(designName));
+                return designStatusEle.Text;
+            }
+
+            return string.Empty;
         }
 
         public string GetDesignType(string designName)
@@ -236,7 +241,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
                 Driver.GetElement(_dataMenuGoTo.Format(documentName)).Click();
             }
-           
+
 
             //if (DriverContext.Driver.IsUrlEndsWith("onedesign"))
             //    return;

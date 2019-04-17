@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using GenerateDocument.Common.Extensions;
+﻿using GenerateDocument.Common.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace GenerateDocument.Common.WebElements
 {
@@ -65,7 +59,7 @@ namespace GenerateDocument.Common.WebElements
             }
             catch (NoSuchElementException)
             {
-                throw new Exception("");
+                throw new Exception("Option is null");
             }
 
             return webElement;

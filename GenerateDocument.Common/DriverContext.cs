@@ -23,6 +23,7 @@ namespace GenerateDocument.Common
             get { return driver; }
         }
 
+        //Need to remove after refactor finished
         public WebDriverWait BrowserWait(int? timeoutInSecond = null)
         {
             if (driverWait == null)

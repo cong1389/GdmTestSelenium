@@ -13,7 +13,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
     public class UserEditFormFilling : PageBaseObject
     {
         private readonly ElementLocator
-            _optionsLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}']"),
+            _optionsLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}' or contains(text(), '{1}')]"),
             _optionsContain = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
             _uploadLogoButton = new ElementLocator(Locator.XPath, "//span[contains(@id, '_ContentPlaceHolderStepArea_InputFields_LinkButton482')]"),
             _uploadImageTextbox = new ElementLocator(Locator.XPath, "//input[@id='{0}']"),
@@ -95,21 +95,6 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             }
         }
 
-        //public void ClickToNextStep()
-        //{
-        //    var element = DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[contains(@id, '_StepNextN1_TheLabelButton')]")));
-        //    Driver.ScrollToView(element);
-        //    element.Click();
-        //    DriverContext.BrowserWait(30).Until(ExpectedConditions.StalenessOf(element));
-
-        //    //Check required fields
-        //    if (!Driver.IsUrlEndsWith("usereditprinting"))
-        //    {
-        //        var requiredFieldsEle = Driver.WaitUntilPresentedElement(_completeRequiredFields, BaseConfiguration.LongTimeout);
-        //        requiredFieldsEle?.Click();
-        //    }
-        //}
-
         public void ClickToViewDesignOptions(bool clickToOpen = true)
         {
             var groupEle = Driver.GetElement(_optionsLabel.Format("View design options"));
@@ -119,9 +104,9 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             //Driver.WaitUntilPresentedElement(_optionsContain.Format("div1"), BaseConfiguration.LongTimeout);
         }
 
-        public void ClickToViewTextOptions(bool clickToOpen = true)
+        public void ClickToViewTextOptions()
         {
-            var groupEle = Driver.GetElement(_optionsLabel.Format("View Text options"));
+            var groupEle = Driver.GetElement(_optionsLabel.Format("View text options", "View Text options"));
             Driver.ScrollToView(groupEle);
             groupEle.Click();
 
@@ -357,7 +342,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             var selectElement = radiobuttons[index];
             Driver.ScrollToView(selectElement);
-
+            
             return selectElement.Selected;
         }
 

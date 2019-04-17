@@ -15,6 +15,10 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         
         public UserEditPrinting ClickToNextStep()
         {
+            if (!Driver.IsElementPresent(_nextStepButtonLocator))
+            {
+                return this;
+            }
             var nextButtonEle = Driver.GetElement(_nextStepButtonLocator);
             Driver.ScrollToView(nextButtonEle);
             nextButtonEle?.Click();

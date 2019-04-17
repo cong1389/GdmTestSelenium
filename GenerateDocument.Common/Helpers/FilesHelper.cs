@@ -33,16 +33,6 @@ namespace GenerateDocument.Common.Helpers
             }
         }
 
-        public static void WaitForFileOfGivenName(double waitTime, string filesName, string folder, bool checkSize)
-        {
-            WaitHelper.Wait(() => File.Exists(Path.Combine(folder, filesName)), TimeSpan.FromSeconds(waitTime), TimeSpan.FromSeconds(1), $"Waiting for file {filesName} in folder {folder}");
-
-            if (checkSize)
-            {
-                WaitHelper.Wait(() => GetFileByName(folder, filesName).Length > 0, TimeSpan.FromSeconds(waitTime), TimeSpan.FromSeconds(1), $"Checking if size of file {filesName} > 0 bytes");
-            }
-        }
-
 
     }
 }
