@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using GenerateDocument.Common.Extensions;
-using GenerateDocument.Test.Extensions;
+﻿using GenerateDocument.Common.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;

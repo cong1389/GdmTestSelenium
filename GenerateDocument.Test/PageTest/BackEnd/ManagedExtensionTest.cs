@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using GenerateDocument.Test.PageObjects.BackEnd;
 using GenerateDocument.Test.Utilities;
-using GenerateDocument.Test.Extensions;
 using NUnit.Framework;
 
 using static GenerateDocument.Test.Utilities.PageCommon;

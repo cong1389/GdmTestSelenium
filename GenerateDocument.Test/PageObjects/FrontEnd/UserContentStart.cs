@@ -1,11 +1,9 @@
-﻿using GenerateDocument.Common;
-using GenerateDocument.Test.Extensions;
+﻿using GenerateDocument.Common.Extensions;
 using GenerateDocument.Test.Utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.PageObjects;
 using System.Linq;
-using GenerateDocument.Common.Extensions;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd

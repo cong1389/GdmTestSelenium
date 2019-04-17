@@ -1,12 +1,6 @@
-﻿using System;
-using System.Linq;
-using GenerateDocument.Common;
+﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
-using GenerateDocument.Test.Extensions;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
-using OpenQA.Selenium.Support.UI;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
@@ -18,9 +12,6 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public UserEditPrinting(DriverContext driverContext) : base(driverContext)
         {
         }
-
-        [FindsBy(How = How.Id, Using = "LinkButtonContinueAnyway")]
-        private IWebElement ContinueAnywayWithoutRequiredFieldButton { get; set; }
         
         public UserEditPrinting ClickToNextStep()
         {

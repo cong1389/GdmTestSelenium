@@ -1,16 +1,11 @@
-﻿using NUnit.Framework;
-using System;
+﻿using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Helpers;
+using GenerateDocument.Test.WrapperFactory;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 using static GenerateDocument.Test.Utilities.PageCommon;
-using GenerateDocument.Test.WrapperFactory;
-using GenerateDocument.Test.Extensions;
-using GenerateDocument.Common.Extensions;
-using GenerateDocument.Common.Helpers;
+using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.PageTest.NewApp
 {

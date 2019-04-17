@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using GenerateDocument.Common.Extensions;
 using GenerateDocument.Test.Utilities;
-using GenerateDocument.Test.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
-using GenerateDocument.Common.Extensions;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {

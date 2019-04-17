@@ -124,5 +124,15 @@ namespace GenerateDocument.Common.Extensions
         {
             driver.Navigate().GoToUrl(url);
         }
+
+        public static void RefreshPage(this IWebDriver driver)
+        {
+            driver.Navigate().Refresh();
+        }
+
+        public static void SwitchToParent(this IWebDriver driver)
+        {
+            driver.SwitchTo().Window(driver.WindowHandles.First());
+        }
     }
 }

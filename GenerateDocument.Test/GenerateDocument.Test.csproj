@@ -110,7 +110,6 @@
     <Compile Include="PageObjects\FrontEnd\UserEditFinish.cs" />
     <Compile Include="PageObjects\FrontEnd\UserEditFormFilling.cs" />
     <Compile Include="PageObjects\FrontEnd\UserEditPrinting.cs" />
-    <Compile Include="Extensions\IWebDriverExtension.cs" />
     <Compile Include="PageObjects\PageObject.cs" />
     <Compile Include="PageTest\BackEnd\ManagedExtensionTest.cs" />
     <Compile Include="PageObjects\FrontEnd\UserContentStart.cs" />

@@ -1,10 +1,11 @@
 ﻿using GenerateDocument.Common.Extensions;
-using GenerateDocument.Test.Extensions;
+using GenerateDocument.Common.Helpers;
 using GenerateDocument.Test.PageObjects;
 using GenerateDocument.Test.PageObjects.BackEnd;
 using GenerateDocument.Test.PageObjects.FrontEnd;
 using GenerateDocument.Test.PageObjects.NewApp;
 using GenerateDocument.Test.Utilities;
+using GenerateDocument.Test.WrapperFactory;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
@@ -12,8 +13,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using GenerateDocument.Common.Helpers;
-using GenerateDocument.Test.WrapperFactory;
 using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.PageTest.NewApp

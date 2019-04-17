@@ -1,6 +1,5 @@
 ﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
-using GenerateDocument.Test.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;

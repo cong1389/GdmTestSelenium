@@ -1,13 +1,12 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
-using GenerateDocument.Test.Extensions;
+using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
+using System.Linq;
+using System.Threading;
 using static GenerateDocument.Test.Utilities.PageCommon;
-using GenerateDocument.Common;
-using GenerateDocument.Common.Types;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {

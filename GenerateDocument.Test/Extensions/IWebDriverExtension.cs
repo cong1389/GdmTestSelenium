@@ -30,19 +30,13 @@ namespace GenerateDocument.Test.Extensions
         //    browser.Navigate().GoToUrl(url);
         //}
 
-        public static void SwitchToPopup(this IWebDriver browser)
-        {
-            browser.SwitchTo().Window(browser.WindowHandles.Last());
-        }
+        //public static void SwitchToPopup(this IWebDriver browser)
+        //{
+        //    browser.SwitchTo().Window(browser.WindowHandles.Last());
+        //}
 
-        public static void SwitchToParent(this IWebDriver browser)
-        {
-            browser.SwitchTo().Window(browser.WindowHandles.First());
-        }
+       
 
-        public static void RefreshPage(this IWebDriver browser)
-        {
-            browser.Navigate().Refresh();
-        }
+       
     }
 }

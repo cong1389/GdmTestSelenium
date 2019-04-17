@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using GenerateDocument.Common.Extensions;
-using GenerateDocument.Test.Extensions;
-using GenerateDocument.Test.Utilities;
+﻿using GenerateDocument.Common.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using static GenerateDocument.Test.Utilities.PageCommon;
+using System;
+using System.Linq;
+using System.Threading;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {

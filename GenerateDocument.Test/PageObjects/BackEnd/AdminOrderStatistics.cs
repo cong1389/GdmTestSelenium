@@ -1,9 +1,7 @@
-﻿using OpenQA.Selenium;
+﻿using GenerateDocument.Common.Extensions;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
-using GenerateDocument.Test.Extensions;
-
 using static GenerateDocument.Test.Utilities.PageCommon;
-using GenerateDocument.Common.Extensions;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {

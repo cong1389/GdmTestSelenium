@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using GenerateDocument.Common.Extensions;
-using GenerateDocument.Test.Extensions;
-using GenerateDocument.Test.Utilities;
+﻿using GenerateDocument.Common.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
