@@ -1,11 +1,10 @@
-﻿using GenerateDocument.Common.Extensions;
+﻿using GenerateDocument.Common;
+using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Types;
 using GenerateDocument.Test.WrapperFactory;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
-using GenerateDocument.Common;
-using GenerateDocument.Common.Types;
 
 namespace GenerateDocument.Test.PageObjects
 {

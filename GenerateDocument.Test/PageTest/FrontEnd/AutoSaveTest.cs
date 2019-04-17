@@ -1,4 +1,5 @@
 ﻿using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Helpers;
 using GenerateDocument.Test.PageObjects;
 using GenerateDocument.Test.PageObjects.BackEnd;
 using GenerateDocument.Test.PageObjects.FrontEnd;
@@ -11,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GenerateDocument.Common.Helpers;
+using GenerateDocument.Common;
 using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
@@ -117,9 +118,13 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         }
 
         [Test]
-        public void ConditionalControls_SuccessAutoSave()
+        public void ConditionalControls_ReloadPage_SuccessAutoSave()
         {
             string documentName = "[AUTOTEST] Social Media Post";
+
+            Dictionary<string, string> valueInputs = new Dictionary<string, string>();
+            Dictionary<string, string> valueOutputs = new Dictionary<string, string>();
+
             UserSiteLoginStep();
 
             _myDesign.CreateDesign();
@@ -128,14 +133,27 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
             _userContentStart.SelectDocument(documentBefore.Id);
 
-            _userEditFormFilling.ExpandOptions("Layout options")
+            _userEditFormFilling
+                .ExpandOptions("Layout options")
                 .SelectByValue("FIELD_1024", "Fundraiser");
             Assert.IsTrue(_action.GetNotifyMessage);
 
-            _userEditFormFilling.ExpandOptions("Image and Text options")
-                .SelectByValue("FIELD_1045", "Visit our Just Giving page:")
-                .EnteringValueInputTextInOptionsGroup("div2", NameHelper.RandomName(10));
+            _userEditFormFilling
+                .ExpandOptions("Image and Text options")
+                .SelectByValue("FIELD_1045", "Visit our Just Giving page:");
+            valueInputs = _userEditFormFilling.EnteringValueInputsTextInOptions("div2", NameHelper.RandomName(10));
             Assert.IsTrue(_action.GetNotifyMessage);
+
+            //Verify value entered when reload page
+            DriverContext.Driver.RefreshPage();
+
+            _userEditFormFilling
+                .ExpandOptions("Image and Text options");
+            valueOutputs = _userEditFormFilling.GetValueInputsTextInOptions("div2");
+
+            Console.WriteLine($"valueInputs: {valueInputs.Count}");
+            Console.WriteLine($"valueOutputs: {valueOutputs.Count}");
+            CollectionAssert.AreEqual(valueInputs, valueOutputs, "The value inputs do not same the value outputs");
 
             _userEditFormFilling.ClickToNextStep();
             _userEditPrinting.ClickToNextStep();

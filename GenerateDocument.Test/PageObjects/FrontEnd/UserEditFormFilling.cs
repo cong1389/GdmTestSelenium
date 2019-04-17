@@ -26,6 +26,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             _dropDownLocator = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//select[@id='{0}']"),
             _completeRequiredFields = new ElementLocator(Locator.XPath, "//div[@class='warningAreaMessageWarning']"),
             _nextStepButtonLocator = new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]"),
+            _containerLocator = new ElementLocator(Locator.XPath, "//div[@id='div2']"),
             _inputLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input");
 
         public UserEditFormFilling(DriverContext driverContext) : base(driverContext)
@@ -377,17 +378,39 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             return this;
         }
 
-        public UserEditFormFilling EnteringValueInputTextInOptionsGroup(string optionsContainId, string inputData)
+        public string GetSelectedValue(string ctrId)
         {
+            Select drpEle = Driver.GetElement<Select>(_dropDownLocator.Format(ctrId));
+            return drpEle.Selected().SelectedOption.Text;
+        }
+
+        public Dictionary<string, string> EnteringValueInputsTextInOptions(string optionsContainId, string text)
+        {
+            var valueInputs = new Dictionary<string, string>();
             Driver.GetElements(_inputLocator.Format(optionsContainId)).ToList().ForEach(x =>
             {
                 Driver.ScrollToView(x);
                 x.Clear();
-                x.SendKeys(inputData);
+                x.SendKeys(text);
                 x.SendKeys(Keys.Tab);
+
+                valueInputs.Add(x.GetAttribute("id"), text);
             });
 
-            return this;
+            return valueInputs;
+        }
+
+        public Dictionary<string, string> GetValueInputsTextInOptions(string optionsContainId)
+        {
+            var valueOutputs = new Dictionary<string, string>();
+
+            Driver.GetElements(_inputLocator.Format(optionsContainId), 1).ToList().ForEach(x =>
+              {
+                  Driver.ScrollToView(x);
+                  valueOutputs.Add(x.GetAttribute("id"), x.GetAttribute("value"));
+              });
+
+            return valueOutputs;
         }
 
         public UserEditFormFilling ClickToNextStep()

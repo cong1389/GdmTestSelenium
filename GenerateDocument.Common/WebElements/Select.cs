@@ -21,10 +21,10 @@ namespace GenerateDocument.Common.WebElements
             this.webElement = webElement;
         }
 
-        //public SelectElement SelectElement()
-        //{
-        //    return new SelectElement(this.webElement);
-        //}
+        public SelectElement Selected()
+        {
+            return new SelectElement(this.webElement);
+        }
 
         public void SelectedByValue(string value)
         {
