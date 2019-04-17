@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GenerateDocument.Common.Helpers;
 using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
@@ -50,7 +51,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _userContentStart = new UserContentStart(DriverContext.Driver);
             _userEditFormFilling = new UserEditFormFilling(DriverContext);
             _userEditPrinting = new UserEditPrinting(DriverContext);
-            _userEditFinish = new UserEditFinish(DriverContext.Driver);
+            _userEditFinish = new UserEditFinish(DriverContext);
             _adminProducts = new AdminProducts(DriverContext.Driver);
             _adminProductDetails = new AdminProductDetails(DriverContext.Driver);
             _adminOptionSet = new AdminOptionSet(DriverContext.Driver);
@@ -67,7 +68,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             yield return new Dictionary<string, string>
             {
                 ["ProductName"] = "[AUTOTEST][SWF] A4 Poster",
-                ["ProductDescription"] = TestUtil.RandomName(4)
+                ["ProductDescription"] = NameHelper.RandomName(4)
             };
 
             //yield return new Dictionary<string, string>
@@ -108,10 +109,9 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             _userEditFormFilling.ClickToNextStep();
             _userEditPrinting.ClickToNextStep();
-            _userEditPrinting.ClickToBypassCompleteRequiredFields();
 
             _userEditFinish.EnterOrderName(setupProduct["ProductDescription"]);
-            _userEditFinish.ClickToGenerateDocument();
+            _userEditFinish.ClickToFinishDesign();
 
             Assert.IsTrue(_oneDesign.GetDesignName().IsEquals(setupProduct["ProductDescription"].EncodeSpecialCharacters()));
         }
@@ -119,11 +119,12 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         [Test]
         public void ConditionalControls_SuccessAutoSave()
         {
+            string documentName = "[AUTOTEST] Social Media Post";
             UserSiteLoginStep();
 
             _myDesign.CreateDesign();
 
-            var documentBefore = _userContentStart.SearchDocument("[AUTOTEST] Social Media Post");
+            var documentBefore = _userContentStart.SearchDocument(documentName);
             Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
             _userContentStart.SelectDocument(documentBefore.Id);
 
@@ -132,8 +133,16 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             Assert.IsTrue(_action.GetNotifyMessage);
 
             _userEditFormFilling.ExpandOptions("Image and Text options")
-                .SelectByValue("FIELD_1045", "Visit our Just Giving page:");
+                .SelectByValue("FIELD_1045", "Visit our Just Giving page:")
+                .EnteringValueInputTextInOptionsGroup("div2", NameHelper.RandomName(10));
             Assert.IsTrue(_action.GetNotifyMessage);
+
+            _userEditFormFilling.ClickToNextStep();
+            _userEditPrinting.ClickToNextStep();
+
+            _userEditFinish
+                .EnterOrderName(NameHelper.RandomName(10))
+                .ClickToFinishDesign();
         }
 
         private void UserSiteLoginStep()
@@ -213,7 +222,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             foreach (var item in displayedTextareas)
             {
-                var textValue = TestUtil.RandomName(10);
+                var textValue = NameHelper.RandomName(10);
 
                 item.Clear();
                 item.SendKeys(textValue);

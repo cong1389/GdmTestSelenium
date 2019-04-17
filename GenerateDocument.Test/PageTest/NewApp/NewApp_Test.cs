@@ -51,7 +51,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _userContentStart = new UserContentStart(DriverContext.Driver);
             _userEditFormFilling = new UserEditFormFilling(DriverContext);
             _userEditPrinting = new UserEditPrinting(DriverContext);
-            _userEditFinish = new UserEditFinish(DriverContext.Driver);
+            _userEditFinish = new UserEditFinish(DriverContext);
             _oneDesign = new OneDesign(DriverContext);
             _userContentApprovals = new UserContentApprovals(DriverContext.Driver);
             _userContentApprovalsReview = new UserContentApprovalsReview(DriverContext.Driver);
@@ -155,7 +155,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             foreach (var item in displayedTextareas)
             {
-                var textValue = TestUtil.RandomName(10);
+                var textValue = NameHelper.RandomName(10);
 
                 item.Clear();
                 item.SendKeys(textValue);
@@ -183,7 +183,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
                 var maxLength = 200;
 
-                var longDesignNameToFail = $"{designName}{TestUtil.RandomName(maxLength)}";
+                var longDesignNameToFail = $"{designName}{NameHelper.RandomName(maxLength)}";
 
                 verifyInvalidDescription(longDesignNameToFail, $"Design name should not exceed {maxLength} characters");
 
@@ -194,7 +194,8 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             Console.WriteLine($"CreateDocumentStep--> designName: {designName}");
 
-            _userEditFinish.ClickToGenerateDocument(designName);
+            _userEditFinish.EnterOrderName(designName);
+            _userEditFinish.ClickToFinishDesign();
 
             Assert.IsTrue(DriverContext.Driver.IsUrlEndsWith("onedesign"), "User is navigated to One design page once process finished");
         }
@@ -215,7 +216,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             foreach (var item in displayedTextareas)
             {
-                var textValue = TestUtil.RandomName(10);
+                var textValue = NameHelper.RandomName(10);
 
                 item.Clear();
                 item.SendKeys(textValue);
@@ -226,7 +227,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             _userEditPrinting.ClickToNextStep();
 
-            _userEditFinish.ClickToGenerateDocument();
+            _userEditFinish.ClickToFinishDesign();
 
             Assert.IsTrue(DriverContext.Driver.IsUrlEndsWith("onedesign"), "User is navigated to One design page once process finished");
         }

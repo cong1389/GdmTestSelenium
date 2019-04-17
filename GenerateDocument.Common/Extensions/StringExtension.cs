@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace GenerateDocument.Common.Extensions
 {
@@ -23,5 +25,7 @@ namespace GenerateDocument.Common.Extensions
 
             return text.Replace("<", "&lt;").Replace(">", "&gt;");
         }
+
+        
     }
 }

@@ -19,5 +19,7 @@ namespace GenerateDocument.Test.PageObjects
         protected IWebDriver Driver { get; set; }
 
         protected DriverContext DriverContext { get; set; }
+
+
     }
 }

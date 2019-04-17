@@ -12,7 +12,8 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
     public class UserEditPrinting : PageBaseObject
     {
-        private readonly ElementLocator completeRequiredFields = new ElementLocator(Locator.XPath, "//div[@class='warningAreaMessageWarning']");
+        private readonly ElementLocator 
+            _nextStepButtonLocator = new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]");
 
         public UserEditPrinting(DriverContext driverContext) : base(driverContext)
         {
@@ -20,37 +21,14 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         [FindsBy(How = How.Id, Using = "LinkButtonContinueAnyway")]
         private IWebElement ContinueAnywayWithoutRequiredFieldButton { get; set; }
-
-        public void ClickToNextStep()
+        
+        public UserEditPrinting ClickToNextStep()
         {
-            if (!Driver.IsUrlEndsWith("usereditprinting"))
-                return;
+            var nextButtonEle = Driver.GetElement(_nextStepButtonLocator);
+            Driver.ScrollToView(nextButtonEle);
+            nextButtonEle?.Click();
 
-            var webDriver = DriverContext.BrowserWait();
-            var element = webDriver.Until(ExpectedConditions.ElementToBeClickable(By.Id("ctl00_ctl00_ContentPlaceHolderBody_StepArea1_StepNextN1_TheLabelButton")));
-            Driver.ScrollToView(element);
-            element.Click();
-            webDriver.Until(ExpectedConditions.StalenessOf(element));
-        }
-
-        public bool NeedToCompleteRequiredFields()
-        {
-            try
-            {
-                return DriverContext.BrowserWait(5).Until(ExpectedConditions.ElementIsVisible(By.ClassName("warningAreaMessageWarning"))) != null;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-       
-
-        public void ClickToBypassCompleteRequiredFields()
-        {
-            var requiredFieldsEle = Driver.WaitUntilPresentedElement(completeRequiredFields, BaseConfiguration.LongTimeout);
-            requiredFieldsEle?.Click();
+            return this;
         }
     }
 }

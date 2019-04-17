@@ -56,6 +56,7 @@
     <Compile Include="Extensions\StringExtension.cs" />
     <Compile Include="Extensions\WebDriverExtensions.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
+    <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Helpers\WaitHelper.cs" />
     <Compile Include="Locator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

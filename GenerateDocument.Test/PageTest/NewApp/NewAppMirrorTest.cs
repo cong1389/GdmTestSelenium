@@ -1,4 +1,5 @@
-﻿using GenerateDocument.Test.PageObjects.NewApp;
+﻿using GenerateDocument.Common.Helpers;
+using GenerateDocument.Test.PageObjects.NewApp;
 using GenerateDocument.Test.Utilities;
 using NUnit.Framework;
 using System;
@@ -26,7 +27,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             VerifyRenameAction(designName, "Please enter a different name");
 
-            var longDesriptionExceedMaxLength = designName + TestUtil.RandomName(200);
+            var longDesriptionExceedMaxLength = designName + NameHelper.RandomName(200);
 
             VerifyRenameAction(longDesriptionExceedMaxLength, "Design name should not exceed 200 characters");
         }
@@ -60,7 +61,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             VerifyRenameAction(newDesignNameForThirdTimeRename);
 
             designName = $"[RENAME]{templateName}_{_designNamePrefix}";
-            newDesignName = $"{designName}_<script>alert('{TestUtil.RandomName(5)}');</script>";
+            newDesignName = $"{designName}_<script>alert('{NameHelper.RandomName(5)}');</script>";
             VerifyRenameAction(newDesignName);
         }
 
@@ -73,11 +74,11 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             VerifyShowFullLessDesignNameAction(true);
 
-            var shortDesignName = TestUtil.RandomName(5);
+            var shortDesignName = NameHelper.RandomName(5);
             VerifyRenameAction(shortDesignName);
             VerifyShowFullLessDesignNameAction(false);
 
-            var longDesignName = TestUtil.RandomName(200);
+            var longDesignName = NameHelper.RandomName(200);
             VerifyRenameAction(longDesignName);
             VerifyShowFullLessDesignNameAction(true);
         }

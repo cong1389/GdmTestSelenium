@@ -23,8 +23,10 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             _uploadButtonOfModal = new ElementLocator(Locator.XPath, "il_upload_btn-upload"),
             _textAreaField = new ElementLocator(Locator.XPath, "//div[contains(@id, '_ContentPlaceHolderStepArea_InputFields_InputFields')]//textarea"),
             _imageEditArea = new ElementLocator(Locator.XPath, "//table[contains(@id, '_ContentPlaceHolderStepArea__UserImageEdit1__ModalPopUp1_tablePopUpArea')]"),
-            _dropDownLocator = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//select[@id='{0}']");
-
+            _dropDownLocator = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//select[@id='{0}']"),
+            _completeRequiredFields = new ElementLocator(Locator.XPath, "//div[@class='warningAreaMessageWarning']"),
+            _nextStepButtonLocator = new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]"),
+            _inputLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input");
 
         public UserEditFormFilling(DriverContext driverContext) : base(driverContext)
         {
@@ -92,13 +94,20 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             }
         }
 
-        public void ClickToNextStep()
-        {
-            var element = DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[contains(@id, '_StepNextN1_TheLabelButton')]")));
-            Driver.ScrollToView(element);
-            element.Click();
-            DriverContext.BrowserWait(30).Until(ExpectedConditions.StalenessOf(element));
-        }
+        //public void ClickToNextStep()
+        //{
+        //    var element = DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[contains(@id, '_StepNextN1_TheLabelButton')]")));
+        //    Driver.ScrollToView(element);
+        //    element.Click();
+        //    DriverContext.BrowserWait(30).Until(ExpectedConditions.StalenessOf(element));
+
+        //    //Check required fields
+        //    if (!Driver.IsUrlEndsWith("usereditprinting"))
+        //    {
+        //        var requiredFieldsEle = Driver.WaitUntilPresentedElement(_completeRequiredFields, BaseConfiguration.LongTimeout);
+        //        requiredFieldsEle?.Click();
+        //    }
+        //}
 
         public void ClickToViewDesignOptions(bool clickToOpen = true)
         {
@@ -364,6 +373,35 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             Select drpEle = Driver.GetElement<Select>(_dropDownLocator.Format(ctrId));
             drpEle.SelectedByValue(value);
+
+            return this;
+        }
+
+        public UserEditFormFilling EnteringValueInputTextInOptionsGroup(string optionsContainId, string inputData)
+        {
+            Driver.GetElements(_inputLocator.Format(optionsContainId)).ToList().ForEach(x =>
+            {
+                Driver.ScrollToView(x);
+                x.Clear();
+                x.SendKeys(inputData);
+                x.SendKeys(Keys.Tab);
+            });
+
+            return this;
+        }
+
+        public UserEditFormFilling ClickToNextStep()
+        {
+            var nextButtonEle = Driver.GetElement(_nextStepButtonLocator);
+            Driver.ScrollToView(nextButtonEle);
+            nextButtonEle?.Click();
+
+            //Check required fields
+            if (Driver.IsUrlEndsWith("usereditformfilling") && Driver.IsElementPresent(_completeRequiredFields))
+            {
+                var requiredFieldsEle = Driver.GetElement(_completeRequiredFields);
+                requiredFieldsEle?.Click();
+            }
 
             return this;
         }

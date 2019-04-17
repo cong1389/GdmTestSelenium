@@ -49,10 +49,29 @@ namespace GenerateDocument.Common.Extensions
             }
             catch (WebDriverTimeoutException)
             {
-                return null;
+                throw new Exception($"Do not find element: {locator.Value}");
             }
 
             return driver.GetElement(locator);
+        }
+
+        public static bool WaitUntilPresentedUrl(this IWebDriver driver, string url, double timeout)
+        {
+            try
+            {
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
+
+                new WebDriverWait(driver, TimeSpan.FromSeconds(BaseConfiguration.LongTimeout)).Until(x =>
+                {
+                    return x.Url.IsContains(url);
+                });
+            }
+            catch (WebDriverTimeoutException ex)
+            {
+                throw new Exception($"The loading page {url} has issue {ex.Message} ");
+            }
+
+            return false;
         }
 
         public static Actions Actions(this IWebDriver driver)

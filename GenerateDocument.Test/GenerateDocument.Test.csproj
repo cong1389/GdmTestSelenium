@@ -89,7 +89,6 @@
     <Compile Include="PageTest\NewApp\NewApp_Test.cs" />
     <Compile Include="PageTest\PageTestBase.cs" />
     <Compile Include="Utilities\PageCommon.cs" />
-    <Compile Include="Utilities\TestUtil.cs" />
     <Compile Include="PageObjects\BackEnd\AdminExtensions.cs" />
     <Compile Include="PageObjects\BackEnd\AdminGlobalLibrary.cs" />
     <Compile Include="PageObjects\BackEnd\AdminManagedConfiguration.cs" />

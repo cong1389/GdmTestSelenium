@@ -19,6 +19,11 @@ namespace GenerateDocument.Common
             }
         }
 
+        public static double MiddleTimeout
+        {
+            get { return Convert.ToDouble(ConfigurationManager.AppSettings["middleTimeout"]); }
+        }
+
         public static double ShortTimeout
         {
             get { return Convert.ToDouble(ConfigurationManager.AppSettings["shortTimeout"]); }
