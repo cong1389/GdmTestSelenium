@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -66,7 +67,7 @@ namespace GenerateDocument.Common
         {
             if (this.driver != null)
             {
-                driver.Manage().Cookies.DeleteAllCookies();
+                driver.DeleteAllCookies();
                 driver.Dispose();
 
                 var dir = new DirectoryInfo(BaseConfiguration.NewAppTestDir);

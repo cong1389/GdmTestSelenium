@@ -2,6 +2,7 @@
 using GenerateDocument.Common.Helpers;
 using GenerateDocument.Test.WrapperFactory;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.IO;
 using static GenerateDocument.Test.Utilities.PageCommon;
@@ -156,7 +157,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         public void DesignOutputs_SuccessfullyDownloaded_WithoutConfirm_WhenProductHadNewReleaseWithMaintainOriginalOption(string templateName, Dictionary<string, bool> settings)
         {
             LoginStep(_returnPage);
-
+            
             CreateDocumentStep(templateName);
 
             VerifyDesignType($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
@@ -167,8 +168,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
             PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
 
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}");
-
-            FilesHelper.DeleteAllFiles(ConfigInfo.NewAppTestDir);
 
             AdminLoginStep(AdminAccount);
 
@@ -191,7 +190,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}");
 
             _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
-
+            
             PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"], false);
         }
 
@@ -236,8 +235,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
                 _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");
 
                 PlaceOrderStep($"{templateName}_{_designNamePrefix}", settings["IsKit"]);
-
-                FilesHelper.DeleteAllFiles(ConfigInfo.NewAppTestDir);
             }
             finally
             {

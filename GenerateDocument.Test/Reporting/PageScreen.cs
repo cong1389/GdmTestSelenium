@@ -18,7 +18,6 @@ namespace GenerateDocument.Test.Reporting
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
         }

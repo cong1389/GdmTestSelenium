@@ -92,7 +92,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         }
 
         [Test, TestCaseSource(nameof(SetupProductData))]
-        public void Check_SavingDataAutomatically(Dictionary<string, string> setupProduct)
+        public void HappyCase_SendTextAndUploadImage_InputSaved(Dictionary<string, string> setupProduct)
         {
             AdminSiteSwitchAutoSave(() => AdminConfigExtension(), () => AdminCustomA4PosterProduct(setupProduct["ProductName"]));//TODO
 
@@ -118,7 +118,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         }
 
         [Test]
-        public void ConditionalControls_ReloadPage_SuccessAutoSave()
+        public void ConditionalControls_ReloadPage_InputSaved()
         {
             string documentName = "[AUTOTEST] Social Media Post";
 
@@ -334,7 +334,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             Func<string, string> getExtension = (string fileName) => fileName.Substring(fileName.LastIndexOf("."));
 
-            Console.WriteLine($"getNameOfFile: {getNameOfFile}");
             var nameOfUploadedImage = getNameOfFile.Invoke(uploadedImageName);
             var nameOfExpectedImage = getNameOfFile.Invoke(expectedImageName);
 

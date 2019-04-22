@@ -40,7 +40,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         private bool _isShowPolicyAgreementModal = true;
 
         [SetUp]
-        public void Init()
+        public void StartTestCase()
         {
             _designNamePrefix = Guid.NewGuid().ToString();
 
@@ -57,6 +57,13 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _adminLogin = new AdminLogin(DriverContext);
             _adminProducts = new AdminProducts(DriverContext.Driver);
             _adminProductDetails = new AdminProductDetails(DriverContext.Driver);
+        }
+
+        [TearDown]
+        public void StopTestCase()
+        {
+            DriverContext.Driver.DeleteAllCookies();
+            DriverContext.Driver.ClearAllSessionStorage();
         }
 
         private static IEnumerable<object> WorkflowTestResources(bool hasApprovalWorkflow, bool? isApproved = null)
@@ -190,8 +197,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
                 designName = $"[RENAME]{name}_{_designNamePrefix}";
             }
-
-            Console.WriteLine($"CreateDocumentStep--> designName: {designName}");
 
             _userEditFinish.EnterOrderName(designName);
             _userEditFinish.ClickToFinishDesign();

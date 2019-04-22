@@ -41,6 +41,9 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
                 ReviewDesignIfHasApprovalWorkflow($"{templateName}_{_designNamePrefix}", settings["IsApproved"]);
 
+                _action.UserLogout();
+                LoginStep(_returnPage);
+
                 VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifApproved: settings["IsApproved"]);
 
                 _myDesign.GoToActions($"{templateName}_{_designNamePrefix}");

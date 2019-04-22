@@ -74,14 +74,9 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             DriverContext.Driver.RefreshPage();
 
             Driver.WaitUntilPresentedElement(_dataDocumentName.Format(designName));
-
-            if (Driver.IsElementPresent(_designStatus.Format(designName)))
-            {
-                var designStatusEle = Driver.GetElement(_designStatus.Format(designName));
-                return designStatusEle.Text;
-            }
-
-            return string.Empty;
+            var designStatusEle = Driver.WaitUntilPresentedElement(_designStatus.Format(designName), e => e.Displayed, BaseConfiguration.LongTimeout);
+            Console.WriteLine($"designStatusEle: {designStatusEle}");
+            return designStatusEle == null ? string.Empty : designStatusEle.Text;
         }
 
         public string GetDesignType(string designName)
@@ -232,7 +227,6 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public void GoToActions(string documentName)
         {
-            Console.WriteLine($"documentName: {documentName}");
             var isthumbnailBoxEle = Driver.IsElementPresent(_dataThumbnailBox.Format(documentName));
             if (isthumbnailBoxEle != null)
             {

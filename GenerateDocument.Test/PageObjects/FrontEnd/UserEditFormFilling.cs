@@ -14,6 +14,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
     {
         private readonly ElementLocator
             _optionsLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}' or contains(text(), '{1}')]"),
+            _optionsCommonLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}']"),
             _optionsContain = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
             _uploadLogoButton = new ElementLocator(Locator.XPath, "//span[contains(@id, '_ContentPlaceHolderStepArea_InputFields_LinkButton482')]"),
             _uploadImageTextbox = new ElementLocator(Locator.XPath, "//input[@id='{0}']"),
@@ -97,7 +98,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public void ClickToViewDesignOptions(bool clickToOpen = true)
         {
-            var groupEle = Driver.GetElement(_optionsLabel.Format("View design options"));
+            var groupEle = Driver.GetElement(_optionsCommonLabel.Format("View design options"));
             Driver.ScrollToView(groupEle);
             groupEle.Click();
 
@@ -115,7 +116,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public void ClickToViewFooterOptions(bool clickToOpen = true)
         {
-            var footerGroupEle = Driver.GetElement(_optionsLabel.Format("View footer options*"));
+            var footerGroupEle = Driver.GetElement(_optionsCommonLabel.Format("View footer options*"));
             Driver.ScrollToView(footerGroupEle);
             footerGroupEle.Click();
 
@@ -249,7 +250,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public string GetSecondUploadImageValue()
         {
             Driver.ScrollToView(SecondImageTextbox);
-            Console.WriteLine($"Second upload value: {SecondImageTextbox.GetAttribute("value")}");
+       
             return SecondImageTextbox.GetAttribute("value");
         }
 
@@ -348,7 +349,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public UserEditFormFilling ExpandOptions(string optionsName)
         {
-            var groupEle = Driver.GetElement(_optionsLabel.Format(optionsName));
+            var groupEle = Driver.GetElement(_optionsCommonLabel.Format(optionsName));
             Driver.ScrollToView(groupEle);
             groupEle.Click();
 
@@ -389,7 +390,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             var valueOutputs = new Dictionary<string, string>();
 
-            Driver.GetElements(_inputLocator.Format(optionsContainId), 1).ToList().ForEach(x =>
+            Driver.GetElements(_inputLocator.Format(optionsContainId), 3).ToList().ForEach(x =>
               {
                   Driver.ScrollToView(x);
                   valueOutputs.Add(x.GetAttribute("id"), x.GetAttribute("value"));

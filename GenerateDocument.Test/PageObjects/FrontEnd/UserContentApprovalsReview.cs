@@ -16,7 +16,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public void HandleApprovalProcess(bool isApproved)
         {
             var linkText = isApproved ? "Mark All As Approved" : "Mark All As Declined";
-            Console.WriteLine($"linkText: {linkText}");
+         
             //Browser.FindElement(By.LinkText(linkText)).Click();
             BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.LinkText(linkText))).Click();
             Thread.Sleep(2000);
@@ -48,7 +48,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
             //close modal
             Browser.FindElement(By.Id("DocDetailPopup_divPopClose1")).Click();
-            Console.WriteLine($"Check design name with designName: {designName} --designNamePart: {designNamePart}");
+         
             return designName.IsEquals(designNamePart);
         }
     }

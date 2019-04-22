@@ -46,11 +46,12 @@ namespace GenerateDocument.Test.PageTest.NewApp
             SubmitForApprovalStep(newDesignName);
 
             var newDesignNameForSecondTimeRename = $"{templateName}_{Guid.NewGuid().ToString()}";
-
             VerifyRenameAction(newDesignNameForSecondTimeRename);
 
             ReviewDesignIfHasApprovalWorkflow(newDesignNameForSecondTimeRename, settings["IsApproved"]);
 
+            _action.UserLogout();
+            LoginStep(_returnPage);
             VerifyDesignStatus(newDesignNameForSecondTimeRename, ifApproved: settings["IsApproved"]);
 
             _myDesign.GoToActions(newDesignNameForSecondTimeRename);

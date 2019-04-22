@@ -1,14 +1,13 @@
 ﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Types;
+using GenerateDocument.Test.WrapperFactory;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using GenerateDocument.Common.Helpers;
-using GenerateDocument.Common.Types;
-using GenerateDocument.Test.WrapperFactory;
 
 namespace GenerateDocument.Test.PageObjects.NewApp
 {
@@ -79,9 +78,13 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         {
             var downloadButtons = GetDownloadDesignButtons();
 
+            int account = 0;
             foreach (var button in downloadButtons)
             {
+                Driver.ScrollToView(button);
                 button.Click();
+
+                ExitForDownloadCompletedModal();
 
                 if (needToPublishFirst)
                 {
@@ -96,18 +99,13 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                     //verify modal is closed
                     DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("modal-open")));
                 }
-            }
 
-            if (Driver.CheckExistedCookie($"MSFeedbackSent{ConfigInfo.MopinionFormId}"))
-            {
-                ExitForDownloadCompletedModal();
-            }
-            else
-            {
-                TakeSurveyIfVisible(isShowSurveyInvitationModal);
-            }
+                account++;
+                TakeSurveyIfVisible(isShowSurveyInvitationModal, account);
 
-            //FilesHelper.WaitForFileOfGivenName(BaseConfiguration.LongTimeout, designName, BaseConfiguration.NewAppTestDir, true);
+            }
+            account = -1;
+            TakeSurveyIfVisible(isShowSurveyInvitationModal, account);
 
             if (isShowSurveyInvitationModal)
             {
@@ -131,14 +129,19 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         private void ExitForDownloadCompletedModal()
         {
-            var modalEle = Driver.WaitUntilPresentedElement(_modalOpen, BaseConfiguration.LongTimeout);
-            if (modalEle != null)
+            bool.TryParse(Driver.GetSessionStorage("hasShowedFeedback"), out bool hasShowedFeedback);
+            Console.WriteLine($"hasShowedFeedback: {hasShowedFeedback}");
+            if (hasShowedFeedback)
             {
-                // Driver.SwitchTo().Frame(modalEle);
-                Driver.GetElement(_completedModalCloseBtn).Click();
+                var modalEle = Driver.WaitUntilPresentedElement(_modalOpen, e => e.Displayed, BaseConfiguration.LongTimeout);
+                if (modalEle != null)
+                {
+                    // Driver.SwitchTo().Frame(modalEle);
+                    Driver.GetElement(_completedModalCloseBtn).Click();
 
-                //Driver.SwitchToParent();
-                //Driver.WaitUntilElementIsNoLongerFound(_modalOpen, BaseConfiguration.ShortTimeout);
+                    //Driver.SwitchToParent();
+                    Driver.WaitUntilElementIsNoLongerFound(_modalOpen, BaseConfiguration.ShortTimeout);
+                }
             }
         }
 
@@ -158,27 +161,33 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             Thread.Sleep(2000);
         }
 
-        public void TakeSurveyIfVisible(bool visibility)
+        public void TakeSurveyIfVisible(bool visibility, int countAccess)
         {
-            if (visibility)
+            var hasFeedbackCookies = Driver.CheckExistedCookie($"MSFeedbackSent{ConfigInfo.MopinionFormId}");
+            Console.WriteLine($"Access take survey fun: {countAccess} times");
+            Console.WriteLine($"TakeSurveyIfVisible with visibility:{visibility}, hasFeedbackCookies:{hasFeedbackCookies} ");
+            if (!hasFeedbackCookies)
             {
                 Driver.WaitUntilPresentedElement(_modalOpen, BaseConfiguration.LongTimeout);
 
-                var takeTheSurveyButton = Driver.WaitUntilPresentedElement(_takeTheSurveyButton, BaseConfiguration.LongTimeout);
-                takeTheSurveyButton.Click();
-
-                var surveyWindowEle = Driver.WaitUntilPresentedElement(_surveyWindow, BaseConfiguration.ShortTimeout);
-                if (surveyWindowEle != null)
+                var takeTheSurveyButton = Driver.WaitUntilPresentedElement(_takeTheSurveyButton, e => e.Displayed, BaseConfiguration.LongTimeout);
+                if (takeTheSurveyButton != null)
                 {
-                    Driver.SwitchTo().Frame(surveyWindowEle);
-                    Driver.GetElement(_surveySubmitBtn).Click();
+                    takeTheSurveyButton.Click();
 
-                    // Driver.WaitUntilElementIsNoLongerFound(_surveySubmitBtn, BaseConfiguration.ShortTimeout);
-                    Driver.GetElement(_closeModalBtn).Click();
+                    var surveyWindowEle = Driver.WaitUntilPresentedElement(_surveyWindow, BaseConfiguration.ShortTimeout);
+                    if (surveyWindowEle != null)
+                    {
+                        Driver.SwitchTo().Frame(surveyWindowEle);
+                        Driver.GetElement(_surveySubmitBtn).Click();
 
-                    Driver.SwitchToParent();
+                        // Driver.WaitUntilElementIsNoLongerFound(_surveySubmitBtn, BaseConfiguration.ShortTimeout);
+                        Driver.GetElement(_closeModalBtn).Click();
 
-                    Driver.WaitUntilElementIsNoLongerFound(_mopinionActiveClass, BaseConfiguration.ShortTimeout);
+                        Driver.SwitchToParent();
+
+                        Driver.WaitUntilElementIsNoLongerFound(_mopinionActiveClass, BaseConfiguration.ShortTimeout);
+                    }
                 }
             }
         }
@@ -198,7 +207,6 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                 textField.SendKeys(name);
             }
 
-            Console.WriteLine("run to here 1!!!");
             //wait to renameDesign button ready for clicking
             DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//button[contains(@class, 'disabled')]")));
             DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@ng-click='renameDesign()']"))).Click();
@@ -222,8 +230,6 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
             //verify modal is closed
             DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("modal-open")));
-
-            Console.WriteLine("run to here 2!!!");
 
             Driver.RefreshPage();
 
