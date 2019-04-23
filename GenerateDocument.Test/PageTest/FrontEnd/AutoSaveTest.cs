@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using GenerateDocument.Common;
+using GenerateDocument.Test.DataDriven;
 using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
@@ -161,6 +162,13 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _userEditFinish
                 .EnterOrderName(NameHelper.RandomName(10))
                 .ClickToFinishDesign();
+        }
+
+        [Test]
+        [TestCaseSource(typeof(TestData), "Credentials")]
+        public void TestDataDriven(IDictionary<string, string> parameters)
+        {
+
         }
 
         private void UserSiteLoginStep()
