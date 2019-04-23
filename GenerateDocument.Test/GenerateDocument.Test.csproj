@@ -72,8 +72,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="DataDriven\DataDrivenHelper.cs" />
-    <Compile Include="DataDriven\TestData.cs" />
+    <Compile Include="DataProviders\DataDrivenHelper.cs" />
+    <Compile Include="DataProviders\DataDriven.cs" />
     <Compile Include="PageObjects\BackEnd\AdminOptionField.cs" />
     <Compile Include="PageObjects\BackEnd\AdminOptionSet.cs" />
     <Compile Include="PageObjects\BackEnd\AdminProjects.cs" />
@@ -156,12 +156,21 @@
     <Content Include="Content\imageTest\starbucks.jpeg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataDriven\DataDriven.xml" />
+    <Content Include="DataProviders\TestPlan.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="DataProviders\DataDriven.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GenerateDocument.Common\GenerateDocument.Common.csproj">
       <Project>{d5184eae-1f4b-4676-bc09-4bb64b984ba1}</Project>
       <Name>GenerateDocument.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GenerateDocument.Domain\GenerateDocument.Domain.csproj">
+      <Project>{bda33a24-4fa5-4ae3-83dd-ecc20d6d7288}</Project>
+      <Name>GenerateDocument.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

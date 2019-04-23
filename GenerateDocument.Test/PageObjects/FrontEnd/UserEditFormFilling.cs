@@ -14,7 +14,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
     {
         private readonly ElementLocator
             _optionsLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}' or contains(text(), '{1}')]"),
-            _optionsCommonLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}']"),
+            _optionsCommonLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}']//parent::a"),
             _optionsContain = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
             _uploadLogoButton = new ElementLocator(Locator.XPath, "//span[contains(@id, '_ContentPlaceHolderStepArea_InputFields_LinkButton482')]"),
             _uploadImageTextbox = new ElementLocator(Locator.XPath, "//input[@id='{0}']"),
@@ -250,7 +250,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public string GetSecondUploadImageValue()
         {
             Driver.ScrollToView(SecondImageTextbox);
-       
+
             return SecondImageTextbox.GetAttribute("value");
         }
 
@@ -343,7 +343,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             var selectElement = radiobuttons[index];
             Driver.ScrollToView(selectElement);
-            
+
             return selectElement.Selected;
         }
 
@@ -351,7 +351,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             var groupEle = Driver.GetElement(_optionsCommonLabel.Format(optionsName));
             Driver.ScrollToView(groupEle);
-            groupEle.Click();
+            groupEle.OnClickJavaScript();
 
             return this;
         }
@@ -384,6 +384,14 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             });
 
             return valueInputs;
+        }
+
+        public void EnteringValueInputTextInOptions(string controlId, string text)
+        {
+            var inputEle = Driver.GetElement(_inputLocator.Format(controlId));
+            Driver.ScrollToView(inputEle);
+            inputEle.SendKeys(text);
+            inputEle.SendKeys(Keys.Tab);
         }
 
         public Dictionary<string, string> GetValueInputsTextInOptions(string optionsContainId)

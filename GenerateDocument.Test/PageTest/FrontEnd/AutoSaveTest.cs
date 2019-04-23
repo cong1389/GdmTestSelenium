@@ -1,5 +1,7 @@
-﻿using GenerateDocument.Common.Extensions;
+﻿using GenerateDocument.Common;
+using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Helpers;
+using GenerateDocument.Test.DataProviders;
 using GenerateDocument.Test.PageObjects;
 using GenerateDocument.Test.PageObjects.BackEnd;
 using GenerateDocument.Test.PageObjects.FrontEnd;
@@ -12,8 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GenerateDocument.Common;
-using GenerateDocument.Test.DataDriven;
+using GenerateDocument.Domain.AutoSaves;
 using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
@@ -153,7 +154,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             valueOutputs = _userEditFormFilling.GetValueInputsTextInOptions("div2");
 
             Console.WriteLine($"valueInputs: {valueInputs.Count}");
-            Console.WriteLine($"valueOutputs: {valueOutputs.Count}");
+            Console.WriteLine($"valueInputs: {valueOutputs.Count}");
             CollectionAssert.AreEqual(valueInputs, valueOutputs, "The value inputs do not same the value outputs");
 
             _userEditFormFilling.ClickToNextStep();
@@ -165,9 +166,71 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         }
 
         [Test]
-        [TestCaseSource(typeof(TestData), "Credentials")]
-        public void TestDataDriven(IDictionary<string, string> parameters)
+        [TestCaseSource(typeof(DataDriven), "Conditional")]
+        public void TestConditional(TestCase testcase)
         {
+            UserSiteLoginStep();
+
+            _myDesign.CreateDesign();
+
+            var documentBefore = _userContentStart.SearchDocument(testcase.ProductName);
+            Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
+            _userContentStart.SelectDocument(documentBefore.Id);
+
+            foreach (var control in testcase.Controls)
+            {
+                _userEditFormFilling.ExpandOptions(control.Group);
+                SendKeyToControl(control, out Dictionary<string, string> valueInputs);
+                Assert.IsTrue(_action.GetNotifyMessage);
+
+                VerifyDependenciesControl(control.Dependencies);
+            }
+
+        }
+
+        private void VerifyDependenciesControl(List<Control> dependencies)
+        {
+            if (!dependencies.Any())
+            {
+                return;
+            }
+
+            foreach (var control in dependencies)
+            {
+                _userEditFormFilling.ExpandOptions(control.Group);
+                SendKeyToControl(control, out Dictionary<string, string> valueInputs);
+
+                Assert.IsTrue(_action.GetNotifyMessage);
+            }
+        }
+
+        private Dictionary<string, string> SendKeyToControl(Control control, out Dictionary<string, string> valueInputs)
+        {
+            valueInputs = new Dictionary<string, string>();
+
+            switch (control.Type)
+            {
+                case "dropbox":
+                    valueInputs.Add(control.Id, control.Value);
+                    _userEditFormFilling.SelectByValue(control.Id, control.Value);
+                    break;
+
+                case "textbox":
+                    var value = NameHelper.RandomName(10);
+                    valueInputs.Add(control.Id, value);
+                    _userEditFormFilling.EnteringValueInputTextInOptions(control.Id, value);
+                    break;
+            }
+
+
+            return valueInputs;
+        }
+
+        [Test]
+        [TestCaseSource(typeof(DataDriven), "Credentials")]
+        public void TestDataDriven(Dictionary<string, string> parameters)
+        {
+
 
         }
 

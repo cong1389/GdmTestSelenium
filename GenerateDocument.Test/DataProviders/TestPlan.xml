@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<testplan name="AutoSave">
+
+  <testcases>
+
+    <testcase name="conditional" description="AutoSave testing" productname="[AUTOTEST] Social Media Post">
+      <controls>
+
+        <control id="FIELD_1024" type="dropbox" value="Fundraiser" group='Layout options'>
+          <dependencies>
+            <control id="FIELD_1045" type="dropbox" value="Visit our Just Giving page:" group='Image and Text options'></control>
+            <control id="FIELD_1046" type="textbox" group='Image and Text options'></control>
+          </dependencies>
+        </control>
+
+      </controls>
+    </testcase>
+
+
+
+  </testcases>
+
+</testplan>
