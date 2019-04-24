@@ -75,7 +75,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
             Driver.WaitUntilPresentedElement(_dataDocumentName.Format(designName));
             var designStatusEle = Driver.WaitUntilPresentedElement(_designStatus.Format(designName), e => e.Displayed, BaseConfiguration.LongTimeout);
-            Console.WriteLine($"designStatusEle: {designStatusEle}");
+            
             return designStatusEle == null ? string.Empty : designStatusEle.Text;
         }
 

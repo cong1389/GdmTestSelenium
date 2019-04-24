@@ -81,10 +81,9 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             int account = 0;
             foreach (var button in downloadButtons)
             {
+                account++;
                 Driver.ScrollToView(button);
-                button.Click();
-
-                ExitForDownloadCompletedModal();
+                button.OnClickJavaScript();
 
                 if (needToPublishFirst)
                 {
@@ -100,7 +99,8 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                     DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("modal-open")));
                 }
 
-                account++;
+                ExitForDownloadCompletedModal(account);
+
                 TakeSurveyIfVisible(isShowSurveyInvitationModal, account);
 
             }
@@ -127,7 +127,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             makeSureAllOutputsAreDownloaded(downloadButtons.Count);
         }
 
-        private void ExitForDownloadCompletedModal()
+        private void ExitForDownloadCompletedModal(int count)
         {
             bool.TryParse(Driver.GetSessionStorage("hasShowedFeedback"), out bool hasShowedFeedback);
             Console.WriteLine($"hasShowedFeedback: {hasShowedFeedback}");
@@ -136,8 +136,12 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                 var modalEle = Driver.WaitUntilPresentedElement(_modalOpen, e => e.Displayed, BaseConfiguration.LongTimeout);
                 if (modalEle != null)
                 {
-                    // Driver.SwitchTo().Frame(modalEle);
-                    Driver.GetElement(_completedModalCloseBtn).Click();
+                    var closedLink = Driver.WaitUntilPresentedElement(_completedModalCloseBtn, e => e.Displayed, BaseConfiguration.LongTimeout);
+                    //var closedLink = Driver.GetElement(_completedModalCloseBtn);
+                    Console.WriteLine($"modalEle onClick: { closedLink.Text}, count before: {count}");
+                    closedLink.OnClickJavaScript();
+
+                    Console.WriteLine($"modalEle onClick: { closedLink.Text}, count after: {count}");
 
                     //Driver.SwitchToParent();
                     Driver.WaitUntilElementIsNoLongerFound(_modalOpen, BaseConfiguration.ShortTimeout);
@@ -164,7 +168,6 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         public void TakeSurveyIfVisible(bool visibility, int countAccess)
         {
             var hasFeedbackCookies = Driver.CheckExistedCookie($"MSFeedbackSent{ConfigInfo.MopinionFormId}");
-            Console.WriteLine($"Access take survey fun: {countAccess} times");
             Console.WriteLine($"TakeSurveyIfVisible with visibility:{visibility}, hasFeedbackCookies:{hasFeedbackCookies} ");
             if (!hasFeedbackCookies)
             {

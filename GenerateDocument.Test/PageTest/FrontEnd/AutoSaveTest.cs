@@ -153,8 +153,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                 .ExpandOptions("Image and Text options", "div2");
             valueOutputs = _userEditFormFilling.GetValueInputsTextInOptions("div2");
 
-            Console.WriteLine($"valueInputs: {valueInputs.Count}");
-            Console.WriteLine($"valueInputs: {valueOutputs.Count}");
             CollectionAssert.AreEqual(valueInputs, valueOutputs, "The value inputs do not same the value outputs");
 
             _userEditFormFilling.ClickToNextStep();

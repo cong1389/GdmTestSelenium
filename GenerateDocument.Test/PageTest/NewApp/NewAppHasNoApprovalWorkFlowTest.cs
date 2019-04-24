@@ -1,5 +1,6 @@
 ﻿using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Helpers;
+using GenerateDocument.Test.PageObjects.BackEnd;
 using GenerateDocument.Test.WrapperFactory;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -227,6 +228,8 @@ namespace GenerateDocument.Test.PageTest.NewApp
                 _adminProductDetails.UpdateAndConvertToLatestRelease();
 
                 _adminProductDetails.UpdateSettings(true);
+
+                //_adminLogout.ClickLogOutButton();
 
                 LoginStep(_returnPage);
 

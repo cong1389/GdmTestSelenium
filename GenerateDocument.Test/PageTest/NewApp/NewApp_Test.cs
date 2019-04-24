@@ -32,6 +32,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         private AdminLogin _adminLogin;
         private AdminProducts _adminProducts;
         private AdminProductDetails _adminProductDetails;
+        private AdminLogout _adminLogout;
 
         private const string _returnPage = "designs";
 
@@ -57,6 +58,8 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _adminLogin = new AdminLogin(DriverContext);
             _adminProducts = new AdminProducts(DriverContext.Driver);
             _adminProductDetails = new AdminProductDetails(DriverContext.Driver);
+
+            _adminLogout = new AdminLogout(DriverContext);
         }
 
         [TearDown]
