@@ -1,41 +1,33 @@
-﻿using NUnit.Framework;
-using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
-
-namespace GenerateDocument.Test.Utilities
+﻿namespace GenerateDocument.Test.Utilities
 {
     public static class PageCommon
     {
-        public static readonly string AdminGlobalLibraryPage = $"{HostUrl}/AdminGlobalLibrary.aspx";
-        public static readonly string AdminLoginPage = $"{HostUrl}/AdminLogin.aspx";
-        public static readonly string AdminManagedConfigurationPage = $"{HostUrl}/AdminManagedConfiguration.aspx";
-        public static readonly string AdminManageGroupsPage = $"{HostUrl}/AdminManageGroups.aspx?g=User";
-        public static readonly string AdminOrdersPage = $"{HostUrl}/AdminOrders.aspx";
-        public static readonly string AdminOrderStatisticsPage = $"{HostUrl}/AdminOrderStatistics.aspx";
-        public static readonly string AdminProductContentPage = $"{HostUrl}/AdminProductContent.aspx";
-        public static readonly string AdminProductsPage = $"{HostUrl}/AdminProducts.aspx";
-        public static readonly string AdminProjectsPage = $"{HostUrl}/AdminProjects.aspx";
-        public static readonly string AdminSiteOptionsPage = $"{HostUrl}/AdminSiteOptions.aspx";
-        public static readonly string AdminUserAccountsPage = $"{HostUrl}/AdminUserAccounts.aspx";
-        public static readonly string AdminUserAccountAdminGroupPage = $"{HostUrl}/AdminUserAccounts.aspx?g=Admin";
-        public static readonly string AdminContentCollectionsPage = $"{HostUrl}/AdminContentCollections.aspx";
-        public static readonly string UserContentShoppingCartBasketPage = $"{HostUrl}/usercontentshoppingcart.aspx?page=basket";
-        public static readonly string UserContentShoppingCartDraftPage = $"{HostUrl}/usercontentshoppingcart.aspx?page=draft";
-        public static readonly string UserContentStartPage = $"{HostUrl}/UserContentStart.aspx";
-        public static readonly string UserLoginPage = $"{HostUrl}/Login.aspx";
-        public static readonly string UserContentOrdersPage = $"{HostUrl}/UserContentOrders.aspx";
-        public static readonly string UserContentApprovalsPage = $"{HostUrl}/UserContentApprovals.aspx";
-        public static readonly string UserContentApprovalsReviewPage = $"{HostUrl}/UserContentApprovalsReview.aspx";
-        public static readonly string AdminExtensionsPage = $"{HostUrl}/AdminExtensions.aspx";
-        public static readonly string MyDesignPage = $"{NewAppUrl}/#/designs";
-        public static readonly string DesignDetailAndActionPage = $"{NewAppUrl}/#/onedesign/";
+        public static readonly string AdminGlobalLibraryPage = $"{ProjectBaseConfiguration.HostUrl}/AdminGlobalLibrary.aspx";
+        public static readonly string AdminLoginPage = $"{ProjectBaseConfiguration.HostUrl}/AdminLogin.aspx";
+        public static readonly string AdminManagedConfigurationPage = $"{ProjectBaseConfiguration.HostUrl}/AdminManagedConfiguration.aspx";
+        public static readonly string AdminManageGroupsPage = $"{ProjectBaseConfiguration.HostUrl}/AdminManageGroups.aspx?g=User";
+        public static readonly string AdminOrdersPage = $"{ProjectBaseConfiguration.HostUrl}/AdminOrders.aspx";
+        public static readonly string AdminOrderStatisticsPage = $"{ProjectBaseConfiguration.HostUrl}/AdminOrderStatistics.aspx";
+        public static readonly string AdminProductContentPage = $"{ProjectBaseConfiguration.HostUrl}/AdminProductContent.aspx";
+        public static readonly string AdminProductsPage = $"{ProjectBaseConfiguration.HostUrl}/AdminProducts.aspx";
+        public static readonly string AdminProjectsPage = $"{ProjectBaseConfiguration.HostUrl}/AdminProjects.aspx";
+        public static readonly string AdminSiteOptionsPage = $"{ProjectBaseConfiguration.HostUrl}/AdminSiteOptions.aspx";
+        public static readonly string AdminUserAccountsPage = $"{ProjectBaseConfiguration.HostUrl}/AdminUserAccounts.aspx";
+        public static readonly string AdminUserAccountAdminGroupPage = $"{ProjectBaseConfiguration.HostUrl}/AdminUserAccounts.aspx?g=Admin";
+        public static readonly string AdminContentCollectionsPage = $"{ProjectBaseConfiguration.HostUrl}/AdminContentCollections.aspx";
+        public static readonly string UserContentStartPage = $"{ProjectBaseConfiguration.HostUrl}/UserContentStart.aspx";
+        public static readonly string UserLoginPage = $"{ProjectBaseConfiguration.HostUrl}/Login.aspx";
+        public static readonly string UserContentOrdersPage = $"{ProjectBaseConfiguration.HostUrl}/UserContentOrders.aspx";
+        public static readonly string UserContentApprovalsPage = $"{ProjectBaseConfiguration.HostUrl}/UserContentApprovals.aspx";
+        public static readonly string AdminExtensionsPage = $"{ProjectBaseConfiguration.HostUrl}/AdminExtensions.aspx";
+        public static readonly string MyDesignPage = $"{ProjectBaseConfiguration.NewAppUrl}/#/designs";
 
         public static readonly string RetiredPrefix = "[RETIRED]";
         public static readonly string DeletedPrefix = "[DELETED]";
 
-        public static readonly Account CustomerAdminAccount = new Account { UserName = CustomerAdminUserName, Password = CustomerAdminPassword };
+        public static readonly Account CustomerAdminAccount = new Account { UserName = ProjectBaseConfiguration.CustomerAdminUserName, Password = ProjectBaseConfiguration.CustomerAdminPassword };
         public static readonly Account TestAccount = new Account { UserName = "RightMarket", Password = "123" };
-        public static readonly Account SocialNetworkAccount = new Account { UserName = "rm.devtest@yahoo.com", Password = "thaopv" };
-        public static readonly Account AdminAccount = new Account { UserName = AdminId, Password = AdminPassword };
+        public static readonly Account AdminAccount = new Account { UserName = ProjectBaseConfiguration.AdminId, Password = ProjectBaseConfiguration.AdminPassword };
     }
 
     public struct Account

@@ -1,7 +1,6 @@
 ﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
-using GenerateDocument.Test.WrapperFactory;
 using OpenQA.Selenium;
 using System;
 using System.Linq;
@@ -40,7 +39,7 @@ namespace GenerateDocument.Test.PageObjects
         /// </summary>
         public void CreateMopinionCookie()
         {
-            var cookieName = $"MSFeedbackSent{ConfigInfo.MopinionFormId}";
+            var cookieName = $"MSFeedbackSent{ProjectBaseConfiguration.MopinionFormId}";
             if (!Browser.Manage().Cookies.AllCookies.Any(x => x.Name.Equals(cookieName)))
             {
                 var mopinionCookie = new Cookie(cookieName, "true", "/", DateTime.Now.AddDays(-1));

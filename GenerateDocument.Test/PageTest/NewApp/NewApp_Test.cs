@@ -5,7 +5,6 @@ using GenerateDocument.Test.PageObjects.BackEnd;
 using GenerateDocument.Test.PageObjects.FrontEnd;
 using GenerateDocument.Test.PageObjects.NewApp;
 using GenerateDocument.Test.Utilities;
-using GenerateDocument.Test.WrapperFactory;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
@@ -13,7 +12,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.PageTest.NewApp
 {
@@ -128,7 +126,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             var userLogin = new UserLogin(DriverContext)
                    .NavigateTo()
-                   .LoginSystem(UserId, UserPassword);
+                   .LoginSystem(ProjectBaseConfiguration.UserId, ProjectBaseConfiguration.UserPassword);
 
             Thread.Sleep(3000);
 
@@ -269,10 +267,10 @@ namespace GenerateDocument.Test.PageTest.NewApp
             var countButtons = _oneDesign.GetDownloadDesignButtons().Count;
             Assert.IsTrue(countButtons >= 1, "Download options should be available");
 
-            FilesHelper.DeleteAllFiles(ConfigInfo.NewAppTestDir);
+            FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.NewAppTestDir);
             _oneDesign.DownloadDesign(needToPublishFirst, ref _isShowSurveyInvitationModal, name);
 
-            var downloadedFilesCount = FilesHelper.CountFiles(NewAppTestDir);
+            var downloadedFilesCount = FilesHelper.CountFiles(ProjectBaseConfiguration.NewAppTestDir);
             //var downloadedFilesCount = CountDownloadFiles(downloadOptionsCount);
             Assert.IsTrue(downloadedFilesCount == countButtons, $"Files downloaded successfully; files count: {downloadedFilesCount}");
 
@@ -289,7 +287,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             int countDownloadedFiles()
             {
-                return new DirectoryInfo(NewAppTestDir).GetFiles()
+                return new DirectoryInfo(ProjectBaseConfiguration.NewAppTestDir).GetFiles()
                     .Count(x => new[] { ".jpg", ".pdf" }.Contains(x.Extension.ToLower()));
             }
 
@@ -393,7 +391,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
         private bool VerifyDownloadFileNames(string[] expectedFileNames)
         {
-            var fileNames = new DirectoryInfo(NewAppTestDir).GetFiles()
+            var fileNames = new DirectoryInfo(ProjectBaseConfiguration.NewAppTestDir).GetFiles()
                 .Where(x => new[] { ".jpg", ".pdf" }.Contains(x.Extension.ToLower())).Select(x => Path.GetFileNameWithoutExtension(x.Name).Trim());
 
             var result = fileNames.All(x => expectedFileNames.Contains(x)) && expectedFileNames.All(x => fileNames.Contains(x));

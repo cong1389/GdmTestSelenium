@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using GenerateDocument.Common.Extensions;
 using GenerateDocument.Test.PageObjects.BackEnd;
 using GenerateDocument.Test.Utilities;
 using NUnit.Framework;
-
+using System.Collections.Generic;
 using static GenerateDocument.Test.Utilities.PageCommon;
-using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
-using GenerateDocument.Common.Extensions;
 
 namespace GenerateDocument.Test.PageTest.BackEnd
 {
@@ -147,7 +145,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
         {
             AdminLoginStep(CustomerAdminAccount);
 
-            Assert.IsTrue(!DriverContext.Driver.IsAbleToAccessPage($"{HostUrl}/{page}"));
+            Assert.IsTrue(!DriverContext.Driver.IsAbleToAccessPage($"{ProjectBaseConfiguration.HostUrl}/{page}"));
         }
 
         [Test]
@@ -307,7 +305,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
 
             _adminProductsPage.Open();
 
-            var kitIconUrl = $"{HostUrl}/Images/ROI360ProductKit.gif";
+            var kitIconUrl = $"{ProjectBaseConfiguration.HostUrl}/Images/ROI360ProductKit.gif";
 
             Assert.IsTrue(_adminProductsPage.GetKitIconSrc(productName).IsEquals(kitIconUrl));
 
@@ -321,7 +319,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
 
             _adminProductsPage.Open();
 
-            var vdpIconUrl = $"{HostUrl}/Images/ROI360ProductVariableData.gif";
+            var vdpIconUrl = $"{ProjectBaseConfiguration.HostUrl}/Images/ROI360ProductVariableData.gif";
 
             Assert.IsTrue(_adminProductsPage.GetVdpIconSrc(productName).IsEquals(vdpIconUrl));
 

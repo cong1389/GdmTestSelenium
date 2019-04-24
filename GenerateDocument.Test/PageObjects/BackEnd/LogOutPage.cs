@@ -1,8 +1,6 @@
 ﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {

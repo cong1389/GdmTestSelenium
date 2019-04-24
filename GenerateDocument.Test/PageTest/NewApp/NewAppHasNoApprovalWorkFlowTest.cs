@@ -1,13 +1,8 @@
 ﻿using GenerateDocument.Common.Extensions;
-using GenerateDocument.Common.Helpers;
-using GenerateDocument.Test.PageObjects.BackEnd;
-using GenerateDocument.Test.WrapperFactory;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.IO;
 using static GenerateDocument.Test.Utilities.PageCommon;
-using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.PageTest.NewApp
 {
@@ -31,7 +26,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             }
             finally
             {
-                var dir = new DirectoryInfo(NewAppTestDir);
+                var dir = new DirectoryInfo(ProjectBaseConfiguration.NewAppTestDir);
                 foreach (var file in dir.GetFiles())
                 {
                     file.Delete();
@@ -60,7 +55,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             }
             finally
             {
-                var dir = new DirectoryInfo(NewAppTestDir);
+                var dir = new DirectoryInfo(ProjectBaseConfiguration.NewAppTestDir);
                 foreach (var file in dir.GetFiles())
                 {
                     file.Delete();
@@ -241,7 +236,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             }
             finally
             {
-                var dir = new DirectoryInfo(NewAppTestDir);
+                var dir = new DirectoryInfo(ProjectBaseConfiguration.NewAppTestDir);
                 foreach (var file in dir.GetFiles())
                 {
                     file.Delete();

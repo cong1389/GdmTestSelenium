@@ -3,7 +3,6 @@ using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GenerateDocument.Common.WebElements;
