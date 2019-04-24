@@ -17,9 +17,14 @@ namespace GenerateDocument.Common.Extensions
     {
         public static bool IsElementPresent(this IWebDriver driver, ElementLocator locator)
         {
+            return IsElementPresent(driver, locator, BaseConfiguration.LongTimeout);
+        }
+
+        public static bool IsElementPresent(this IWebDriver driver, ElementLocator locator, double timeout)
+        {
             try
             {
-                var isDisplayed = driver.GetElement(locator, e => e.Displayed);
+                var isDisplayed = driver.GetElement(locator, timeout, e => e.Displayed);
                 return isDisplayed != null;
             }
             catch (NoSuchElementException)

@@ -14,7 +14,9 @@ namespace GenerateDocument.Domain.AutoSaves
 
         public string Value { get; set; }
 
-        public string Group { get; set; }
+        public string GroupName { get; set; }
+
+        public string GroupId { get; set; }
 
         public List<Control> Dependencies { get; set; }
     }

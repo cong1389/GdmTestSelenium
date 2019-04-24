@@ -3,19 +3,30 @@
 
   <testcases>
 
-    <testcase name="conditional" description="AutoSave testing" productname="[AUTOTEST] Social Media Post">
+    <testcase name="conditional_Social" description="AutoSave testing" productname="[AUTOTEST] Social Media Post">
       <controls>
 
-        <control id="FIELD_1024" type="dropbox" value="Fundraiser" group='Layout options'>
+        <control id="FIELD_1024" type="dropbox" value="Fundraiser" groupName='Layout options'  groupId="div1">
           <dependencies>
-            <control id="FIELD_1045" type="dropbox" value="Visit our Just Giving page:" group='Image and Text options'></control>
-            <control id="FIELD_1046" type="textbox" group='Image and Text options'></control>
+            <control id="FIELD_1045" type="dropbox" value="Visit our Just Giving page:" groupName="Image and Text options" groupId="div2"></control>
+            <control id="FIELD_1046" type="textbox" groupName="Image and Text options"  groupId="div2"></control>
           </dependencies>
         </control>
 
       </controls>
     </testcase>
 
+    <testcase name="conditional_A4" description="AutoSave testing" productname="[AUTOTEST][SWF] A4 Poster">
+      <controls>
+
+        <control id="FIELD_828" type="textbox" value="" groupName='View Text options'  groupId="div2"/>
+        <control id="FIELD_829" type="textbox" value="" groupName='View Text options'  groupId="div2"/>
+        <control id="FIELD_473" type="textbox" value="" groupName='View Text options'  groupId="div2"/>
+
+        <control id="FIELD_499" type="dropbox" value="logos" groupName='View footer options*'  groupId="div3"/>
+
+      </controls>
+    </testcase>
 
 
   </testcases>

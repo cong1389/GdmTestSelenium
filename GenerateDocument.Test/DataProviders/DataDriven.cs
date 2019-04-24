@@ -10,25 +10,26 @@ namespace GenerateDocument.Test.DataProviders
         {
             get
             {
-                var testPlan = DataDrivenHelper.ReadOnlyData(@"D:\Project\Practice\GdmTestSelenium\GdmTestSelenium\GenerateDocument.Test\DataProviders\TestPlan.xml");
+                var testPlan = DataDrivenHelper.ReadOnlyData(@"D:\RM\GdmTestSelenium\GenerateDocument.Test\DataProviders\TestPlan.xml");
                 foreach (var testPlanTestcase in testPlan.Testcases)
                 {
                     var testCaseData = new TestCaseData(testPlanTestcase);
                     testCaseData.SetName("conditional");
+
                     yield return testCaseData;
                 }
             }
         }
 
-        public static IEnumerable Credentials
-        {
-            get
-            {
-                return DataDrivenHelper.ReadDataDriveFile(@"D:\Project\Practice\GdmTestSelenium\GdmTestSelenium\GenerateDocument.Test\DataProviders\DataDriven.xml"
-              , "credential"
-              , new[] { "user", "password" }
-              , "AutoSave");
-            }
-        }
+        //public static IEnumerable Credentials
+        //{
+        //    get
+        //    {
+        //        return DataDrivenHelper.ReadDataDriveFile(@"D:\Project\Practice\GdmTestSelenium\GdmTestSelenium\GenerateDocument.Test\DataProviders\DataDriven.xml"
+        //      , "credential"
+        //      , new[] { "user", "password" }
+        //      , "AutoSave");
+        //    }
+        //}
     }
 }

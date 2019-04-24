@@ -136,12 +136,12 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _userContentStart.SelectDocument(documentBefore.Id);
 
             _userEditFormFilling
-                .ExpandOptions("Layout options")
+                .ExpandOptions("Layout options", "div1")
                 .SelectByValue("FIELD_1024", "Fundraiser");
             Assert.IsTrue(_action.GetNotifyMessage);
 
             _userEditFormFilling
-                .ExpandOptions("Image and Text options")
+                .ExpandOptions("Image and Text options", "div2")
                 .SelectByValue("FIELD_1045", "Visit our Just Giving page:");
             valueInputs = _userEditFormFilling.EnteringValueInputsTextInOptions("div2", NameHelper.RandomName(10));
             Assert.IsTrue(_action.GetNotifyMessage);
@@ -150,7 +150,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             DriverContext.Driver.RefreshPage();
 
             _userEditFormFilling
-                .ExpandOptions("Image and Text options");
+                .ExpandOptions("Image and Text options", "div2");
             valueOutputs = _userEditFormFilling.GetValueInputsTextInOptions("div2");
 
             Console.WriteLine($"valueInputs: {valueInputs.Count}");
@@ -179,7 +179,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             foreach (var control in testcase.Controls)
             {
-                _userEditFormFilling.ExpandOptions(control.Group);
+                _userEditFormFilling.ExpandOptions(control.GroupName, control.GroupId);
                 SendKeyToControl(control, out Dictionary<string, string> valueInputs);
                 Assert.IsTrue(_action.GetNotifyMessage);
 
@@ -197,7 +197,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             foreach (var control in dependencies)
             {
-                _userEditFormFilling.ExpandOptions(control.Group);
+                _userEditFormFilling.ExpandOptions(control.GroupName, control.GroupId);
                 SendKeyToControl(control, out Dictionary<string, string> valueInputs);
 
                 Assert.IsTrue(_action.GetNotifyMessage);
@@ -208,6 +208,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         {
             valueInputs = new Dictionary<string, string>();
 
+            string value;
             switch (control.Type)
             {
                 case "dropbox":
@@ -216,7 +217,13 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                     break;
 
                 case "textbox":
-                    var value = NameHelper.RandomName(10);
+                    value = control.Value ?? NameHelper.RandomName(10);
+                    valueInputs.Add(control.Id, value);
+                    _userEditFormFilling.EnteringValueInputTextInOptions(control.Id, value);
+                    break;
+
+                case "textarea":
+                    value = control.Value ?? NameHelper.RandomName(100);
                     valueInputs.Add(control.Id, value);
                     _userEditFormFilling.EnteringValueInputTextInOptions(control.Id, value);
                     break;
@@ -226,13 +233,13 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             return valueInputs;
         }
 
-        [Test]
-        [TestCaseSource(typeof(DataDriven), "Credentials")]
-        public void TestDataDriven(Dictionary<string, string> parameters)
-        {
+        //[Test]
+        //[TestCaseSource(typeof(DataDriven), "Credentials")]
+        //public void TestDataDriven(Dictionary<string, string> parameters)
+        //{
 
 
-        }
+        //}
 
         private void UserSiteLoginStep()
         {

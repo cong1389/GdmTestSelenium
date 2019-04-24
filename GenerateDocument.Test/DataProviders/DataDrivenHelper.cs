@@ -15,8 +15,6 @@ namespace GenerateDocument.Test.DataProviders
     {
         public static TestPlan ReadOnlyData(string dataPath)
         {
-            string testName = string.Empty;
-
             XPathDocument xpd = new XPathDocument(dataPath);
             XPathNavigator xpn = xpd.CreateNavigator();
             XPathNodeIterator xpi = xpn.Select("/testplan");
@@ -58,7 +56,8 @@ namespace GenerateDocument.Test.DataProviders
                                     Id = controlNode.GetAttribute("id", xpn.NamespaceURI),
                                     Value = controlNode.GetAttribute("value", xpn.NamespaceURI),
                                     Type = controlNode.GetAttribute("type", xpn.NamespaceURI),
-                                    Group = controlNode.GetAttribute("group", xpn.NamespaceURI),
+                                    GroupName = controlNode.GetAttribute("groupName", xpn.NamespaceURI),
+                                    GroupId = controlNode.GetAttribute("groupId", xpn.NamespaceURI),
                                     Dependencies = new List<Control>()
 
                                 };
@@ -78,7 +77,8 @@ namespace GenerateDocument.Test.DataProviders
                                             Id = dependenciesCtrNode.GetAttribute("id", xpn.NamespaceURI),
                                             Value = dependenciesCtrNode.GetAttribute("value", xpn.NamespaceURI),
                                             Type = dependenciesCtrNode.GetAttribute("type", xpn.NamespaceURI),
-                                            Group = dependenciesCtrNode.GetAttribute("group", xpn.NamespaceURI)
+                                            GroupName = dependenciesCtrNode.GetAttribute("groupName", xpn.NamespaceURI),
+                                            GroupId = dependenciesCtrNode.GetAttribute("groupId", xpn.NamespaceURI)
                                         });
                                     }
 

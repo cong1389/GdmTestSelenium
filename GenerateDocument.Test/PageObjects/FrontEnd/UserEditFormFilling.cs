@@ -15,6 +15,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         private readonly ElementLocator
             _optionsLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}' or contains(text(), '{1}')]"),
             _optionsCommonLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}']//parent::a"),
+            _optionsCommonId = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
             _optionsContain = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
             _uploadLogoButton = new ElementLocator(Locator.XPath, "//span[contains(@id, '_ContentPlaceHolderStepArea_InputFields_LinkButton482')]"),
             _uploadImageTextbox = new ElementLocator(Locator.XPath, "//input[@id='{0}']"),
@@ -28,7 +29,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             _completeRequiredFields = new ElementLocator(Locator.XPath, "//div[@class='warningAreaMessageWarning']"),
             _nextStepButtonLocator = new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]"),
             _containerLocator = new ElementLocator(Locator.XPath, "//div[@id='div2']"),
-            _inputLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input");
+            _inputLocator = new ElementLocator(Locator.XPath, "//*[@id='{0}']");
 
         public UserEditFormFilling(DriverContext driverContext) : base(driverContext)
         {
@@ -347,11 +348,15 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             return selectElement.Selected;
         }
 
-        public UserEditFormFilling ExpandOptions(string optionsName)
+        public UserEditFormFilling ExpandOptions(string groupName, string groupId)
         {
-            var groupEle = Driver.GetElement(_optionsCommonLabel.Format(optionsName));
-            Driver.ScrollToView(groupEle);
-            groupEle.OnClickJavaScript();
+            var statusGroupContent = Driver.IsElementPresent(_optionsCommonId.Format(groupId), BaseConfiguration.ShortTimeout);
+            if (!statusGroupContent)
+            {
+                var groupEle = Driver.GetElement(_optionsCommonLabel.Format(groupName));
+                Driver.ScrollToView(groupEle);
+                groupEle.OnClickJavaScript();
+            }
 
             return this;
         }
@@ -390,6 +395,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             var inputEle = Driver.GetElement(_inputLocator.Format(controlId));
             Driver.ScrollToView(inputEle);
+            inputEle.Clear();
             inputEle.SendKeys(text);
             inputEle.SendKeys(Keys.Tab);
         }
