@@ -1,6 +1,5 @@
 ﻿using GenerateDocument.Common;
 using NUnit.Framework;
-using OpenQA.Selenium;
 
 namespace GenerateDocument.Test.PageTest
 {

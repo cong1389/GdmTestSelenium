@@ -1,8 +1,7 @@
-﻿using System;
-using GenerateDocument.Test.WrapperFactory;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace GenerateDocument.Test.PageObjects
 {
@@ -17,7 +16,7 @@ namespace GenerateDocument.Test.PageObjects
             PageFactory.InitElements(Browser, this);
         }
 
-        public WebDriverWait BrowserWait(int? timeoutInSecond = null) => new WebDriverWait(Browser, TimeSpan.FromSeconds(timeoutInSecond ?? ConfigInfo.TimeoutInSecond));
+        public WebDriverWait BrowserWait(int? timeoutInSecond = null) => new WebDriverWait(Browser, TimeSpan.FromSeconds(timeoutInSecond ?? ProjectBaseConfiguration.TimeoutInSecond));
 
         public void ScrollToView(IWebElement element)
         {

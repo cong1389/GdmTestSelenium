@@ -1,9 +1,5 @@
 ﻿using OpenQA.Selenium;
-using GenerateDocument.Test.WrapperFactory;
 using System;
-using System.Drawing.Imaging;
-
-using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.Reporting
 {
@@ -14,7 +10,7 @@ namespace GenerateDocument.Test.Reporting
             try
             {
                 var screenshot = ((ITakesScreenshot)browser).GetScreenshot();
-                screenshot.SaveAsFile($"{ScreenshotPath}\\{filename}.png", ScreenshotImageFormat.Png);
+                screenshot.SaveAsFile($"{ProjectBaseConfiguration.ScreenshotPath}\\{filename}.png", ScreenshotImageFormat.Png);
             }
             catch (Exception ex)
             {

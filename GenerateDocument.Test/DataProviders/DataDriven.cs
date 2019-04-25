@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Linq;
 using NUnit.Framework;
 
 namespace GenerateDocument.Test.DataProviders
@@ -10,7 +9,7 @@ namespace GenerateDocument.Test.DataProviders
         {
             get
             {
-                var testPlan = DataDrivenHelper.ReadOnlyData(@"D:\RM\GdmTestSelenium\GenerateDocument.Test\DataProviders\TestPlan.xml");
+                var testPlan = DataDrivenHelper.ReadOnlyData(ProjectBaseConfiguration.DataDrivenFile);
                 foreach (var testPlanTestcase in testPlan.Testcases)
                 {
                     var testCaseData = new TestCaseData(testPlanTestcase);

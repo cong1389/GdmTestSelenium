@@ -1,11 +1,21 @@
 ﻿using System.Configuration;
-using GenerateDocument.Test.Utilities;
+using System.IO;
+using NUnit.Framework;
 
-namespace GenerateDocument.Test.WrapperFactory
+namespace GenerateDocument.Test
 {
-    public static class ConfigInfo
+    public static class ProjectBaseConfiguration
     {
-        public static readonly string BrowserName = ConfigurationManager.AppSettings["BROWSER_NAME"];
+        private static readonly string CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
+
+        public static string DataDrivenFile 
+        {
+            get
+            {
+                return Path.Combine(Directory.GetParent(CurrentDirectory).Parent.FullName, ConfigurationManager.AppSettings["dataDrivenFile"]);
+            }
+        }
+
         public static readonly int TimeoutInSecond = int.Parse(ConfigurationManager.AppSettings["TIMEOUT_IN_SECOND"]);
         public static readonly string HostUrl = ConfigurationManager.AppSettings["HOST_URL"];
         public static readonly string NewAppUrl = ConfigurationManager.AppSettings["NEWAPP_URL"];
@@ -19,23 +29,9 @@ namespace GenerateDocument.Test.WrapperFactory
         public static readonly string CustomerAdminUserName = ConfigurationManager.AppSettings["CUSTOMER_ADMIN"];
         public static readonly string CustomerAdminPassword = ConfigurationManager.AppSettings["CUSTOMER_PASSWORD"];
 
-        public static readonly string UserViewStagedName = ConfigurationManager.AppSettings["USER_VIEW_STAGED_NAME"];
-
-        public static readonly string UserViewStagedPassword = ConfigurationManager.AppSettings["USER_VIEW_STAGED_PASSWORD"];
-
         public static readonly string ScreenshotPath = ConfigurationManager.AppSettings["SCREENSHOT_PATH"];
 
-        public static readonly string BasketPosterName = ConfigurationManager.AppSettings["BASKET_POSTER_NAME"];
-
-        public static readonly string DraftPosterName = ConfigurationManager.AppSettings["DRAFT_POSTER_NAME"];
-
-        public static readonly string AdvancedFlyerName = ConfigurationManager.AppSettings["ADVANCED_FLYER_NAME"];
-
         public static readonly string A4PosterName = "A4 Poster";
-
-        public static readonly string FinancialKitName = "Financial Services Kit";
-
-        public static readonly string BusinessCardhName = "BusinessCard";
 
         public static readonly string NewAppTestDir = @"C:\NewAppTestDir";
 

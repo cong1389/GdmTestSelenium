@@ -1,6 +1,5 @@
 ﻿using GenerateDocument.Common.Helpers;
 using GenerateDocument.Test.PageObjects.NewApp;
-using GenerateDocument.Test.Utilities;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

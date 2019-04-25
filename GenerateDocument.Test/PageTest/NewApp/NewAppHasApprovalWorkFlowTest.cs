@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using GenerateDocument.Common.Helpers;
-using GenerateDocument.Test.WrapperFactory;
 
 namespace GenerateDocument.Test.PageTest.NewApp
 {
@@ -52,7 +51,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             }
             finally
             {
-                FilesHelper.DeleteAllFiles(ConfigInfo.NewAppTestDir);
+                FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.NewAppTestDir);
             }
 
         }

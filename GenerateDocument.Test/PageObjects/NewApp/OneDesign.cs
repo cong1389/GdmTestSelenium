@@ -1,7 +1,6 @@
 ﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
-using GenerateDocument.Test.WrapperFactory;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -167,7 +166,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public void TakeSurveyIfVisible(bool visibility, int countAccess)
         {
-            var hasFeedbackCookies = Driver.CheckExistedCookie($"MSFeedbackSent{ConfigInfo.MopinionFormId}");
+            var hasFeedbackCookies = Driver.CheckExistedCookie($"MSFeedbackSent{ProjectBaseConfiguration.MopinionFormId}");
             Console.WriteLine($"TakeSurveyIfVisible with visibility:{visibility}, hasFeedbackCookies:{hasFeedbackCookies} ");
             if (!hasFeedbackCookies)
             {

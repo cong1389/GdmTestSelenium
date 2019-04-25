@@ -1,5 +1,4 @@
-﻿using GenerateDocument.Common;
-using GenerateDocument.Common.Extensions;
+﻿using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Helpers;
 using GenerateDocument.Test.DataProviders;
 using GenerateDocument.Test.PageObjects;
@@ -7,7 +6,6 @@ using GenerateDocument.Test.PageObjects.BackEnd;
 using GenerateDocument.Test.PageObjects.FrontEnd;
 using GenerateDocument.Test.PageObjects.NewApp;
 using GenerateDocument.Test.Utilities;
-using GenerateDocument.Test.WrapperFactory;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
@@ -15,7 +13,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using GenerateDocument.Domain.AutoSaves;
-using static GenerateDocument.Test.WrapperFactory.ConfigInfo;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
 {
@@ -245,14 +242,14 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             new UserLogin(DriverContext)
                 .NavigateTo()
-               .LoginSystem(UserId, UserPassword);
+               .LoginSystem(ProjectBaseConfiguration.UserId, ProjectBaseConfiguration.UserPassword);
         }
 
         private void AdminSiteLoginStep()
         {
             new AdminLogin(DriverContext)
                 .NavigateTo()
-                .LoginSystem(ConfigInfo.AdminId, ConfigInfo.AdminPassword);
+                .LoginSystem(ProjectBaseConfiguration.AdminId, ProjectBaseConfiguration.AdminPassword);
         }
 
         private void AdminSiteSwitchAutoSave(params Action[] actions)
@@ -427,9 +424,9 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             new UserLogin(DriverContext)
                 .NavigateTo()
-                .LoginSystem(UserId, UserPassword);
+                .LoginSystem(ProjectBaseConfiguration.UserId, ProjectBaseConfiguration.UserPassword);
 
-            var documentAfter = _userContentStart.SearchDocument(A4PosterName);
+            var documentAfter = _userContentStart.SearchDocument(ProjectBaseConfiguration.A4PosterName);
             _userContentStart.SelectDocument(documentAfter.Id);
             Assert.IsTrue(documentAfter.Name.IsContains("In progress") && _userContentStart.IsInprogressDocument());
             _userContentStart.SelectCompleteExistingDocument();
