@@ -35,7 +35,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         public MyDesign CreateDesign()
         {
             Driver.ScrollToTop();
-            Driver.GetElement(_browseTemplateCatalog).Click();
+            Driver.GetElement(_browseTemplateCatalog).OnClickJavaScript();
 
             return this;
         }

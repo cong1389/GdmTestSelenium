@@ -42,9 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoSaves\Control.cs" />
-    <Compile Include="AutoSaves\Document.cs" />
-    <Compile Include="AutoSaves\ExpandOption.cs" />
-    <Compile Include="AutoSaves\OptionField.cs" />
+    <Compile Include="AutoSaves\TestCase.cs" />
+    <Compile Include="AutoSaves\TestPlan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

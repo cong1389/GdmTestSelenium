@@ -19,16 +19,5 @@ namespace GenerateDocument.Test.DataProviders
                 }
             }
         }
-
-        //public static IEnumerable Credentials
-        //{
-        //    get
-        //    {
-        //        return DataDrivenHelper.ReadDataDriveFile(@"D:\Project\Practice\GdmTestSelenium\GdmTestSelenium\GenerateDocument.Test\DataProviders\DataDriven.xml"
-        //      , "credential"
-        //      , new[] { "user", "password" }
-        //      , "AutoSave");
-        //    }
-        //}
     }
 }

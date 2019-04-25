@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.IO;
 using NUnit.Framework;
 
@@ -8,11 +9,11 @@ namespace GenerateDocument.Test
     {
         private static readonly string CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
 
-        public static string DataDrivenFile 
+        public static string DataDrivenFile
         {
             get
             {
-                return Path.Combine(Directory.GetParent(CurrentDirectory).Parent.FullName, ConfigurationManager.AppSettings["dataDrivenFile"]);
+                return Path.Combine(CurrentDirectory, ConfigurationManager.AppSettings["dataDrivenFile"]);
             }
         }
 
