@@ -209,7 +209,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public bool DoCopyDesign(string designName, string copiedDesignName)
         {
-            DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//div[@data-documentname='{designName}']//div[@class='thumbnail']//div[@class='content-wrapper']//ul//li//a[@name='copy']"))).Click();
+            DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//div[@data-documentname='{designName}']//div[@class='thumbnail']//div[@class='content-wrapper']//ul//li//a[@name='copy']"))).OnClickJavaScript();
 
             DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.ClassName("modal-open")));
 
@@ -217,7 +217,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             textField.Clear();
             textField.SendKeys(copiedDesignName);
 
-            DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@ng-click='cloneDesign()']"))).Click();
+            DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@ng-click='cloneDesign()']"))).OnClickJavaScript();
 
             DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("modal-open")));
 

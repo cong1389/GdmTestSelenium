@@ -8,16 +8,16 @@ namespace GenerateDocument.Common.WebElements
 {
     public class Select : RemoteWebElement
     {
-        private readonly IWebElement webElement;
+        private readonly IWebElement _webElement;
 
         public Select(IWebElement webElement) : base(webElement.ToDriver() as RemoteWebDriver, null)
         {
-            this.webElement = webElement;
+            _webElement = webElement;
         }
 
         public SelectElement Selected()
         {
-            return new SelectElement(this.webElement);
+            return new SelectElement(this._webElement);
         }
 
         public void SelectedByValue(string value)
@@ -41,11 +41,11 @@ namespace GenerateDocument.Common.WebElements
 
         public IWebElement WaitUntilDropdownIsPopulated(double timeout)
         {
-            var selecteElement = new SelectElement(webElement);
+            var selecteElement = new SelectElement(_webElement);
             var isPopulated = false;
             try
             {
-                new WebDriverWait(webElement.ToDriver(), TimeSpan.FromSeconds(timeout)).Until(x =>
+                new WebDriverWait(_webElement.ToDriver(), TimeSpan.FromSeconds(timeout)).Until(x =>
                 {
                     var size = selecteElement.Options.Count;
                     if (size > 1)
@@ -62,7 +62,7 @@ namespace GenerateDocument.Common.WebElements
                 throw new Exception("Option is null");
             }
 
-            return webElement;
+            return _webElement;
         }
     }
 }

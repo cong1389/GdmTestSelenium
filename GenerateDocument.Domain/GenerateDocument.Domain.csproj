@@ -44,6 +44,7 @@
     <Compile Include="AutoSaves\Control.cs" />
     <Compile Include="AutoSaves\TestCase.cs" />
     <Compile Include="AutoSaves\TestPlan.cs" />
+    <Compile Include="HtmlControls\ImageControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

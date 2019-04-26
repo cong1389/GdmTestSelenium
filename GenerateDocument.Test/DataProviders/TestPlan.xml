@@ -3,7 +3,7 @@
 
   <testcases>
 
-    <testcase name="conditional_Social" description="AutoSave testing" productname="[AUTOTEST] Social Media Post">
+    <!--<testcase name="conditional_Social" description="AutoSave testing" productname="[AUTOTEST] Social Media Post">
       <controls>
 
         <control id="FIELD_1024" type="dropbox" value="Fundraiser" groupName='Layout options'  groupId="div1">
@@ -14,16 +14,20 @@
         </control>
 
       </controls>
-    </testcase>
+    </testcase>-->
 
     <testcase name="conditional_A4" description="AutoSave testing" productname="[AUTOTEST][SWF] A4 Poster">
       <controls>
+
+        <control id="FIELD_471" type="radio" value="Circle" groupName='View design options'  groupId="div1"/>
 
         <control id="FIELD_828" type="textbox" value="" groupName='View Text options'  groupId="div2"/>
         <control id="FIELD_829" type="textbox" value="" groupName='View Text options'  groupId="div2"/>
         <control id="FIELD_473" type="textbox" value="" groupName='View Text options'  groupId="div2"/>
 
-        <control id="FIELD_499" type="dropbox" value="logos" groupName='View footer options*'  groupId="div3"/>
+        <control id="FIELD_499" type="dropbox" value="logo" groupName='View footer options*'  groupId="div3"/>
+
+        <control id="FIELD_1567" type="listbox" value="train" groupName=''  groupId=""/>
 
       </controls>
     </testcase>

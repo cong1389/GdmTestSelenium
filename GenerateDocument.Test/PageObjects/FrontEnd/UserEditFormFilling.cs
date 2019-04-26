@@ -6,6 +6,8 @@ using OpenQA.Selenium.Support.UI;
 using System.Collections.Generic;
 using System.Linq;
 using GenerateDocument.Common.WebElements;
+using System.IO;
+using System;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
@@ -28,7 +30,11 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             _completeRequiredFields = new ElementLocator(Locator.XPath, "//div[@class='warningAreaMessageWarning']"),
             _nextStepButtonLocator = new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]"),
             _containerLocator = new ElementLocator(Locator.XPath, "//div[@id='div2']"),
-            _inputLocator = new ElementLocator(Locator.XPath, "//*[@id='{0}']");
+            _inputLocator = new ElementLocator(Locator.XPath, "//*[@id='{0}']"),
+            _radioLocator = new ElementLocator(Locator.XPath, "//input[@type='radio' and @id='{0}' and @value='{1}']"),
+            _checkBoxLocator = new ElementLocator(Locator.XPath, "//input[@type='radio' and @id='{0}'"),
+            _imageUploadBtnLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//a//span[text()='Upload']"),
+            _imageLableLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input[@disabled and contains(@id,'_IMGNAME')]");
 
         public UserEditFormFilling(DriverContext driverContext) : base(driverContext)
         {
@@ -349,6 +355,10 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public UserEditFormFilling ExpandOptions(string groupName, string groupId)
         {
+            if (string.IsNullOrEmpty(groupName) || string.IsNullOrEmpty(groupId))
+            {
+                return this;
+            }
             var statusGroupContent = Driver.IsElementPresent(_optionsCommonId.Format(groupId), BaseConfiguration.ShortTimeout);
             if (!statusGroupContent)
             {
@@ -364,6 +374,27 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             Select drpEle = Driver.GetElement<Select>(_dropDownLocator.Format(ctrId));
             drpEle.SelectedByValue(value);
+
+            return this;
+        }
+
+        public UserEditFormFilling TickRadio(string ctrId, string value)
+        {
+            Driver.GetElement<Radio>(_radioLocator.Format(ctrId, value)).TickRadio();
+
+            return this;
+        }
+
+        public UserEditFormFilling TickOrUnTickCheckBox(string ctrId, bool isCheck)
+        {
+            if (isCheck)
+            {
+                Driver.GetElement<CheckBox>(_checkBoxLocator.Format(ctrId)).TickCheckBox();
+            }
+            else
+            {
+                Driver.GetElement<CheckBox>(_checkBoxLocator.Format(ctrId)).UnTickCheckBox();
+            }
 
             return this;
         }
@@ -426,6 +457,66 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             }
 
             return this;
+        }
+
+        public UserEditFormFilling UploadImageControl(string containerId, string fileName)
+        {
+            var imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Content\imageTest", fileName);
+
+            UploadImage(fileName
+                , imagePath
+                , () => ClickToUploadImage(containerId, imagePath)
+                , () => ClickToViewFooterOptions()
+                , GetImageNameAfterUploaded
+                );
+
+            return this;
+        }
+
+        private void UploadImage(string fileName, string path, Action uploadImageAction, Action expandSection, Func<string, string> getUploadedImageName)
+        {
+            uploadImageAction.Invoke();
+
+            expandSection.Invoke();
+
+            var uploadedFileName = getUploadedImageName;
+
+            // CheckImageNameUploaded(uploadedFileName, fileName);
+        }
+
+        private static bool CheckImageNameUploaded(string uploadedImageName, string expectedImageName)
+        {
+            Func<string, string> getNameOfFile = (string fileName) => fileName.Substring(0, fileName.LastIndexOf("."));
+
+            Func<string, string> getExtension = (string fileName) => fileName.Substring(fileName.LastIndexOf("."));
+
+            var nameOfUploadedImage = getNameOfFile.Invoke(uploadedImageName);
+            var nameOfExpectedImage = getNameOfFile.Invoke(expectedImageName);
+
+            var uploadedImageExtension = getExtension.Invoke(uploadedImageName);
+            var expectedImageExtension = getExtension.Invoke(expectedImageName);
+
+            return nameOfUploadedImage.Contains(nameOfExpectedImage) && uploadedImageExtension.Equals(expectedImageExtension);
+        }
+
+        public string GetImageNameAfterUploaded(string containerId)
+        {
+            var logoTextboxEle = Driver.GetElement(_imageLableLocator.Format(containerId), e => e.Displayed);
+            Driver.ScrollToView(logoTextboxEle);
+
+            return logoTextboxEle.GetAttribute("value");
+        }
+
+        private void ClickToUploadImage(string containerId, string path)
+        {
+            var uploadBtnEle = Driver.GetElement(_imageUploadBtnLocator.Format(containerId));
+            Driver.ScrollToView(uploadBtnEle);
+            uploadBtnEle.Click();
+
+            Driver.GetElement(_imageLableLocator).SendKeys(path);
+            ClickToSubmitFileUpload();
+
+            Driver.WaitUntilElementIsNoLongerFound(_modalLarge, BaseConfiguration.LongTimeout);
         }
     }
 }

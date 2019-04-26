@@ -43,7 +43,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
         public const string WarningMessageExpect = "This name is being used by another design";
 
-        //Need to improve
         [SetUp]
         public void SetUpOneTestCase()
         {
@@ -181,6 +180,13 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                 VerifyDependenciesControl(control.Dependencies);
             }
 
+            _userEditFormFilling.ClickToNextStep();
+            _userEditPrinting.ClickToNextStep();
+
+            _userEditFinish
+                .EnterOrderName(NameHelper.RandomName(10))
+                .ClickToFinishDesign();
+
         }
 
         private void VerifyDependenciesControl(List<Control> dependencies)
@@ -207,34 +213,34 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             switch (control.Type)
             {
                 case "dropbox":
-                    valueInputs.Add(control.Id, control.Value);
+                case "listbox":
                     _userEditFormFilling.SelectByValue(control.Id, control.Value);
                     break;
 
                 case "textbox":
-                    value = control.Value ?? NameHelper.RandomName(10);
+                    value = string.IsNullOrEmpty(control.Value) ? NameHelper.RandomName(10) : control.Value;
                     valueInputs.Add(control.Id, value);
                     _userEditFormFilling.EnteringValueInputTextInOptions(control.Id, value);
                     break;
 
                 case "textarea":
-                    value = control.Value ?? NameHelper.RandomName(100);
+                    value = string.IsNullOrEmpty(control.Value) ? NameHelper.RandomName(100) : control.Value;
                     valueInputs.Add(control.Id, value);
                     _userEditFormFilling.EnteringValueInputTextInOptions(control.Id, value);
+                    break;
+
+                case "radio":
+                    _userEditFormFilling.TickRadio(control.Id, control.Value);
+                    break;
+
+                case "checkbox":
+                    _userEditFormFilling.TickOrUnTickCheckBox(control.Id, Boolean.Parse(control.Value));
                     break;
             }
 
 
             return valueInputs;
         }
-
-        //[Test]
-        //[TestCaseSource(typeof(DataDriven), "Credentials")]
-        //public void TestDataDriven(Dictionary<string, string> parameters)
-        //{
-
-
-        //}
 
         private void UserSiteLoginStep()
         {

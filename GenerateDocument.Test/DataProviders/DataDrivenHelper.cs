@@ -58,12 +58,14 @@ namespace GenerateDocument.Test.DataProviders
                                     GroupName = controlNode.GetAttribute("groupName", xpn.NamespaceURI),
                                     GroupId = controlNode.GetAttribute("groupId", xpn.NamespaceURI),
                                     Dependencies = new List<Control>()
-
                                 };
 
+                                //Get image
+                                var imageNode = controlNode.SelectChildren("image", xpn.NamespaceURI);
+                               
 
                                 //Get Dependencies nodes
-                                var dependenciesNode = controlNode.SelectChildren("dependencies", xpn.NamespaceURI);
+                                    var dependenciesNode = controlNode.SelectChildren("dependencies", xpn.NamespaceURI);
                                 while (dependenciesNode.MoveNext())
                                 {
                                     var currentDependenciesNode = dependenciesNode.Current;
