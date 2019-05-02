@@ -25,6 +25,26 @@
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_829">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_828">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_473">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_488">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
 
         <!--Verify View footer options*-->
         <step controltype="container" action="click" controlid="div3" controlvalue="View footer options*"></step>
