@@ -5,13 +5,17 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
+using log4net;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.NewApp
 {
     public class MyDesign : PageBaseObject
     {
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly ElementLocator
             _browseTemplateCatalog = new ElementLocator(Locator.XPath, "//button[@ng-click='browseTemplateCatalog()']"),
             _dataDocumentName = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']"),
@@ -34,6 +38,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public MyDesign CreateDesign()
         {
+            logger.Info($"Click create design: {_browseTemplateCatalog.Value}");
             Driver.ScrollToTop();
             Driver.GetElement(_browseTemplateCatalog).OnClickJavaScript();
 

@@ -4,6 +4,8 @@ using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Reflection;
+using log4net;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
@@ -37,17 +39,6 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             return this;
         }
 
-        //public UserLogin LoginSystem()
-        //{
-        //    if (NeedToLogin())
-        //    {
-        //        NavigateTo();
-        //        LoginSystem(UserId, UserPassword);
-        //    }
-
-        //    return this;
-        //}
-
         public UserLogin NavigateTo()
         {
             Driver.NavigateTo(UserLoginPage);
@@ -79,7 +70,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             if (Driver.IsElementPresent(_cookieconsent))
             {
                 Driver.GetElement(_gotItLink).Click();
-                Driver.WaitUntilElementIsNoLongerFound(_cookieconsent,BaseConfiguration.ShortTimeout);
+                Driver.WaitUntilElementIsNoLongerFound(_cookieconsent, BaseConfiguration.ShortTimeout);
             }
         }
 
