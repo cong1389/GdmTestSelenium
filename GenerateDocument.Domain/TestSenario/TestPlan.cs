@@ -6,6 +6,6 @@ namespace GenerateDocument.Domain.TestSenario
     {
         public string Name { get; set; }
 
-        public List<TestCase> Testcases { get; set; }
+        public List<TestCase> TestCases { get; set; }
     }
 }

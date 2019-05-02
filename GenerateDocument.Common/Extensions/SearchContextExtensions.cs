@@ -80,6 +80,13 @@ namespace GenerateDocument.Common.Extensions
             return webElemement.As<T>();
         }
 
+        public static T GetElement<T>(this ISearchContext searchContext, ElementLocator locator, Func<IWebElement, bool> condition)
+            where T : class, IWebElement
+        {
+            IWebElement webElemement = searchContext.GetElement(locator, condition);
+            return webElemement.As<T>();
+        }
+
         public static T GetElement<T>(this ISearchContext searchContext, ElementLocator locator, double timeout)
             where T : class, IWebElement
         {

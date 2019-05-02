@@ -3,38 +3,93 @@
 
   <testcases>
 
-    <testcase name="DependenciesControl" description="Verify autoSave dependencies controls" productname="[AUTOTEST] Social Media Post">
-      <controls>
-
-        <control id="FIELD_1024" type="dropbox" value="Fundraiser" groupName='Layout options'  groupId="div1">
-
-          <dependencies>
-            <control id="FIELD_1045" type="dropbox" value="Visit our Just Giving page:" groupName="Image and Text options" groupId="div2"></control>
-            <control id="FIELD_1046" type="textbox" value="" groupName="Image and Text options"  groupId="div2"></control>
-            <control id="FIELD_502" type="textbox"  value="" groupName="Image and Text options"  groupId="div2"></control>
-          </dependencies>
-
-        </control>
-
-      </controls>
-    </testcase>
-
     <testcase name="ControlTypes" description="Verify some control type" productname="[AUTOTEST][SWF] A4 Poster">
-      <controls>
+      <steps>
 
-        <control id="FIELD_471" type="radio" value="Circle" groupName='View design options'  groupId="div1"/>
+        <!--Verify View design options-->
+        <step controltype="container" action="click" controlid="div1" controlvalue="View design options"></step>
+        <step controltype="radio" action="click" controlid="FIELD_471" controlvalue="Circle"></step>
+        <step controltype="radio" action="click" controlid="FIELD_845" controlvalue="54,43,0,52"></step>
+        <step controltype="radio" action="click" controlid="FIELD_846" controlvalue="0,0,0,63"></step>
+        <step controltype="image" action="click" controlid="DIV_482" controlvalue="adidas.png">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equals" expectedvalue="adidas.png" assertmessage="Upload files before and after are not the same"></expectation>
+          </expectations>
+        </step>
 
-        <control id="FIELD_828" type="textbox" value="" groupName='View Text options'  groupId="div2"/>
-        <control id="FIELD_829" type="textbox" value="" groupName='View Text options'  groupId="div2"/>
-        <control id="FIELD_473" type="textbox" value="" groupName='View Text options'  groupId="div2"/>
+        <!--Verify View Text options-->
+        <step controltype="container" action="click" controlid="div2" controlvalue="View Text options"></step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_828">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
 
-        <control id="FIELD_499" type="dropbox" value="logo" groupName='View footer options*'  groupId="div3"/>
+        <!--Verify View footer options*-->
+        <step controltype="container" action="click" controlid="div3" controlvalue="View footer options*"></step>
+        <step controltype="dropbox" action="select" controlid="FIELD_499" controlvalue="logos">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="dropbox" action="select" controlid="FIELD_836" controlvalue="2">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
 
-        <control id="FIELD_1567" type="listbox" value="train" groupName=''  groupId=""/>
+        <step controltype="image" action="click" controlid="DIV_841" controlvalue="bg1.jpg">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equals" expectedvalue="bg1.jpg" assertmessage="Upload files before and after are not the same"></expectation>
+          </expectations>
+        </step>
 
-      </controls>
+        <step controltype="image" action="click" controlid="DIV_842" controlvalue="bg2.jpg">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equals" expectedvalue="bg2.jpg" assertmessage="Upload files before and after are not the same"></expectation>
+          </expectations>
+        </step>
+
+
+      </steps>
     </testcase>
 
+    <!--<testcase name="DependenciesControl" description="Verify autoSave dependencies controls" productname="[AUTOTEST] Social Media Post">
+      <steps>
+
+        <step controltype="container" action="click" controlid="div1" controlvalue="Layout options"></step>
+        <step controltype="dropbox" action="select" controlid="FIELD_1024" controlvalue="Fundraiser">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+        <step controltype="container" action="click" controlid="div2" controlvalue="Image and Text options"></step>
+
+        <step controltype="dropbox" action="select" controlid="FIELD_1045" controlvalue="Visit our Just Giving page:">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+        <step controltype="textbox" action="sendkeys" controlid="FIELD_1046">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+        <step controltype="textbox" action="sendkeys" controlid="FIELD_502">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+      </steps>
+
+    </testcase>-->
 
   </testcases>
 

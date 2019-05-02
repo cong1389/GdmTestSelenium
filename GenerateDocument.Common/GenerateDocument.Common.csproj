@@ -64,6 +64,8 @@
     <Compile Include="Types\BrowserTypes.cs" />
     <Compile Include="Types\ElementLocator.cs" />
     <Compile Include="WebElements\CheckBox.cs" />
+    <Compile Include="WebElements\ImageUpload.cs" />
+    <Compile Include="WebElements\Listbox.cs" />
     <Compile Include="WebElements\Radio.cs" />
     <Compile Include="WebElements\Select.cs" />
   </ItemGroup>

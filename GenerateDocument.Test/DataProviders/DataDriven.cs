@@ -10,7 +10,7 @@ namespace GenerateDocument.Test.DataProviders
             get
             {
                 var testPlan = DataDrivenHelper.ReadOnlyData(ProjectBaseConfiguration.DataDrivenFile);
-                foreach (var testPlanTestcase in testPlan.Testcases)
+                foreach (var testPlanTestcase in testPlan.TestCases)
                 {
                     var testCaseData = new TestCaseData(testPlanTestcase);
                     testCaseData.SetName($"{testPlanTestcase.Name}_{testPlanTestcase.ProductName}");

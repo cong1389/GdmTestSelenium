@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GenerateDocument.Common.WebElements;
 using GenerateDocument.Domain.TestSenario;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
@@ -171,68 +172,86 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
             _userContentStart.SelectDocument(documentBefore.Id);
 
-            foreach (var control in testcase.Controls)
+            foreach (var step in testcase.Steps)
             {
-                _userEditFormFilling.ExpandOptions(control.GroupName, control.GroupId);
-                SendKeyToControl(control);
-                Assert.IsTrue(_action.GetNotifyMessage);
-
-                VerifyDependenciesControl(control.Dependencies);
+                PerformToControl(step);
+                CheckingExpectation(step);
             }
 
-            _userEditFormFilling.ClickToNextStep();
-            _userEditPrinting.ClickToNextStep();
+            //_userEditFormFilling.ClickToNextStep();
+            //_userEditPrinting.ClickToNextStep();
 
-            _userEditFinish
-                .EnterOrderName(NameHelper.RandomName(10))
-                .ClickToFinishDesign();
+            //_userEditFinish
+            //    .EnterOrderName(NameHelper.RandomName(10))
+            //    .ClickToFinishDesign();
 
         }
 
-        private void VerifyDependenciesControl(List<Control> dependencies)
+        private void PerformToControl(Step step)
         {
-            if (!dependencies.Any())
+            string value;
+
+            switch (step.ControlType)
+            {
+                case "container":
+                    _userEditFormFilling.ExpandOptions(step.ControlValue, step.ControlId);
+                    break;
+
+                case "dropbox":
+                case "listbox":
+                    _userEditFormFilling.SelectByValue(step.ControlId, step.ControlValue);
+                    break;
+
+                case "textbox":
+                    value = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
+                    _userEditFormFilling.EnteringValueInputTextInOptions(step.ControlId, value);
+                    break;
+
+                case "textarea":
+                    value = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(100) : step.ControlValue;
+                    _userEditFormFilling.EnteringValueInputTextInOptions(step.ControlId, value);
+                    break;
+
+                case "radio":
+                    _userEditFormFilling.TickRadio(step.ControlId, step.ControlValue);
+                    break;
+
+                case "checkbox":
+                    _userEditFormFilling.TickOrUnTickCheckBox(step.ControlId, Boolean.Parse(step.ControlValue));
+                    break;
+
+                case "image":
+                    _userEditFormFilling.UploadImageControl(step.ControlId, step.ControlValue);
+                    
+                    break;
+            }
+        }
+
+        private void CheckingExpectation(Step step)
+        {
+            if (!step.Expectations.Any())
             {
                 return;
             }
 
-            foreach (var control in dependencies)
+            step.Expectations.ForEach(x =>
             {
-                _userEditFormFilling.ExpandOptions(control.GroupName, control.GroupId);
-                SendKeyToControl(control);
+                switch (x.AssertType)
+                {
+                    case "istrue":
+                        Assert.IsTrue(_action.GetNotifyMessage, x.AssertMessage);
+                        break;
 
-                Assert.IsTrue(_action.GetNotifyMessage);
-            }
-        }
+                    case "equals":
+                        if (step.ControlType.Equals("image"))
+                        {
+                            var actualValue = _userEditFormFilling.GetImageNameAfterUploaded(step.ControlId);
+                            Assert.AreEqual(actualValue, x.ExpectedValue,x.AssertMessage);
+                        }
+                        break;
 
-        private void SendKeyToControl(Control control)
-        {
-            string value;
-            switch (control.Type)
-            {
-                case "dropbox":
-                case "listbox":
-                    _userEditFormFilling.SelectByValue(control.Id, control.Value);
-                    break;
-
-                case "textbox":
-                    value = string.IsNullOrEmpty(control.Value) ? NameHelper.RandomName(10) : control.Value;
-                    _userEditFormFilling.EnteringValueInputTextInOptions(control.Id, value);
-                    break;
-
-                case "textarea":
-                    value = string.IsNullOrEmpty(control.Value) ? NameHelper.RandomName(100) : control.Value;
-                    _userEditFormFilling.EnteringValueInputTextInOptions(control.Id, value);
-                    break;
-
-                case "radio":
-                    _userEditFormFilling.TickRadio(control.Id, control.Value);
-                    break;
-
-                case "checkbox":
-                    _userEditFormFilling.TickOrUnTickCheckBox(control.Id, Boolean.Parse(control.Value));
-                    break;
-            }
+                }
+            });
         }
 
         private void UserSiteLoginStep()
@@ -374,17 +393,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             Assert.IsTrue(isCheckUploadedImageName);
         }
 
-        private void UploadImageOptionFile()
-        {
-            _userEditFormFilling.ClickToViewImageOptions();
-
-            var firstImagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImageFolderRelativePath, ImageOptionFirstImage);
-            UploadImage(ImageOptionFirstImage, firstImagePath, () => _userEditFormFilling.ClickToUploadFirstImageOptionFile(firstImagePath), () => _userEditFormFilling.ClickToViewImageOptions(true), _userEditFormFilling.GetFirstUploadImageValue);
-
-            var secondImagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImageFolderRelativePath, ImageOptionSecondImage);
-            UploadImage(ImageOptionSecondImage, secondImagePath, () => _userEditFormFilling.ClickToUploadSecondImageOptionFile(secondImagePath), () => _userEditFormFilling.ClickToViewImageOptions(true), _userEditFormFilling.GetSecondUploadImageValue);
-        }
-
         private void UploadImage(string fileName, string path, Action uploadImageAction, Action expandSection, Func<string> getUploadedImageName)
         {
             Assert.IsTrue(File.Exists(path));
@@ -413,24 +421,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             var expectedImageExtension = getExtension.Invoke(expectedImageName);
 
             return nameOfUploadedImage.Contains(nameOfExpectedImage) && uploadedImageExtension.Equals(expectedImageExtension);
-        }
-
-        private void ToggleCheckRadioButton()
-        {
-            int selectIndex = SetDesignOptionLayout();
-
-            _action.UserLogout();
-
-            new UserLogin(DriverContext)
-                .NavigateTo()
-                .LoginSystem(ProjectBaseConfiguration.UserId, ProjectBaseConfiguration.UserPassword);
-
-            var documentAfter = _userContentStart.SearchDocument(ProjectBaseConfiguration.A4PosterName);
-            _userContentStart.SelectDocument(documentAfter.Id);
-            Assert.IsTrue(documentAfter.Name.IsContains("In progress") && _userContentStart.IsInprogressDocument());
-            _userContentStart.SelectCompleteExistingDocument();
-
-            CheckDesignOptionLayout(selectIndex);
         }
 
         private int SetDesignOptionLayout()

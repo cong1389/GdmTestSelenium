@@ -14,27 +14,35 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
     public class UserEditFormFilling : PageBaseObject
     {
         private readonly ElementLocator
-            _optionsLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}' or contains(text(), '{1}')]"),
-            _optionsCommonLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}']//parent::a"),
+            _optionsLabel = new ElementLocator(Locator.XPath,
+                "//td[@class='formFilling-form']//div[text()='{0}' or contains(text(), '{1}')]"),
+            _optionsCommonLabel = new ElementLocator(Locator.XPath,
+                "//td[@class='formFilling-form']//div[text()='{0}']//parent::a"),
             _optionsCommonId = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
             _optionsContain = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
-            _uploadLogoButton = new ElementLocator(Locator.XPath, "//span[contains(@id, '_ContentPlaceHolderStepArea_InputFields_LinkButton482')]"),
+            _uploadLogoButton = new ElementLocator(Locator.XPath,
+                "//span[contains(@id, '_ContentPlaceHolderStepArea_InputFields_LinkButton482')]"),
             _uploadImageTextbox = new ElementLocator(Locator.XPath, "//input[@id='{0}']"),
             _uploadImageButton = new ElementLocator(Locator.XPath, "//div[contains(@id,'{0}')]//a"),
             _modalLarge = new ElementLocator(Locator.XPath, "//div[@class='modal modal--large']"),
             _chooseFileButtonOfModal = new ElementLocator(Locator.XPath, "//x-upload-file//input[@type='file']"),
             _uploadButtonOfModal = new ElementLocator(Locator.XPath, "il_upload_btn-upload"),
-            _textAreaField = new ElementLocator(Locator.XPath, "//div[contains(@id, '_ContentPlaceHolderStepArea_InputFields_InputFields')]//textarea"),
-            _imageEditArea = new ElementLocator(Locator.XPath, "//table[contains(@id, '_ContentPlaceHolderStepArea__UserImageEdit1__ModalPopUp1_tablePopUpArea')]"),
+            _textAreaField = new ElementLocator(Locator.XPath,
+                "//div[contains(@id, '_ContentPlaceHolderStepArea_InputFields_InputFields')]//textarea"),
+            _imageEditArea = new ElementLocator(Locator.XPath,
+                "//table[contains(@id, '_ContentPlaceHolderStepArea__UserImageEdit1__ModalPopUp1_tablePopUpArea')]"),
             _dropDownLocator = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//select[@id='{0}']"),
             _completeRequiredFields = new ElementLocator(Locator.XPath, "//div[@class='warningAreaMessageWarning']"),
-            _nextStepButtonLocator = new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]"),
+            _nextStepButtonLocator =
+                new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]"),
             _containerLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input"),
             _inputLocator = new ElementLocator(Locator.XPath, "//*[@id='{0}']"),
             _radioLocator = new ElementLocator(Locator.XPath, "//input[@type='radio' and @id='{0}' and @value='{1}']"),
             _checkBoxLocator = new ElementLocator(Locator.XPath, "//input[@type='radio' and @id='{0}'"),
             _imageUploadBtnLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//a//span[text()='Upload']"),
-            _imageLableLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input[@disabled and contains(@id,'_IMGNAME')]");
+            _imageLableLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input[@disabled and contains(@id,'_IMGNAME')]"),
+            _chooseImageLocator = new ElementLocator(Locator.XPath, "//div[contains(@id, 'html5_')]//input[@type='file']"),
+            _submitUploadBtnLocator = new ElementLocator(Locator.Id, "il_upload_btn-upload");
 
         public UserEditFormFilling(DriverContext driverContext) : base(driverContext)
         {
@@ -366,8 +374,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public UserEditFormFilling SelectByValue(string ctrId, string value)
         {
-            Select drpEle = Driver.GetElement<Select>(_dropDownLocator.Format(ctrId));
-            drpEle.SelectedByValue(value);
+            Driver.GetElement<Select>(_dropDownLocator.Format(ctrId)).SelectedByValue(value);
 
             return this;
         }
@@ -455,62 +462,34 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public UserEditFormFilling UploadImageControl(string containerId, string fileName)
         {
-            var imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Content\imageTest", fileName);
-
-            UploadImage(fileName
-                , imagePath
-                , () => ClickToUploadImage(containerId, imagePath)
-                , () => ClickToViewFooterOptions()
-                , GetImageNameAfterUploaded
-                );
+            var imagePath = Path.Combine(ProjectBaseConfiguration.Contents, fileName);
+            Driver.GetElement<ImageUpload>(_imageUploadBtnLocator.Format(containerId)).Upload(imagePath);
 
             return this;
         }
 
-        private void UploadImage(string fileName, string path, Action uploadImageAction, Action expandSection, Func<string, string> getUploadedImageName)
-        {
-            uploadImageAction.Invoke();
-
-            expandSection.Invoke();
-
-            var uploadedFileName = getUploadedImageName;
-
-            // CheckImageNameUploaded(uploadedFileName, fileName);
-        }
-
-        private static bool CheckImageNameUploaded(string uploadedImageName, string expectedImageName)
-        {
-            Func<string, string> getNameOfFile = (string fileName) => fileName.Substring(0, fileName.LastIndexOf("."));
-
-            Func<string, string> getExtension = (string fileName) => fileName.Substring(fileName.LastIndexOf("."));
-
-            var nameOfUploadedImage = getNameOfFile.Invoke(uploadedImageName);
-            var nameOfExpectedImage = getNameOfFile.Invoke(expectedImageName);
-
-            var uploadedImageExtension = getExtension.Invoke(uploadedImageName);
-            var expectedImageExtension = getExtension.Invoke(expectedImageName);
-
-            return nameOfUploadedImage.Contains(nameOfExpectedImage) && uploadedImageExtension.Equals(expectedImageExtension);
-        }
-
         public string GetImageNameAfterUploaded(string containerId)
         {
-            var logoTextboxEle = Driver.GetElement(_imageLableLocator.Format(containerId), e => e.Displayed);
-            Driver.ScrollToView(logoTextboxEle);
+            //Expand group options
+            var containerLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//ancestor::div[@groupname]");
+            var statusGroupContent = Driver.IsElementPresent(containerLocator.Format(containerId), BaseConfiguration.ShortTimeout);
+            if (!statusGroupContent)
+            {
+                var groupContainerEle = Driver.GetElement(containerLocator.Format(containerId), e => e.Enabled);
+                Driver.ScrollToView(groupContainerEle);
 
-            return logoTextboxEle.GetAttribute("value");
+                var id = groupContainerEle.GetAttribute("id");
+                var headerGroupLocator = new ElementLocator(Locator.XPath, "//a[contains(@onclick,'{0}')]");
+                Driver.GetElement(headerGroupLocator.Format(id)).OnClickJavaScript(); ;
+            }
+
+            return Driver.GetElement<ImageUpload>(_imageLableLocator.Format(containerId), e => e.Displayed).GetImageName();
+
+            //var inputLableEle = Driver.GetElement(_imageLableLocator.Format(containerId), e => e.Displayed);
+            //Driver.ScrollToView(inputLableEle);
+
+            //return inputLableEle.GetAttribute("value");
         }
 
-        private void ClickToUploadImage(string containerId, string path)
-        {
-            var uploadBtnEle = Driver.GetElement(_imageUploadBtnLocator.Format(containerId));
-            Driver.ScrollToView(uploadBtnEle);
-            uploadBtnEle.Click();
-
-            Driver.GetElement(_imageLableLocator).SendKeys(path);
-            ClickToSubmitFileUpload();
-
-            Driver.WaitUntilElementIsNoLongerFound(_modalLarge, BaseConfiguration.LongTimeout);
-        }
     }
 }

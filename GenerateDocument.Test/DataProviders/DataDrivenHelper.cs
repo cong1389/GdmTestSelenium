@@ -19,78 +19,68 @@ namespace GenerateDocument.Test.DataProviders
             XPathNodeIterator xpi = xpn.Select("/testplan");
 
             var testPlan = new TestPlan();
-            var testCases = new List<TestCase>();
-            var controls = new List<Control>();
 
             while (xpi.MoveNext())
             {
                 testPlan.Name = xpi.Current.GetAttribute("name", xpn.NamespaceURI);
-                testPlan.Testcases = new List<TestCase>();
+                testPlan.TestCases = new List<TestCase>();
 
-                var testCasesNode = xpi.Current.SelectChildren("testcases", xpn.NamespaceURI);
-                while (testCasesNode.MoveNext())
+                var testCasesChildNode = xpi.Current.SelectChildren("testcases", xpn.NamespaceURI);
+                while (testCasesChildNode.MoveNext())
                 {
-                    var testCaseNode = testCasesNode.Current.SelectChildren("testcase", xpn.NamespaceURI);
-                    while (testCaseNode.MoveNext())//Read each testcase node
+                    var testCaseChildNode = testCasesChildNode.Current.SelectChildren("testcase", xpn.NamespaceURI);
+                    while (testCaseChildNode.MoveNext())//Read each testcase node
                     {
                         //Get attr for test case
                         var testCase = new TestCase
                         {
-                            Name = testCaseNode.Current.GetAttribute("name", xpn.NamespaceURI),
-                            Description = testCaseNode.Current.GetAttribute("description", xpn.NamespaceURI),
-                            ProductName = testCaseNode.Current.GetAttribute("productname", xpn.NamespaceURI),
-                            Controls = new List<Control>()
+                            Name = testCaseChildNode.Current.GetAttribute("name", xpn.NamespaceURI),
+                            Description = testCaseChildNode.Current.GetAttribute("description", xpn.NamespaceURI),
+                            ProductName = testCaseChildNode.Current.GetAttribute("productname", xpn.NamespaceURI),
+                            Steps = new List<Step>()
                         };
 
-                        var controlsNode = testCaseNode.Current.SelectChildren("controls", xpn.NamespaceURI);
-                        while (controlsNode.MoveNext())//Read each control node
+                        var stepsNode = testCaseChildNode.Current.SelectChildren("steps", xpn.NamespaceURI);
+                        while (stepsNode.MoveNext())//Read each steps node
                         {
-                            var ctrlsNode = controlsNode.Current;
-                            var ctrs = ctrlsNode.SelectChildren("control", xpn.NamespaceURI);
-                            while (ctrs.MoveNext())
+                            var stepsCurrentNode = stepsNode.Current;
+                            var stepChild = stepsCurrentNode.SelectChildren("step", xpn.NamespaceURI);
+                            while (stepChild.MoveNext())//Read each step node
                             {
-                                var controlNode = ctrs.Current;
-                                var control = new Control()
+                                var stepCurrentNode = stepChild.Current;
+                                var step = new Step()
                                 {
-                                    Id = controlNode.GetAttribute("id", xpn.NamespaceURI),
-                                    Value = controlNode.GetAttribute("value", xpn.NamespaceURI),
-                                    Type = controlNode.GetAttribute("type", xpn.NamespaceURI),
-                                    GroupName = controlNode.GetAttribute("groupName", xpn.NamespaceURI),
-                                    GroupId = controlNode.GetAttribute("groupId", xpn.NamespaceURI),
-                                    Dependencies = new List<Control>()
+                                    ControlType = stepCurrentNode.GetAttribute("controltype", xpn.NamespaceURI),
+                                    Action = stepCurrentNode.GetAttribute("action", xpn.NamespaceURI),
+                                    ControlId = stepCurrentNode.GetAttribute("controlid", xpn.NamespaceURI),
+                                    ControlValue = stepCurrentNode.GetAttribute("controlvalue", xpn.NamespaceURI)
                                 };
 
-                                //Get image
-                                var imageNode = controlNode.SelectChildren("image", xpn.NamespaceURI);
-                               
-
-                                //Get Dependencies nodes
-                                    var dependenciesNode = controlNode.SelectChildren("dependencies", xpn.NamespaceURI);
-                                while (dependenciesNode.MoveNext())
+                                var expectationsChildNode = stepChild.Current.SelectChildren("expectations", xpn.NamespaceURI);
+                                while (expectationsChildNode.MoveNext())
                                 {
-                                    var currentDependenciesNode = dependenciesNode.Current;
-                                    var currentDependenciesCtrNode = currentDependenciesNode.SelectChildren("control", xpn.NamespaceURI);
-                                    while (currentDependenciesCtrNode.MoveNext())
+                                    var expectationChildNode = expectationsChildNode.Current.SelectChildren("expectation", xpn.NamespaceURI);
+                                    while (expectationChildNode.MoveNext())//Read each expectation node
                                     {
-                                        var dependenciesCtrNode = currentDependenciesCtrNode.Current;
-                                        control.Dependencies.Add(new Control()
+                                        var expectaionCurrentNode = expectationChildNode.Current;
+                                        var expectation = new Expectation()
                                         {
-                                            Id = dependenciesCtrNode.GetAttribute("id", xpn.NamespaceURI),
-                                            Value = dependenciesCtrNode.GetAttribute("value", xpn.NamespaceURI),
-                                            Type = dependenciesCtrNode.GetAttribute("type", xpn.NamespaceURI),
-                                            GroupName = dependenciesCtrNode.GetAttribute("groupName", xpn.NamespaceURI),
-                                            GroupId = dependenciesCtrNode.GetAttribute("groupId", xpn.NamespaceURI)
-                                        });
-                                    }
+                                            AssertType = expectaionCurrentNode.GetAttribute("asserttype", xpn.NamespaceURI),
+                                            AssertMessage = expectaionCurrentNode.GetAttribute("assertmessage", xpn.NamespaceURI),
+                                            ExpectedValue = expectaionCurrentNode.GetAttribute("expectedvalue", xpn.NamespaceURI),
+                                        };
 
+                                        step.Expectations.Add(expectation);
+                                    }
+                                   
                                 }
 
-                                testCase.Controls.Add(control);
+                                testCase.Steps.Add(step);
                             }
 
                         }
 
-                        testPlan.Testcases.Add(testCase);
+                        testPlan.TestCases.Add(testCase);
 
                     }
                 }

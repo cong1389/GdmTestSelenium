@@ -17,6 +17,14 @@ namespace GenerateDocument.Test
             }
         }
 
+        public static string Contents
+        {
+            get
+            {
+                return Path.Combine(CurrentDirectory, ConfigurationManager.AppSettings["contents"]);
+            }
+        }
+
         public static readonly int TimeoutInSecond = int.Parse(ConfigurationManager.AppSettings["TIMEOUT_IN_SECOND"]);
         public static readonly string HostUrl = ConfigurationManager.AppSettings["HOST_URL"];
         public static readonly string NewAppUrl = ConfigurationManager.AppSettings["NEWAPP_URL"];
