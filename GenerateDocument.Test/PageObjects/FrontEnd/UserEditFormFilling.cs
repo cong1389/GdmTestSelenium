@@ -29,7 +29,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             _dropDownLocator = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//select[@id='{0}']"),
             _completeRequiredFields = new ElementLocator(Locator.XPath, "//div[@class='warningAreaMessageWarning']"),
             _nextStepButtonLocator = new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]"),
-            _containerLocator = new ElementLocator(Locator.XPath, "//div[@id='div2']"),
+            _containerLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input"),
             _inputLocator = new ElementLocator(Locator.XPath, "//*[@id='{0}']"),
             _radioLocator = new ElementLocator(Locator.XPath, "//input[@type='radio' and @id='{0}' and @value='{1}']"),
             _checkBoxLocator = new ElementLocator(Locator.XPath, "//input[@type='radio' and @id='{0}'"),
@@ -189,12 +189,6 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             ClickToSubmitFileUpload();
 
             Driver.WaitUntilElementIsNoLongerFound(_modalLarge, BaseConfiguration.LongTimeout);
-
-            //TODO
-            //if (Driver.IsElementPresent(_imageEditArea))
-            //{
-            //    EditImage();
-            //}
         }
 
         public void ClickToUploadSecondSupportingLogo(string path)
@@ -408,7 +402,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public Dictionary<string, string> EnteringValueInputsTextInOptions(string optionsContainId, string text)
         {
             var valueInputs = new Dictionary<string, string>();
-            Driver.GetElements(_inputLocator.Format(optionsContainId)).ToList().ForEach(x =>
+            Driver.GetElements(_containerLocator.Format(optionsContainId)).ToList().ForEach(x =>
             {
                 Driver.ScrollToView(x);
                 x.Clear();
@@ -434,7 +428,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             var valueOutputs = new Dictionary<string, string>();
 
-            Driver.GetElements(_inputLocator.Format(optionsContainId), 3).ToList().ForEach(x =>
+            Driver.GetElements(_containerLocator.Format(optionsContainId), 3).ToList().ForEach(x =>
               {
                   Driver.ScrollToView(x);
                   valueOutputs.Add(x.GetAttribute("id"), x.GetAttribute("value"));

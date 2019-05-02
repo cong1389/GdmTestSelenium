@@ -234,21 +234,6 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
                 Driver.GetElement(_dataMenuGoTo.Format(documentName)).Click();
             }
-
-
-            //if (DriverContext.Driver.IsUrlEndsWith("onedesign"))
-            //    return;
-
-            //DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.Id("products")));
-            //var element = DriverContext.BrowserWait(35).Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//div[@data-documentname='{documentName}']//div[@class='thumbnail']")));
-
-            //var actions = new Actions(DriverContext.Driver);
-            //actions.MoveToElement(element).Perform();
-
-            //DriverContext.BrowserWait().Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//div[@data-documentname='{documentName}']//div[@class='thumbnail']//div[@class='content-wrapper']//ul//li//a[@name='go']"))).Click();
-
-
-            //DriverContext.BrowserWait().Until(ExpectedConditions.UrlContains("onedesign"));
         }
 
         public bool CheckDeleteDocumentAction(string documentName)

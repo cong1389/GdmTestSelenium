@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GenerateDocument.Domain.AutoSaves
+namespace GenerateDocument.Domain.TestSenario
 {
     public class TestCase
     {

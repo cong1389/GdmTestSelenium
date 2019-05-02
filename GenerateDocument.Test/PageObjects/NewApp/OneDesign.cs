@@ -136,7 +136,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                 if (modalEle != null)
                 {
                     var closedLink = Driver.WaitUntilPresentedElement(_completedModalCloseBtn, e => e.Displayed, BaseConfiguration.LongTimeout);
-                    //var closedLink = Driver.GetElement(_completedModalCloseBtn);
+                    
                     Console.WriteLine($"modalEle onClick: { closedLink.Text}, count before: {count}");
                     closedLink.OnClickJavaScript();
 

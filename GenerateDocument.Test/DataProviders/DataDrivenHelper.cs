@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using GenerateDocument.Domain.AutoSaves;
+using GenerateDocument.Domain.TestSenario;
 
 namespace GenerateDocument.Test.DataProviders
 {
@@ -98,62 +98,6 @@ namespace GenerateDocument.Test.DataProviders
 
             return testPlan;
 
-        }
-
-
-        public static IEnumerable<TestCaseData> ReadDataDriveFile(string folder, string testData, string[] diffParam, [Optional] string testName)
-        {
-            var doc = XDocument.Load(folder);
-
-            if (!doc.Descendants(testData).Any())
-            {
-                throw new ArgumentNullException("");
-            }
-
-            foreach (XElement element in doc.Descendants(testData))
-            {
-                var testParams = element.Attributes().ToDictionary(k => k.Name.ToString(), v => v.Value);
-
-                var testCaseName = string.IsNullOrEmpty(testName) ? testData : testName;
-                try
-                {
-                    testCaseName = TestCaseName(diffParam, testParams, testCaseName);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("");
-                }
-
-                var data = new TestCaseData(testParams);
-                data.SetName(testCaseName);
-                yield return data;
-            }
-        }
-
-        private static string TestCaseName(string[] diffParam, Dictionary<string, string> testParams, string testCaseName)
-        {
-            if (diffParam != null && diffParam.Any())
-            {
-                foreach (var p in diffParam)
-                {
-                    string keyValue;
-                    bool keyFlag = testParams.TryGetValue(p, out keyValue);
-
-                    if (keyFlag)
-                    {
-                        if (!string.IsNullOrEmpty(keyValue))
-                        {
-                            testCaseName += "_" + Regex.Replace(keyValue, "[^0-9a-zA-Z]+", "_");
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception(p);
-                    }
-                }
-            }
-
-            return testCaseName;
         }
     }
 }

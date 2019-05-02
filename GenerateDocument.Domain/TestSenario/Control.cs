@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateDocument.Domain.AutoSaves
+namespace GenerateDocument.Domain.TestSenario
 {
     public class Control
     {

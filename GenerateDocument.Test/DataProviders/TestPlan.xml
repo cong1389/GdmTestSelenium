@@ -3,20 +3,23 @@
 
   <testcases>
 
-    <!--<testcase name="conditional_Social" description="AutoSave testing" productname="[AUTOTEST] Social Media Post">
+    <testcase name="DependenciesControl" description="Verify autoSave dependencies controls" productname="[AUTOTEST] Social Media Post">
       <controls>
 
         <control id="FIELD_1024" type="dropbox" value="Fundraiser" groupName='Layout options'  groupId="div1">
+
           <dependencies>
             <control id="FIELD_1045" type="dropbox" value="Visit our Just Giving page:" groupName="Image and Text options" groupId="div2"></control>
-            <control id="FIELD_1046" type="textbox" groupName="Image and Text options"  groupId="div2"></control>
+            <control id="FIELD_1046" type="textbox" value="" groupName="Image and Text options"  groupId="div2"></control>
+            <control id="FIELD_502" type="textbox"  value="" groupName="Image and Text options"  groupId="div2"></control>
           </dependencies>
+
         </control>
 
       </controls>
-    </testcase>-->
+    </testcase>
 
-    <testcase name="conditional_A4" description="AutoSave testing" productname="[AUTOTEST][SWF] A4 Poster">
+    <testcase name="ControlTypes" description="Verify some control type" productname="[AUTOTEST][SWF] A4 Poster">
       <controls>
 
         <control id="FIELD_471" type="radio" value="Circle" groupName='View design options'  groupId="div1"/>

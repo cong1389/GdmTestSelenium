@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GenerateDocument.Domain.AutoSaves;
+using GenerateDocument.Domain.TestSenario;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
 {
@@ -174,7 +174,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             foreach (var control in testcase.Controls)
             {
                 _userEditFormFilling.ExpandOptions(control.GroupName, control.GroupId);
-                SendKeyToControl(control, out Dictionary<string, string> valueInputs);
+                SendKeyToControl(control);
                 Assert.IsTrue(_action.GetNotifyMessage);
 
                 VerifyDependenciesControl(control.Dependencies);
@@ -199,16 +199,14 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             foreach (var control in dependencies)
             {
                 _userEditFormFilling.ExpandOptions(control.GroupName, control.GroupId);
-                SendKeyToControl(control, out Dictionary<string, string> valueInputs);
+                SendKeyToControl(control);
 
                 Assert.IsTrue(_action.GetNotifyMessage);
             }
         }
 
-        private Dictionary<string, string> SendKeyToControl(Control control, out Dictionary<string, string> valueInputs)
+        private void SendKeyToControl(Control control)
         {
-            valueInputs = new Dictionary<string, string>();
-
             string value;
             switch (control.Type)
             {
@@ -219,13 +217,11 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
                 case "textbox":
                     value = string.IsNullOrEmpty(control.Value) ? NameHelper.RandomName(10) : control.Value;
-                    valueInputs.Add(control.Id, value);
                     _userEditFormFilling.EnteringValueInputTextInOptions(control.Id, value);
                     break;
 
                 case "textarea":
                     value = string.IsNullOrEmpty(control.Value) ? NameHelper.RandomName(100) : control.Value;
-                    valueInputs.Add(control.Id, value);
                     _userEditFormFilling.EnteringValueInputTextInOptions(control.Id, value);
                     break;
 
@@ -237,9 +233,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                     _userEditFormFilling.TickOrUnTickCheckBox(control.Id, Boolean.Parse(control.Value));
                     break;
             }
-
-
-            return valueInputs;
         }
 
         private void UserSiteLoginStep()

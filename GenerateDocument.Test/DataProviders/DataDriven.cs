@@ -13,7 +13,7 @@ namespace GenerateDocument.Test.DataProviders
                 foreach (var testPlanTestcase in testPlan.Testcases)
                 {
                     var testCaseData = new TestCaseData(testPlanTestcase);
-                    testCaseData.SetName("conditional");
+                    testCaseData.SetName($"{testPlanTestcase.Name}_{testPlanTestcase.ProductName}");
 
                     yield return testCaseData;
                 }

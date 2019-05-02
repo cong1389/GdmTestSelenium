@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<tests>
-  <credential user="rightmarket" password="123!" message="passed"/>
-  <credential user="rightmarket" password="11111" message="fail"/>
-</tests>

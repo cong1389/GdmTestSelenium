@@ -41,10 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoSaves\Control.cs" />
-    <Compile Include="AutoSaves\TestCase.cs" />
-    <Compile Include="AutoSaves\TestPlan.cs" />
-    <Compile Include="HtmlControls\ImageControl.cs" />
+    <Compile Include="TestSenario\Control.cs" />
+    <Compile Include="TestSenario\TestCase.cs" />
+    <Compile Include="TestSenario\TestPlan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
