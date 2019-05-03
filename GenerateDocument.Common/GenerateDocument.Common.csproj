@@ -68,6 +68,7 @@
     <Compile Include="WebElements\Listbox.cs" />
     <Compile Include="WebElements\Radio.cs" />
     <Compile Include="WebElements\Select.cs" />
+    <Compile Include="WebElements\Button.cs" />
     <Compile Include="WebElements\Textbox.cs" />
   </ItemGroup>
   <ItemGroup>

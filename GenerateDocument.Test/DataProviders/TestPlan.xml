@@ -6,7 +6,9 @@
     <!--<testcase name="ControlTypes" description="Verify some control type" productname="[AUTOTEST][SWF] A4 Poster">
       <steps>
 
-        --><!--Verify View design options--><!--
+        -->
+    <!--Verify View design options-->
+    <!--
         <step controltype="container" action="click" controlid="div1" controlvalue="View design options"></step>
         <step controltype="radio" action="click" controlid="FIELD_471" controlvalue="Circle"></step>
         <step controltype="radio" action="click" controlid="FIELD_845" controlvalue="54,43,0,52"></step>
@@ -18,7 +20,9 @@
           </expectations>
         </step>
 
-        --><!--Verify View Text options--><!--
+        -->
+    <!--Verify View Text options-->
+    <!--
         <step controltype="container" action="click" controlid="div2" controlvalue="View Text options"></step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_828">
           <expectations>
@@ -46,7 +50,9 @@
           </expectations>
         </step>
 
-        --><!--Verify View footer options*--><!--
+        -->
+    <!--Verify View footer options*-->
+    <!--
         <step controltype="container" action="click" controlid="div3" controlvalue="View footer options*"></step>
         <step controltype="dropbox" action="select" controlid="FIELD_499" controlvalue="logos">
           <expectations>
@@ -106,6 +112,37 @@
             <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
+
+        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
+
+        <!--Edit printing page-->
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_550">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+        <step controltype="textbox" action="sendkeys" controlid="FIELD_50" controlvalue="123456">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+        <step controltype="textbox" action="sendkeys" controlid="FIELD_481">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
+
+        <!--Finished page-->
+        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box" controlvalue="">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
 
       </steps>
 

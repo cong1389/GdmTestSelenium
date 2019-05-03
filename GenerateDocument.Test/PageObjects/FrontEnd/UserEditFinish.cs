@@ -1,53 +1,45 @@
-﻿using GenerateDocument.Common;
+﻿using System.Reflection;
+using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Helpers;
 using GenerateDocument.Common.Types;
+using GenerateDocument.Common.WebElements;
+using GenerateDocument.Domain.TestSenario;
+using log4net;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
-    public class UserEditFinish : PageBaseObject
+    public class UserEditFinish : PageBaseObject, IAutoSave
     {
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly ElementLocator
-            _finishDesignButton = new ElementLocator(Locator.XPath, "//a[contains(@id,'UserAddToCartButtons2_GoToDesignsButton')]"),
-            _nextStepButtonLocator = new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]");
+            _inputDescriptionLocator = new ElementLocator(Locator.XPath, "//input[contains(@id,'DocDescription_box')]"),
+            _finishDesignButton = new ElementLocator(Locator.XPath, "//a[contains(@id,'UserAddToCartButtons2_GoToDesignsButton')]");
 
         public UserEditFinish(DriverContext driverContext) : base(driverContext)
         {
-        }
 
-        private IWebElement OrderNameTextBox => DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.Id("ctl00_ctl00_ContentPlaceHolderBody_StepArea1_ContentPlaceHolderStepArea_DocDescription_box")));
-
-        public UserEditFinish ClickToNextStep()
-        {
-            var ele = Driver.WaitUntilPresentedElement(_nextStepButtonLocator, BaseConfiguration.MiddleTimeout);
-            if (ele == null)
-            {
-                return this;
-            }
-
-            ele.Click();
-            Driver.WaitUntilElementIsNoLongerFound(_nextStepButtonLocator, BaseConfiguration.LongTimeout);
-
-            return this;
         }
 
         public UserEditFinish ClickToFinishDesign()
         {
-            var buttonEle = Driver.GetElement(_finishDesignButton);
-            Driver.ScrollToView(buttonEle);
-            buttonEle?.Click();
+            Logger.Info($"Perform to controlId: {_finishDesignButton.Value}");
 
-            Driver.WaitUntilPresentedUrl("onedesign", BaseConfiguration.LongTimeout);
+            Driver.GetElement<Button>(_finishDesignButton).ClickTo();
+
+            Driver.WaitUntilPresentedUrl("onedesign");
 
             return this;
         }
 
-        public UserEditFinish EnterOrderName(string name)
+        public UserEditFinish EnterOrderName(string text)
         {
-            OrderNameTextBox.Clear();
-            OrderNameTextBox.SendKeys(name);
-            OrderNameTextBox.SendKeys(Keys.Tab);
+            Logger.Info($"Perform to controlId: {_inputDescriptionLocator.Value}, value is {text}");
+
+            Driver.GetElement<Textbox>(_inputDescriptionLocator).SetValue(text);
 
             return this;
         }
@@ -55,6 +47,23 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public string GetErrorMessage()
         {
             return DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.Id("descriptionErrorMessage"))).Text;
+        }
+
+        public void PerformToControlType(Step step)
+        {
+            switch (step.ControlType)
+            {
+                case "textbox":
+                    var text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
+                    EnterOrderName(text);
+                    break;
+
+                case "button":
+                    ClickToFinishDesign();
+                    break;
+
+
+            }
         }
     }
 }

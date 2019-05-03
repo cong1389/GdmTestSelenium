@@ -76,6 +76,7 @@
     <Compile Include="PageObjects\BackEnd\AdminOptionField.cs" />
     <Compile Include="PageObjects\BackEnd\AdminOptionSet.cs" />
     <Compile Include="PageObjects\BackEnd\AdminProjects.cs" />
+    <Compile Include="PageObjects\FrontEnd\IAutoSave.cs" />
     <Compile Include="PageObjects\FrontEnd\NavigationMenu.cs" />
     <Compile Include="PageObjects\FrontEnd\UserCheckoutPayment.cs" />
     <Compile Include="PageObjects\FrontEnd\UserCheckoutSubmit.cs" />

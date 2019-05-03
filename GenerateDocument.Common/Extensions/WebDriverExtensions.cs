@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using GenerateDocument.Common.Types;
+﻿using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Html5;
 using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Linq;
+using OpenQA.Selenium.Internal;
 
 namespace GenerateDocument.Common.Extensions
 {
@@ -84,12 +79,7 @@ namespace GenerateDocument.Common.Extensions
         {
             try
             {
-                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-
-                new WebDriverWait(driver, TimeSpan.FromSeconds(BaseConfiguration.LongTimeout)).Until(x =>
-                {
-                    return x.Url.IsContains(url);
-                });
+                new WebDriverWait(driver, TimeSpan.FromSeconds(timeout)).Until(x => x.Url.IsContains(url));
             }
             catch (WebDriverTimeoutException ex)
             {
@@ -149,11 +139,6 @@ namespace GenerateDocument.Common.Extensions
             driver.Manage().Cookies.AddCookie(cookie);
         }
 
-        public static IJavaScriptExecutor JavaScripts(this IWebDriver driver)
-        {
-            return (IJavaScriptExecutor)driver;
-        }
-
         public static string GetSessionStorage(this IWebDriver driver, string itemName)
         {
             var jsExecutor = (IJavaScriptExecutor)driver;
@@ -169,7 +154,7 @@ namespace GenerateDocument.Common.Extensions
         public static void ClearAllSessionStorage(this IWebDriver driver)
         {
             var jsExecutor = (IJavaScriptExecutor)driver;
-            jsExecutor.ExecuteScript($"return window.sessionStorage.clear();");
+            jsExecutor.ExecuteScript("return window.sessionStorage.clear();");
         }
 
         public static bool IsAbleToAccessPage(this IWebDriver driver, string url)
@@ -177,6 +162,12 @@ namespace GenerateDocument.Common.Extensions
             driver.Navigate().GoToUrl(url);
 
             return driver.Url.IsContains(url);
+        }
+
+        public static string GetCurrentPage(this IWebDriver driver)
+        {
+            var uri = new Uri(driver.Url);
+            return uri.Segments.Last();
         }
 
         public static void NavigateTo(this IWebDriver driver, string url)

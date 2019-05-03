@@ -1,4 +1,5 @@
-﻿using GenerateDocument.Common;
+﻿using System;
+using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using GenerateDocument.Common.WebElements;
@@ -7,10 +8,12 @@ using OpenQA.Selenium.Support.UI;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GenerateDocument.Common.Helpers;
+using GenerateDocument.Domain.TestSenario;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
-    public class UserEditFormFilling : PageBaseObject
+    public class UserEditFormFilling : PageBaseObject, IAutoSave
     {
         private readonly ElementLocator
             _optionsLabel = new ElementLocator(Locator.XPath,
@@ -301,14 +304,14 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             return this;
         }
 
-        public UserEditFormFilling TickRadio(string ctrId, string value)
+        private UserEditFormFilling TickRadio(string ctrId, string value)
         {
             Driver.GetElement<Radio>(_radioLocator.Format(ctrId, value)).TickRadio();
 
             return this;
         }
 
-        public UserEditFormFilling TickOrUnTickCheckBox(string ctrId, bool isCheck)
+        private UserEditFormFilling TickOrUnTickCheckBox(string ctrId, bool isCheck)
         {
             if (isCheck)
             {
@@ -320,12 +323,6 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             }
 
             return this;
-        }
-
-        public string GetSelectedValue(string ctrId)
-        {
-            Select drpEle = Driver.GetElement<Select>(_dropDownLocator.Format(ctrId));
-            return drpEle.Selected().SelectedOption.Text;
         }
 
         public Dictionary<string, string> EnteringValueInputsTextInOptions(string optionsContainId, string text)
@@ -345,7 +342,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             return valueInputs;
         }
 
-        public void EnteringValueInputTextInOptions(string controlId, string text)
+        private void EnteringValueInputText(string controlId, string text)
         {
             Driver.GetElement<Textbox>(_inputLocator.Format(controlId)).SetValue(text);
         }
@@ -365,21 +362,20 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public UserEditFormFilling ClickToNextStep()
         {
-            var nextButtonEle = Driver.GetElement(_nextStepButtonLocator);
-            Driver.ScrollToView(nextButtonEle);
-            nextButtonEle?.Click();
+            Driver.GetElement<Button>(_nextStepButtonLocator).ClickTo();
 
             //Check required fields
             if (Driver.IsUrlEndsWith("usereditformfilling") && Driver.IsElementPresent(_completeRequiredFields))
             {
-                var requiredFieldsEle = Driver.GetElement(_completeRequiredFields);
-                requiredFieldsEle?.Click();
+                Driver.GetElement<Button>(_completeRequiredFields).ClickTo();
             }
+
+            Driver.WaitUntilPresentedUrl("usereditprinting");
 
             return this;
         }
 
-        public UserEditFormFilling UploadImageControl(string containerId, string fileName)
+        private UserEditFormFilling UploadImageControl(string containerId, string fileName)
         {
             var imagePath = Path.Combine(ProjectBaseConfiguration.Contents, fileName);
             Driver.GetElement<ImageUpload>(_imageUploadBtnLocator.Format(containerId)).Upload(imagePath);
@@ -410,5 +406,47 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             //return inputLableEle.GetAttribute("value");
         }
 
+        public void PerformToControlType(Step step)
+        {
+            string text;
+
+            switch (step.ControlType)
+            {
+                case "textbox":
+                    text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
+                    EnteringValueInputText(step.ControlId, text);
+                    break;
+
+                case "textarea":
+                    text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(100) : step.ControlValue;
+                    EnteringValueInputText(step.ControlId, text);
+                    break;
+
+                case "dropbox":
+                case "listbox":
+                    SelectByValue(step.ControlId, step.ControlValue);
+                    break;
+
+                case "radio":
+                    TickRadio(step.ControlId, step.ControlValue);
+                    break;
+
+                case "checkbox":
+                    TickOrUnTickCheckBox(step.ControlId, Boolean.Parse(step.ControlValue));
+                    break;
+
+                case "image":
+                    UploadImageControl(step.ControlId, step.ControlValue);
+                    break;
+
+                case "button":
+                    ClickToNextStep();
+                    break;
+
+                case "container":
+                    ExpandOptions(step.ControlValue, step.ControlId);
+                    break;
+            }
+        }
     }
 }

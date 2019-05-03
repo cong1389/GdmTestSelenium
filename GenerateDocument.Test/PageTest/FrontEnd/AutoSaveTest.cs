@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
 {
@@ -172,56 +173,29 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             foreach (var step in testcase.Steps)
             {
-                PerformToControl(step);
+                PerformToPageType(step);
                 CheckingExpectation(step);
             }
-
-            //_userEditFormFilling.ClickToNextStep();
-            //_userEditPrinting.ClickToNextStep();
-
-            //_userEditFinish
-            //    .EnterOrderName(NameHelper.RandomName(10))
-            //    .ClickToFinishDesign();
-
         }
 
-        private void PerformToControl(Step step)
+        private void PerformToPageType(Step step)
         {
-            string value;
+            string currentPage = DriverContext.Driver.GetCurrentPage();
 
-            switch (step.ControlType)
+            switch (currentPage)
             {
-                case "container":
-                    _userEditFormFilling.ExpandOptions(step.ControlValue, step.ControlId);
+                case "UserEditFormFilling.aspx":
+                    _userEditFormFilling.PerformToControlType(step);
                     break;
 
-                case "dropbox":
-                case "listbox":
-                    _userEditFormFilling.SelectByValue(step.ControlId, step.ControlValue);
+                case "UserEditPrinting.aspx":
+                    _userEditPrinting.PerformToControlType(step);
                     break;
 
-                case "textbox":
-                    value = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
-                    _userEditFormFilling.EnteringValueInputTextInOptions(step.ControlId, value);
+                case "UserEditFinish.aspx":
+                    _userEditFinish.PerformToControlType(step);
                     break;
 
-                case "textarea":
-                    value = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(100) : step.ControlValue;
-                    _userEditFormFilling.EnteringValueInputTextInOptions(step.ControlId, value);
-                    break;
-
-                case "radio":
-                    _userEditFormFilling.TickRadio(step.ControlId, step.ControlValue);
-                    break;
-
-                case "checkbox":
-                    _userEditFormFilling.TickOrUnTickCheckBox(step.ControlId, Boolean.Parse(step.ControlValue));
-                    break;
-
-                case "image":
-                    _userEditFormFilling.UploadImageControl(step.ControlId, step.ControlValue);
-                    
-                    break;
             }
         }
 
@@ -244,7 +218,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                         if (step.ControlType.Equals("image"))
                         {
                             var actualValue = _userEditFormFilling.GetImageNameAfterUploaded(step.ControlId);
-                            Assert.AreEqual(actualValue, x.ExpectedValue,x.AssertMessage);
+                            Assert.AreEqual(actualValue, x.ExpectedValue, x.AssertMessage);
                         }
                         break;
 
@@ -419,31 +393,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             var expectedImageExtension = getExtension.Invoke(expectedImageName);
 
             return nameOfUploadedImage.Contains(nameOfExpectedImage) && uploadedImageExtension.Equals(expectedImageExtension);
-        }
-
-        private int SetDesignOptionLayout()
-        {
-            _userEditFormFilling.ClickToViewDesignOptions();
-
-            var designOptionLayoutRadiosBefore = _userEditFormFilling.GetDesignOptionLayoutRadios();
-            Assert.IsTrue(designOptionLayoutRadiosBefore.Any());
-
-            var index = designOptionLayoutRadiosBefore.Count / 2;
-
-            _userEditFormFilling.SetSelectDesignOptionLayout(designOptionLayoutRadiosBefore, index);
-
-            return index;
-        }
-
-        private void CheckDesignOptionLayout(int index)
-        {
-            _userEditFormFilling.ClickToViewDesignOptions();
-
-            var designOptionLayoutRadiosAfter = _userEditFormFilling.GetDesignOptionLayoutRadios();
-            Assert.IsTrue(_userEditFormFilling.CheckSelectDesignOptionLayout(designOptionLayoutRadiosAfter, index));
-
-            _userEditFormFilling.SetSelectDesignOptionLayout(designOptionLayoutRadiosAfter, 0);
-            _userEditFormFilling.ClickToViewDesignOptions();
         }
 
     }
