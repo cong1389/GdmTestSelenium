@@ -4,11 +4,11 @@ using OpenQA.Selenium.Remote;
 
 namespace GenerateDocument.Common.WebElements
 {
-    public class CheckBox : RemoteWebElement
+    public class Checkbox : RemoteWebElement
     {
         private readonly IWebElement _webElement;
 
-        public CheckBox(IWebElement webElement) : base(webElement.ToDriver() as RemoteWebDriver, null)
+        public Checkbox(IWebElement webElement) : base(webElement.ToDriver() as RemoteWebDriver, null)
         {
             _webElement = webElement;
         }

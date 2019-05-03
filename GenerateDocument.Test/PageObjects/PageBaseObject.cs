@@ -5,7 +5,7 @@ namespace GenerateDocument.Test.PageObjects
 {
     public class PageBaseObject
     {
-        public PageBaseObject(DriverContext driverContext)
+        protected PageBaseObject(DriverContext driverContext)
         {
             this.DriverContext = driverContext;
             this.Driver = driverContext.Driver;

@@ -63,11 +63,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\BrowserTypes.cs" />
     <Compile Include="Types\ElementLocator.cs" />
-    <Compile Include="WebElements\CheckBox.cs" />
+    <Compile Include="WebElements\Checkbox.cs" />
     <Compile Include="WebElements\ImageUpload.cs" />
     <Compile Include="WebElements\Listbox.cs" />
     <Compile Include="WebElements\Radio.cs" />
     <Compile Include="WebElements\Select.cs" />
+    <Compile Include="WebElements\Textbox.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

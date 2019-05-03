@@ -1,5 +1,6 @@
 ﻿using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Helpers;
+using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.DataProviders;
 using GenerateDocument.Test.PageObjects;
 using GenerateDocument.Test.PageObjects.BackEnd;
@@ -12,8 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GenerateDocument.Common.WebElements;
-using GenerateDocument.Domain.TestSenario;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
 {
@@ -39,7 +38,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         private const string DesignOptionImage = "starbucks.jpeg";
         private const string FooterOptionFirstImage = "starbucks.jpeg";
         private const string FooterOptionSecondImage = "pepsi.png";
-        private const string ImageOptionFirstImage = "bg1.jpg";
         private const string ImageOptionSecondImage = "bg2.jpg";
 
         public const string WarningMessageExpect = "This name is being used by another design";
@@ -366,14 +364,14 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             UploadImage(FooterOptionFirstImage
                 , firstImagePath
                 , () => _userEditFormFilling.ClickToUploadFirstSupportingLogo(firstImagePath)
-                , () => _userEditFormFilling.ClickToViewFooterOptions(true)
+                , () => _userEditFormFilling.ClickToViewFooterOptions()
                 , _userEditFormFilling.GetFirstSupportingLogoValue);
 
             var secondImagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImageFolderRelativePath, FooterOptionSecondImage);
             UploadImage(FooterOptionSecondImage
                 , secondImagePath
                 , () => _userEditFormFilling.ClickToUploadSecondSupportingLogo(secondImagePath)
-                , () => _userEditFormFilling.ClickToViewFooterOptions(true)
+                , () => _userEditFormFilling.ClickToViewFooterOptions()
                 , _userEditFormFilling.GetSecondSupportingLogoValue);
         }
 
@@ -445,7 +443,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             Assert.IsTrue(_userEditFormFilling.CheckSelectDesignOptionLayout(designOptionLayoutRadiosAfter, index));
 
             _userEditFormFilling.SetSelectDesignOptionLayout(designOptionLayoutRadiosAfter, 0);
-            _userEditFormFilling.ClickToViewDesignOptions(false);
+            _userEditFormFilling.ClickToViewDesignOptions();
         }
 
     }
