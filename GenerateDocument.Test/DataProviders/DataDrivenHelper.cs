@@ -48,7 +48,7 @@ namespace GenerateDocument.Test.DataProviders
                             while (stepChild.MoveNext())//Read each step node
                             {
                                 var stepCurrentNode = stepChild.Current;
-                                var step = new Step()
+                                var step = new Step
                                 {
                                     ControlType = stepCurrentNode.GetAttribute("controltype", xpn.NamespaceURI),
                                     Action = stepCurrentNode.GetAttribute("action", xpn.NamespaceURI),
@@ -72,7 +72,7 @@ namespace GenerateDocument.Test.DataProviders
 
                                         step.Expectations.Add(expectation);
                                     }
-                                   
+
                                 }
 
                                 testCase.Steps.Add(step);

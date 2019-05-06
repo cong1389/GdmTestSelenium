@@ -30,7 +30,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
         private AdminLogin _adminLogin;
         private AdminProducts _adminProducts;
         private AdminProductDetails _adminProductDetails;
-        private AdminLogout _adminLogout;
 
         private const string _returnPage = "designs";
 
@@ -57,7 +56,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _adminProducts = new AdminProducts(DriverContext);
             _adminProductDetails = new AdminProductDetails(DriverContext);
 
-            _adminLogout = new AdminLogout(DriverContext);
+            new AdminLogout(DriverContext);
         }
 
         [TearDown]
@@ -119,8 +118,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
                 };
             }
         }
-
-        private static IEnumerable<string> DesignStatuses => new List<string> { "Unpublished", "Unreviewed", "Rejected", "Shipped" };
 
         private void LoginStep(string returnPage)
         {
@@ -281,29 +278,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
             var downloadedFileNames = _oneDesign.GetDownloadDesignButtons().Select(x => $"{namePart}{x.Text}".CorrectFileNameOnWindows().Trim()).ToArray();
 
             Assert.IsTrue(VerifyDownloadFileNames(downloadedFileNames));
-        }
-
-        private int CountDownloadFiles(int expectNumber)
-        {
-            int countDownloadedFiles()
-            {
-                return new DirectoryInfo(ProjectBaseConfiguration.NewAppTestDir).GetFiles()
-                    .Count(x => new[] { ".jpg", ".pdf" }.Contains(x.Extension.ToLower()));
-            }
-
-            var count = 0;
-            var i = 0;
-
-            do
-            {
-                count = countDownloadedFiles();
-                if (count == expectNumber)
-                    break;
-                i++;
-                Thread.Sleep(1000);
-            } while (i < 40);
-
-            return count;
         }
 
         private void VerifyDesignType(string designName, bool isKit)

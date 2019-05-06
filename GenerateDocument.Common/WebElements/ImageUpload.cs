@@ -24,10 +24,7 @@ namespace GenerateDocument.Common.WebElements
             _webElement = webElement;
         }
 
-        private IWebDriver Driver
-        {
-            get { return _webElement.ToDriver(); }
-        }
+        private IWebDriver Driver => _webElement.ToDriver();
 
         public void Upload(string imagePath)
         {

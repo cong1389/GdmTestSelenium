@@ -409,60 +409,58 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             }
 
             return Driver.GetElement<ImageUpload>(_imageLableLocator.Format(containerId), e => e.Displayed).GetImageName();
-
-            //var inputLableEle = Driver.GetElement(_imageLableLocator.Format(containerId), e => e.Displayed);
-            //Driver.ScrollToView(inputLableEle);
-
-            //return inputLableEle.GetAttribute("value");
         }
 
         public void PerformToControlType(Step step)
         {
             string text;
 
-            switch (step.ControlType)
+            string controlType = step.ControlType;
+            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+
+            switch (controlTypeValue)
             {
-                case "textbox":
+                case ControlTypes.Textbox:
                     text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
                     SendValueToInputText(step.ControlId, text);
                     break;
 
-                case "textarea":
+                case ControlTypes.TextArea:
                     text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(100) : step.ControlValue;
                     SendValueToTextArea(step.ControlId, text);
                     break;
 
-                case "password":
+                case ControlTypes.Password:
                     text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
                     SendValueToPassword(step.ControlId, text);
                     break;
 
-                case "dropbox":
-                case "listbox":
+                case ControlTypes.Dropbox:
+                case ControlTypes.Listbox:
                     SelectByValue(step.ControlId, step.ControlValue);
                     break;
 
-                case "radio":
+                case ControlTypes.Radio:
                     TickRadio(step.ControlId, step.ControlValue);
                     break;
 
-                case "checkbox":
+                case ControlTypes.Checkbox:
                     TickOrUnTickCheckBox(step.ControlId, Boolean.Parse(step.ControlValue));
                     break;
 
-                case "image":
+                case ControlTypes.Image:
                     UploadImageControl(step.ControlId, step.ControlValue);
                     break;
 
-                case "button":
+                case ControlTypes.Button:
                     ClickToNextStep();
                     break;
 
-                case "container":
+                case ControlTypes.Container:
                     ExpandOptions(step.ControlValue, step.ControlId);
                     break;
 
-                case "multipleselect-include":
+                case ControlTypes.MultipleSelectInclude:
                     if (step.Action.Equals("add"))
                     {
                         AddItemsToListboxInclude(step.ControlId, step.ControlValue);
@@ -474,7 +472,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
                     break;
 
-                case "multipleselect-checkbox":
+                case ControlTypes.MultipleSelectCheckbox:
                     if (step.Action.Equals("checked"))
                     {
                         TickItemsToListCheckbox(step.ControlId, step.ControlValue);
@@ -486,7 +484,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
                     break;
 
-                case "multipleselect-listbox":
+                case ControlTypes.MultipleSelectListbox:
                     if (step.Action.Equals("selected"))
                     {
                         SelectItemsToListbox(step.ControlId, step.ControlValue);

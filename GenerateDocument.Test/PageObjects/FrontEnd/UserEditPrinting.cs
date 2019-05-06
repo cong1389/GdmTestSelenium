@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Helpers;
@@ -43,19 +44,22 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             string text;
 
-            switch (step.ControlType)
+            string controlType = step.ControlType;
+            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+
+            switch (controlTypeValue)
             {
-                case "textbox":
+                case ControlTypes.Textbox:
                     text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
                     EnteringValueInputText(step.ControlId, text);
                     break;
 
-                case "textarea":
+                case ControlTypes.TextArea:
                     text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(100) : step.ControlValue;
                     EnteringValueInputText(step.ControlId, text);
                     break;
 
-                case "button":
+                case ControlTypes.Button:
                     ClickToNextStep();
                     break;
 

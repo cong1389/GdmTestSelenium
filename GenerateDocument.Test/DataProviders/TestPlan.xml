@@ -3,7 +3,7 @@
 
   <testcases>
 
-    <testcase name="ControlTypes" description="Verify some control type" productname="[AUTOTEST][SWF] A4 Poster">
+    <testcase name="VerifyAutosaveSomeControlTypes" description="Verify some control type" productname="[AUTOTEST][SWF] A4 Poster">
       <steps>
 
         <!--Verify View design options-->
@@ -73,19 +73,29 @@
           </expectations>
         </step>
 
-        <step controltype="multipleselect-include" action="add" controlid="FIELD_1569" controlvalue="1,2"></step>
-        <step controltype="multipleselect-include" action="remove" controlid="FIELD_1569" controlvalue="1,2"></step>
+        <!--Verify View Image options-->
+        <step controltype="container" action="click" controlid="div4" controlvalue="View Image options"></step>
+        <step controltype="image" action="click" controlid="DIV_837" controlvalue="bg3.jpg">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equals" expectedvalue="bg2.jpg" assertmessage="Upload files before and after are not the same"></expectation>
+          </expectations>
+        </step>
 
-        <step controltype="multipleselect-checkbox" action="checked" controlid="FIELD_1571" controlvalue="1,2"></step>
-        <step controltype="multipleselect-checkbox" action="unchecked" controlid="FIELD_1571" controlvalue="1,2"></step>
+        <!--Add new control type-->
+        <step controltype="multipleselectinclude" action="add" controlid="FIELD_1569" controlvalue="1,2"></step>
+        <step controltype="multipleselectinclude" action="remove" controlid="FIELD_1569" controlvalue="1,2"></step>
 
-        <step controltype="multipleselect-listbox" action="selected" controlid="FIELD_1570" controlvalue="1,2"></step>
+        <step controltype="multipleselectcheckbox" action="checked" controlid="FIELD_1571" controlvalue="1,2"></step>
+        <step controltype="multipleselectcheckbox" action="unchecked" controlid="FIELD_1571" controlvalue="1,2"></step>
+
+        <step controltype="multipleselectlistbox" action="selected" controlid="FIELD_1570" controlvalue="1,2"></step>
         <step controltype="password" action="sendkeys" controlid="FIELD_1572" controlvalue=""></step>
 
       </steps>
     </testcase>
 
-    <testcase name="DependenciesControl" description="Verify autoSave dependencies controls" productname="[AUTOTEST] Social Media Post">
+    <testcase name="VerifyDependenciesControl" description="Verify autoSave dependencies controls" productname="[AUTOTEST] Social Media Post">
       <steps>
 
         <step controltype="container" action="click" controlid="div1" controlvalue="Layout options"></step>

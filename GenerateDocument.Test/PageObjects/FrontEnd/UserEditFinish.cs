@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Helpers;
@@ -51,14 +52,17 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public void PerformToControlType(Step step)
         {
-            switch (step.ControlType)
+            string controlType = step.ControlType;
+            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+
+            switch (controlTypeValue)
             {
-                case "textbox":
+                case ControlTypes.Textbox:
                     var text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
                     EnterOrderName(text);
                     break;
 
-                case "button":
+                case ControlTypes.Button:
                     ClickToFinishDesign();
                     break;
 
