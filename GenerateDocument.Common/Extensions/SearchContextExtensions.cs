@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -92,6 +93,22 @@ namespace GenerateDocument.Common.Extensions
         {
             IWebElement webElemement = searchContext.GetElement(locator, timeout);
             return webElemement.As<T>();
+        }
+
+        public static IList<T> GetElements<T>(this ISearchContext searchContext, ElementLocator locator)
+        where T : class, IWebElement
+        {
+            var webElements = searchContext.GetElements(locator);
+
+            return new ReadOnlyCollection<T>(webElements.Select(e => e.As<T>()).ToList());
+        }
+
+        public static IList<T> GetElements<T>(this ISearchContext searchContext, ElementLocator locator, Func<IWebElement, bool> condition)
+        where T : class, IWebElement
+        {
+            var webElements = searchContext.GetElements(locator, condition);
+
+            return new ReadOnlyCollection<T>(webElements.Select(e => e.As<T>()).ToList());
         }
 
         private static T As<T>(this IWebElement webElement)

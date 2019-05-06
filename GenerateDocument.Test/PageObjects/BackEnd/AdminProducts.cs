@@ -10,25 +10,17 @@ using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {
-    public class AdminProducts : PageObject
+    public class AdminProducts : PageBaseObject
     {
-        private AdminProductDetails _adminProductDetails;
+        private readonly AdminProductDetails _adminProductDetails;
 
-        private readonly ElementLocator eleProductNameInGrid = new ElementLocator(Locator.XPath, "//table[@class='EnhancedDataGrid']//tr//td//a[text()='{0}");
-
-        public AdminProducts(IWebDriver browser) : base(browser)
+        public AdminProducts(DriverContext driverContext) : base(driverContext)
         {
-            _adminProductDetails = new AdminProductDetails(browser);
+            _adminProductDetails = new AdminProductDetails(driverContext);
         }
 
         [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_linkProjects")]
         private IWebElement LinkProject { get; set; }
-
-        [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_grid_ctl11_imgProdIcon")]
-        private IWebElement KitIcon { get; set; }
-
-        [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_grid_ctl03_imgProdIcon")]
-        private IWebElement VdpIcon { get; set; }
 
         public string GetVdpIconSrc(string productName)
         {
@@ -44,9 +36,9 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
         private IWebElement GetCellElementInGrid(string productName)
         {
-            BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"AdminMaster_ContentPlaceHolderBody_grid\"]")));
+            DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"AdminMaster_ContentPlaceHolderBody_grid\"]")));
 
-            var rows = Browser.FindElements(By.XPath("//table[@class='EnhancedDataGrid']//tr"));
+            var rows = Driver.FindElements(By.XPath("//table[@class='EnhancedDataGrid']//tr"));
 
             for (int i = 3; i < rows.Count; i++)
             {
@@ -70,56 +62,36 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
         {
             var xPath = $"//a[contains(text(),'[AUTOTEST]Advanced Flyer')]";
 
-            Browser.FindElement(By.XPath(xPath)).Click();
-        }
-
-        public void ClickToA4Poster()
-        {
-            var xPath = $"//a[contains(text(),'A4 Poster')]";
-
-            Browser.FindElement(By.XPath(xPath)).Click();
+            Driver.FindElement(By.XPath(xPath)).Click();
         }
 
         public void GoToAdminProductDetails(string productName)
         {
             var xPath = $"//a[contains(text(),'{productName}')]";
 
-            Browser.FindElement(By.XPath(xPath)).Click();
+            Driver.FindElement(By.XPath(xPath)).Click();
         }
 
-        public void SelectProductToEnableActions(string productName)
+        private void SelectProductToEnableActions(string productName)
         {
-            BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.ClassName("EnhancedDataGrid")));
+            DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.ClassName("EnhancedDataGrid")));
 
-            Browser.FindElement(By.XPath($"//a[text()='{productName}' or text()='{productName}*']//ancestor::tr[1]//td[1]//input[@type='checkbox']")).Click();
-
-            //var tableRows = Browser.FindElements(By.XPath("//table[@class='EnhancedDataGrid']//tr"));
-
-            //for (var i = 3; i < tableRows.Count; i++)
-            //{
-            //    var cells = tableRows[i].FindElements(By.TagName("td"));
-            //    if (cells[2].Text.IsEquals(productName))
-            //    {
-            //        cells[0].Click();
-
-            //        break;
-            //    }
-            //}
+            Driver.FindElement(By.XPath($"//a[text()='{productName}' or text()='{productName}*']//ancestor::tr[1]//td[1]//input[@type='checkbox']")).Click();
         }
 
-        public void ClickToDuplicateAction()
+        private void ClickToDuplicateAction()
         {
-            Browser.FindElement(By.Id("AdminMaster_ContentPlaceHolderBody_buttonBar_btnDuplicate_spnActive")).Click();
+            Driver.FindElement(By.Id("AdminMaster_ContentPlaceHolderBody_buttonBar_btnDuplicate_spnActive")).Click();
         }
 
-        public void ClickToRetireAction()
+        private void ClickToRetireAction()
         {
-            Browser.FindElement(By.Id("AdminMaster_ContentPlaceHolderBody_buttonBar_btnRetract_spnActive")).Click();
+            Driver.FindElement(By.Id("AdminMaster_ContentPlaceHolderBody_buttonBar_btnRetract_spnActive")).Click();
         }
 
-        public void ClickToDeleteAction()
+        private void ClickToDeleteAction()
         {
-            Browser.FindElement(By.Id("AdminMaster_ContentPlaceHolderBody_buttonBar_btnDelete_spnActive")).Click();
+            Driver.FindElement(By.Id("AdminMaster_ContentPlaceHolderBody_buttonBar_btnDelete_spnActive")).Click();
         }
 
         public void CloneToNewProduct(string productName, string namePrefix)
@@ -130,15 +102,15 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
             var defaultClonedProduct = $"Copy of {productName}";
 
-            var link = BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath($"//a[contains(text(),'{defaultClonedProduct}')]")));
+            var link = DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath($"//a[contains(text(),'{defaultClonedProduct}')]")));
 
             link.Click();
 
-            BrowserWait().Until(ExpectedConditions.UrlContains("AdminProductDetails.aspx"));
+            DriverContext.BrowserWait().Until(ExpectedConditions.UrlContains("AdminProductDetails.aspx"));
 
             _adminProductDetails.ClickToChangeSetting();
 
-            var productNameField = BrowserWait()
+            var productNameField = DriverContext.BrowserWait()
                 .Until(ExpectedConditions.ElementIsVisible(By.Id("AdminMaster_ContentPlaceHolderBody_tbProductName")));
 
             productNameField.Clear();
@@ -166,13 +138,13 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
             ClickToDeleteAction();
 
-            var alert = Browser.SwitchTo().Alert();
+            var alert = Driver.SwitchTo().Alert();
             alert.Accept();
 
             var i = 0;
             do
             {
-                var elements = Browser.FindElements(By.XPath($"//a[contains(text(),'{productName}')]"));
+                var elements = Driver.FindElements(By.XPath($"//a[contains(text(),'{productName}')]"));
                 if (!elements.Any())
                 {
                     break;
@@ -185,7 +157,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
         public void Open()
         {
-            Browser.NavigateTo(AdminProductsPage);
+            Driver.NavigateTo(AdminProductsPage);
         }
     }
 }

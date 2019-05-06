@@ -54,8 +54,8 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _userContentApprovals = new UserContentApprovals(DriverContext.Driver);
             _userContentApprovalsReview = new UserContentApprovalsReview(DriverContext.Driver);
             _adminLogin = new AdminLogin(DriverContext);
-            _adminProducts = new AdminProducts(DriverContext.Driver);
-            _adminProductDetails = new AdminProductDetails(DriverContext.Driver);
+            _adminProducts = new AdminProducts(DriverContext);
+            _adminProductDetails = new AdminProductDetails(DriverContext);
 
             _adminLogout = new AdminLogout(DriverContext);
         }

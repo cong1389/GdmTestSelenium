@@ -1,7 +1,6 @@
-﻿using System;
+﻿using NUnit.Framework;
 using System.Configuration;
 using System.IO;
-using NUnit.Framework;
 
 namespace GenerateDocument.Test
 {
@@ -39,8 +38,6 @@ namespace GenerateDocument.Test
         public static readonly string CustomerAdminPassword = ConfigurationManager.AppSettings["CUSTOMER_PASSWORD"];
 
         public static readonly string ScreenshotPath = ConfigurationManager.AppSettings["SCREENSHOT_PATH"];
-
-        public static readonly string A4PosterName = "A4 Poster";
 
         public static readonly string NewAppTestDir = @"C:\NewAppTestDir";
 

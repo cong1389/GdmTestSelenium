@@ -65,6 +65,9 @@
     <Compile Include="Types\ElementLocator.cs" />
     <Compile Include="WebElements\Checkbox.cs" />
     <Compile Include="WebElements\ImageUpload.cs" />
+    <Compile Include="WebElements\MultipleSelectCheckbox.cs" />
+    <Compile Include="WebElements\MultipleSelectListbox.cs" />
+    <Compile Include="WebElements\MultipleSelectInclude.cs" />
     <Compile Include="WebElements\Listbox.cs" />
     <Compile Include="WebElements\Radio.cs" />
     <Compile Include="WebElements\Select.cs" />

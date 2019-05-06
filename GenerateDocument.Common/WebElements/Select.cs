@@ -25,7 +25,7 @@ namespace GenerateDocument.Common.WebElements
             SelectedByValue(value, BaseConfiguration.LongTimeout);
         }
 
-        public void SelectedByValue(string value, double timeout)
+        private void SelectedByValue(string value, double timeout)
         {
             var ele = WaitUntilDropdownIsPopulated(timeout);
             SelectElement selectElement = new SelectElement(ele);
@@ -39,7 +39,7 @@ namespace GenerateDocument.Common.WebElements
             }
         }
 
-        public IWebElement WaitUntilDropdownIsPopulated(double timeout)
+        private IWebElement WaitUntilDropdownIsPopulated(double timeout)
         {
             var selecteElement = new SelectElement(_webElement);
             var isPopulated = false;
@@ -48,9 +48,8 @@ namespace GenerateDocument.Common.WebElements
                 new WebDriverWait(_webElement.ToDriver(), TimeSpan.FromSeconds(timeout)).Until(x =>
                 {
                     var size = selecteElement.Options.Count;
-                    if (size > 1)
+                    if (size > 0)
                     {
-
                         isPopulated = true;
                     }
 

@@ -16,30 +16,29 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
     public class UserEditFormFilling : PageBaseObject, IAutoSave
     {
         private readonly ElementLocator
-            _optionsLabel = new ElementLocator(Locator.XPath,
-                "//td[@class='formFilling-form']//div[text()='{0}' or contains(text(), '{1}')]"),
-            _optionsCommonLabel = new ElementLocator(Locator.XPath,
-                "//td[@class='formFilling-form']//div[text()='{0}']//parent::a"),
+            _optionsLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}' or contains(text(), '{1}')]"),
+            _optionsCommonLabel = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//div[text()='{0}']//parent::a"),
             _optionsCommonId = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
             _optionsContain = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
-            _uploadLogoButton = new ElementLocator(Locator.XPath,
-                "//span[contains(@id, '_ContentPlaceHolderStepArea_InputFields_LinkButton482')]"),
+            _uploadLogoButton = new ElementLocator(Locator.XPath, "//span[contains(@id, '_ContentPlaceHolderStepArea_InputFields_LinkButton482')]"),
             _uploadImageTextbox = new ElementLocator(Locator.XPath, "//input[@id='{0}']"),
             _uploadImageButton = new ElementLocator(Locator.XPath, "//div[contains(@id,'{0}')]//a"),
             _modalLarge = new ElementLocator(Locator.XPath, "//div[@class='modal modal--large']"),
-            _imageEditArea = new ElementLocator(Locator.XPath,
-                "//table[contains(@id, '_ContentPlaceHolderStepArea__UserImageEdit1__ModalPopUp1_tablePopUpArea')]"),
+            _imageEditArea = new ElementLocator(Locator.XPath, "//table[contains(@id, '_ContentPlaceHolderStepArea__UserImageEdit1__ModalPopUp1_tablePopUpArea')]"),
             _dropDownLocator = new ElementLocator(Locator.XPath, "//td[@class='formFilling-form']//select[@id='{0}']"),
             _completeRequiredFields = new ElementLocator(Locator.XPath, "//div[@class='warningAreaMessageWarning']"),
-            _nextStepButtonLocator =
-                new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]"),
+            _nextStepButtonLocator = new ElementLocator(Locator.XPath, "//a[contains(@id, '_StepNextN1_TheLabelButton')]"),
             _containerLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input"),
-            _inputLocator = new ElementLocator(Locator.XPath, "//*[@id='{0}']"),
+            _inputLocator = new ElementLocator(Locator.XPath, "//input[@id='{0}']"),
+            _textAreaLocator = new ElementLocator(Locator.XPath, "//textarea[@id='{0}']"),
+            _passwordLocator = new ElementLocator(Locator.XPath, "//input[@id='{0}' and @type='password']"),
             _radioLocator = new ElementLocator(Locator.XPath, "//input[@type='radio' and @id='{0}' and @value='{1}']"),
             _checkBoxLocator = new ElementLocator(Locator.XPath, "//input[@type='radio' and @id='{0}'"),
             _imageUploadBtnLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//a//span[text()='Upload']"),
-            _imageLableLocator = new ElementLocator(Locator.XPath,
-                "//div[@id='{0}']//input[@disabled and contains(@id,'_IMGNAME')]");
+            _imageLableLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input[@disabled and contains(@id,'_IMGNAME')]"),
+            _includeMultipleLocator = new ElementLocator(Locator.XPath, "//select[@id='{0}']"),
+            _checkboxMultipleLocator = new ElementLocator(Locator.XPath, "//input[@type='checkbox' and @name='{0}']"),
+            _listboxMultipleLocator = new ElementLocator(Locator.XPath, "//select[@id='{0}']");
 
 
         public UserEditFormFilling(DriverContext driverContext) : base(driverContext)
@@ -256,30 +255,6 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             DriverContext.BrowserWait(30).Until(ExpectedConditions.StalenessOf(imageEditorButton));
         }
 
-        public List<IWebElement> GetDesignOptionLayoutRadios()
-        {
-            return DriverContext.BrowserWait(20).Until(d =>
-            {
-                var elements = d.FindElements(By.Id("FIELD_51484")).ToList();
-                return elements.Count > 0 ? elements.ToList() : null;
-            });
-        }
-
-        public void SetSelectDesignOptionLayout(List<IWebElement> radiobuttons, int index)
-        {
-            var selectElement = radiobuttons[index];
-            Driver.ScrollToView(selectElement);
-            selectElement.Click();
-        }
-
-        public bool CheckSelectDesignOptionLayout(List<IWebElement> radiobuttons, int index)
-        {
-            var selectElement = radiobuttons[index];
-            Driver.ScrollToView(selectElement);
-
-            return selectElement.Selected;
-        }
-
         public UserEditFormFilling ExpandOptions(string groupName, string groupId)
         {
             if (string.IsNullOrEmpty(groupName) || string.IsNullOrEmpty(groupId))
@@ -302,6 +277,31 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             Driver.GetElement<Select>(_dropDownLocator.Format(ctrId)).SelectedByValue(value);
 
             return this;
+        }
+
+        private void TickItemsToListCheckbox(string ctrId, string values)
+        {
+            Driver.GetElement<MultipleSelectCheckbox>(_checkboxMultipleLocator.Format(ctrId)).MultipleTick(values);
+        }
+
+        private void UnTickItemsToCheckListbox(string ctrId, string values)
+        {
+            Driver.GetElement<MultipleSelectCheckbox>(_checkboxMultipleLocator.Format(ctrId)).MultipleUnTick(values);
+        }
+
+        private void AddItemsToListboxInclude(string ctrId, string values)
+        {
+            Driver.GetElement<MultipleSelectInclude>(_includeMultipleLocator.Format(ctrId), e => e.Enabled).IncludeItems(values);
+        }
+
+        private void RemoveItemsToListboxInclude(string ctrId, string values)
+        {
+            Driver.GetElement<MultipleSelectInclude>(_includeMultipleLocator.Format(ctrId), e => e.Enabled).ExcludeItems(values);
+        }
+
+        private void SelectItemsToListbox(string ctrId, string values)
+        {
+            Driver.GetElement<MultipleSelectListbox>(_listboxMultipleLocator.Format(ctrId)).SelectedItems(values);
         }
 
         private UserEditFormFilling TickRadio(string ctrId, string value)
@@ -342,9 +342,19 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             return valueInputs;
         }
 
-        private void EnteringValueInputText(string controlId, string text)
+        private void SendValueToInputText(string controlId, string text)
         {
             Driver.GetElement<Textbox>(_inputLocator.Format(controlId)).SetValue(text);
+        }
+
+        private void SendValueToTextArea(string controlId, string text)
+        {
+            Driver.GetElement<Textbox>(_textAreaLocator.Format(controlId)).SetValue(text);
+        }
+
+        private void SendValueToPassword(string controlId, string text)
+        {
+            Driver.GetElement<Textbox>(_passwordLocator.Format(controlId)).SetValue(text);
         }
 
         public Dictionary<string, string> GetValueInputsTextInOptions(string optionsContainId)
@@ -414,12 +424,17 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             {
                 case "textbox":
                     text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
-                    EnteringValueInputText(step.ControlId, text);
+                    SendValueToInputText(step.ControlId, text);
                     break;
 
                 case "textarea":
                     text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(100) : step.ControlValue;
-                    EnteringValueInputText(step.ControlId, text);
+                    SendValueToTextArea(step.ControlId, text);
+                    break;
+
+                case "password":
+                    text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
+                    SendValueToPassword(step.ControlId, text);
                     break;
 
                 case "dropbox":
@@ -445,6 +460,38 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
                 case "container":
                     ExpandOptions(step.ControlValue, step.ControlId);
+                    break;
+
+                case "multipleselect-include":
+                    if (step.Action.Equals("add"))
+                    {
+                        AddItemsToListboxInclude(step.ControlId, step.ControlValue);
+                    }
+                    else if (step.Action.Equals("remove"))
+                    {
+                        RemoveItemsToListboxInclude(step.ControlId, step.ControlValue);
+                    }
+
+                    break;
+
+                case "multipleselect-checkbox":
+                    if (step.Action.Equals("checked"))
+                    {
+                        TickItemsToListCheckbox(step.ControlId, step.ControlValue);
+                    }
+                    else if (step.Action.Equals("unchecked"))
+                    {
+                        UnTickItemsToCheckListbox(step.ControlId, step.ControlValue);
+                    }
+
+                    break;
+
+                case "multipleselect-listbox":
+                    if (step.Action.Equals("selected"))
+                    {
+                        SelectItemsToListbox(step.ControlId, step.ControlValue);
+                    }
+
                     break;
             }
         }

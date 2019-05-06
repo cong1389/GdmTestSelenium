@@ -51,8 +51,8 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _userEditFormFilling = new UserEditFormFilling(DriverContext);
             _userEditPrinting = new UserEditPrinting(DriverContext);
             _userEditFinish = new UserEditFinish(DriverContext);
-            _adminProducts = new AdminProducts(DriverContext.Driver);
-            _adminProductDetails = new AdminProductDetails(DriverContext.Driver);
+            _adminProducts = new AdminProducts(DriverContext);
+            _adminProductDetails = new AdminProductDetails(DriverContext);
             _adminOptionSet = new AdminOptionSet(DriverContext.Driver);
             _adminOptionField = new AdminOptionField(DriverContext.Driver);
             _adminProductRetired = new AdminProductRetired(DriverContext.Driver);

@@ -31,7 +31,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
 
         public ManagedExtensionTest()
         {
-           // ChangeDefaultForAdminSite();
+            // ChangeDefaultForAdminSite();
         }
 
         private static IEnumerable<string> ProductsCase(bool isKit)
@@ -58,10 +58,10 @@ namespace GenerateDocument.Test.PageTest.BackEnd
             _adminOrderStatistics = new AdminOrderStatistics(DriverContext.Driver);
             _adminProjects = new AdminProjects(DriverContext.Driver);
             _contentCollectionsPage = new ContentCollectionsPage(DriverContext.Driver);
-            _adminProductsPage = new AdminProducts(DriverContext.Driver);
+            _adminProductsPage = new AdminProducts(DriverContext);
             _adminProductContentPage = new AdminProductContent(DriverContext.Driver);
             _adminProductRetired = new AdminProductRetired(DriverContext.Driver);
-            _adminProductDetails = new AdminProductDetails(DriverContext.Driver);
+            _adminProductDetails = new AdminProductDetails(DriverContext);
             _siteOptionsPage = new AdminSiteOptions(DriverContext.Driver);
             _adminSiteOptions = new AdminSiteOptions(DriverContext.Driver);
         }

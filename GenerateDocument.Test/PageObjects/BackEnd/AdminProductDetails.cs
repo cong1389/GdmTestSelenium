@@ -1,12 +1,14 @@
-﻿using OpenQA.Selenium;
+﻿using GenerateDocument.Common;
+using GenerateDocument.Common.Extensions;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {
-    public class AdminProductDetails : PageObject
+    public class AdminProductDetails : PageBaseObject
     {
-        public AdminProductDetails(IWebDriver browser) : base(browser)
+        public AdminProductDetails(DriverContext driverContext) : base(driverContext)
         {
         }
 
@@ -15,13 +17,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
         [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_ckAutoSubmit")]
         private IWebElement SubmitJobCheckBox { get; set; }
-
-        [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_radShipOnly")]
-        private IWebElement DownloadRadio1 { get; set; }
-
-        [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_radDownloadAndShip")]
-        private IWebElement DownloadRadio2 { get; set; }
-
+        
         [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_radDownloadOnly")]
         private IWebElement DownloadRadio3 { get; set; }
 
@@ -45,30 +41,6 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
             }
         }
 
-        public void UnSelectSubmitJobCheckBox()
-        {
-            if (SubmitJobCheckBox.Selected)
-            {
-                SubmitJobCheckBox.Click();
-            }
-        }
-
-        public void ClickDownloadRadio1()
-        {
-            if (!DownloadRadio1.Selected)
-            {
-                DownloadRadio1.Click();
-            }
-        }
-
-        public void ClickDownloadRadio2()
-        {
-            if (!DownloadRadio2.Selected)
-            {
-                DownloadRadio2.Click();
-            }
-        }
-
         public void ClickDownloadRadio3()
         {
             if (!DownloadRadio3.Selected)
@@ -83,18 +55,6 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
             selector.SelectByText("(None)");
         }
 
-        public void SettingPriceZero()
-        {
-            var selector = new SelectElement(PriceTableValue);
-            selector.SelectByText("Price Zero");
-        }
-
-        public void SettingPriceGreaterThanZero()
-        {
-            var selector = new SelectElement(PriceTableValue);
-            selector.SelectByText("Flyer");
-        }
-
         public void ClickToChangeSetting()
         {
             ChangeSettingButton.Click();
@@ -107,7 +67,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
         public void UpdateForMaintainOnly()
         {
-            var element = BrowserWait()
+            var element = DriverContext.BrowserWait()
                 .Until(ExpectedConditions.ElementToBeClickable(By.Id("AdminMaster_ContentPlaceHolderBody_radLegacy")));
             if (!element.Selected)
             {
@@ -117,7 +77,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
         public void UpdateAndConvertToLatestRelease()
         {
-            var element = BrowserWait()
+            var element = DriverContext.BrowserWait()
                 .Until(ExpectedConditions.ElementToBeClickable(By.Id("AdminMaster_ContentPlaceHolderBody_radConvert")));
 
             if (!element.Selected)
@@ -128,7 +88,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
         public void ClickToFormFilling()
         {
-            ScrollToView(FormFillingLink);
+           Driver.ScrollToView(FormFillingLink);
 
             FormFillingLink.Click();
         }
@@ -139,7 +99,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
             if (ifLastStep)
             {
-                BrowserWait()
+                DriverContext.BrowserWait()
                     .Until(ExpectedConditions.ElementToBeClickable(
                         By.Id("AdminMaster_ContentPlaceHolderBody_btnDone")));
             }

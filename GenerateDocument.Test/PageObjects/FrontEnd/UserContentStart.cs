@@ -28,13 +28,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         [FindsBy(How = How.Id, Using = "il_autosavestartdoc_btn-ok")]
         private IWebElement AutoSaveModalCompleteExistingDocumentButton { get; set; }
-
-        [FindsBy(How = How.Id, Using = "il_autosavestartdoc_btn-startnewdocument")]
-        private IWebElement AutoSaveModalStartNewDocumentButton { get; set; }
-
-        [FindsBy(How = How.ClassName, Using = "")]
-        private IWebElement AreaTitle { get; set; }
-
+        
         public ProductInfo SearchDocument(string input)
         {
             var productInfo = new ProductInfo();
