@@ -1,5 +1,7 @@
 ﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Types;
+using GenerateDocument.Common.WebElements;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
@@ -8,61 +10,51 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 {
     public class AdminProductDetails : PageBaseObject
     {
+        private readonly ElementLocator
+            _changeSettingButtonLocator = new ElementLocator(Locator.Id, "AdminMaster_ContentPlaceHolderBody_btnChangeSettings"),
+            _submitJobCheckBoxLocator = new ElementLocator(Locator.Id, "AdminMaster_ContentPlaceHolderBody_ckAutoSubmit"),
+            _downloadRadio3Locator = new ElementLocator(Locator.Id, "AdminMaster_ContentPlaceHolderBody_radDownloadOnly"),
+            _priceTableValueLocator = new ElementLocator(Locator.Id, "AdminMaster_ContentPlaceHolderBody_ddPriceTable"),
+            _releaseButtonLocator = new ElementLocator(Locator.Id, "AdminMaster_ContentPlaceHolderBody_btnRelease"),
+            _formFillingLinkLocator = new ElementLocator(Locator.XPath, "//div[contains(@class, 'steptype-FormFill')]//a"),
+            _updateButtonLocator = new ElementLocator(Locator.Id, "AdminMaster_ContentPlaceHolderBody_btnUpdate");
+
         public AdminProductDetails(DriverContext driverContext) : base(driverContext)
         {
         }
 
-        [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_btnUpdate")]
-        private IWebElement UpdateButton { get; set; }
-
-        [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_ckAutoSubmit")]
-        private IWebElement SubmitJobCheckBox { get; set; }
-        
-        [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_radDownloadOnly")]
-        private IWebElement DownloadRadio3 { get; set; }
-
-        [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_ddPriceTable")]
-        private IWebElement PriceTableValue { get; set; }
-
-        [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_btnChangeSettings")]
-        private IWebElement ChangeSettingButton { get; set; }
-
-        [FindsBy(How = How.Id, Using = "AdminMaster_ContentPlaceHolderBody_btnRelease")]
-        private IWebElement ReleaseButton { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//div[contains(@class, 'steptype-FormFill')]//a")]
-        private IWebElement FormFillingLink { get; set; }
-
         public void SelectSubmitJobCheckBox()
         {
-            if (!SubmitJobCheckBox.Selected)
+            var submitEle = Driver.GetElement(_submitJobCheckBoxLocator);
+            if (!submitEle.Selected)
             {
-                SubmitJobCheckBox.Click();
+                submitEle.Click();
             }
         }
 
         public void ClickDownloadRadio3()
         {
-            if (!DownloadRadio3.Selected)
+            var downloadRadio3Ele = Driver.GetElement(_downloadRadio3Locator);
+
+            if (!downloadRadio3Ele.Selected)
             {
-                DownloadRadio3.Click();
+                downloadRadio3Ele.Click();
             }
         }
 
         public void SettingPriceNone()
         {
-            var selector = new SelectElement(PriceTableValue);
-            selector.SelectByText("(None)");
+            Driver.GetElement<Select>(_priceTableValueLocator).SelectedByValue("(None)");
         }
 
         public void ClickToChangeSetting()
         {
-            ChangeSettingButton.Click();
+            Driver.GetElement(_changeSettingButtonLocator).Click();
         }
 
         public void ClickToRelease()
         {
-            ReleaseButton.Click();
+            Driver.GetElement(_releaseButtonLocator).Click();
         }
 
         public void UpdateForMaintainOnly()
@@ -88,14 +80,16 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
         public void ClickToFormFilling()
         {
-           Driver.ScrollToView(FormFillingLink);
+            var lnk = Driver.GetElement(_formFillingLinkLocator);
 
-            FormFillingLink.Click();
+            Driver.ScrollToView(lnk);
+
+            lnk.Click();
         }
 
         public void UpdateSettings(bool ifLastStep = false)
         {
-            UpdateButton.Click();
+            Driver.GetElement(_updateButtonLocator).Click();
 
             if (ifLastStep)
             {

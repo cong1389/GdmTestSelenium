@@ -69,7 +69,6 @@
     <Compile Include="WebElements\MultipleSelectCheckbox.cs" />
     <Compile Include="WebElements\MultipleSelectListbox.cs" />
     <Compile Include="WebElements\MultipleSelectInclude.cs" />
-    <Compile Include="WebElements\Listbox.cs" />
     <Compile Include="WebElements\Radio.cs" />
     <Compile Include="WebElements\Select.cs" />
     <Compile Include="WebElements\Button.cs" />

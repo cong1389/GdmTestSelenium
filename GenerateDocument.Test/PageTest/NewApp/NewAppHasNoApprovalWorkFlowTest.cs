@@ -92,6 +92,11 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             var editable = _myDesign.CheckDesignEditable($"{RetiredPrefix}{templateName}_{_designNamePrefix}");
             Assert.IsFalse(editable, "Can not edit when the product has been retired");
+
+            //Delete product retired
+            AdminLoginStep(AdminAccount);
+            _adminProducts.Open();
+            _adminProducts.DeleteProduct($"{RetiredPrefix}{templateName}");
         }
 
         [Test, TestCaseSource(nameof(WorkflowTestResources), new object[] { false, null })]

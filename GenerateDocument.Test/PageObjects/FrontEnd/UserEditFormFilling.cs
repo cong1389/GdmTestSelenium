@@ -380,7 +380,8 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                 Driver.GetElement<Button>(_completeRequiredFields).ClickTo();
             }
 
-            Driver.WaitUntilPresentedUrl("usereditprinting");
+            string currentPage = DriverContext.Driver.GetCurrentPage();
+            Driver.WaitUntilPresentedUrl(currentPage);
 
             return this;
         }
@@ -405,7 +406,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
                 var id = groupContainerEle.GetAttribute("id");
                 var headerGroupLocator = new ElementLocator(Locator.XPath, "//a[contains(@onclick,'{0}')]");
-                Driver.GetElement(headerGroupLocator.Format(id)).OnClickJavaScript(); ;
+                Driver.GetElement(headerGroupLocator.Format(id)).OnClickJavaScript();
             }
 
             return Driver.GetElement<ImageUpload>(_imageLableLocator.Format(containerId), e => e.Displayed).GetImageName();

@@ -107,6 +107,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             CheckAutoSaveForViewFooterOptions();
 
             _userEditFormFilling.ClickToNextStep();
+
             _userEditPrinting.ClickToNextStep();
 
             _userEditFinish.EnterOrderName(setupProduct["ProductDescription"]);

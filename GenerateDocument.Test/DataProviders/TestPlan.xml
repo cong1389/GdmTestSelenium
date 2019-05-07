@@ -75,7 +75,7 @@
 
         <!--Verify View Image options-->
         <step controltype="container" action="click" controlid="div4" controlvalue="View Image options"></step>
-        <step controltype="image" action="click" controlid="DIV_837" controlvalue="bg3.jpg">
+        <step controltype="image" action="click" controlid="DIV_837" controlvalue="bg2.jpg">
           <expectations>
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
             <expectation asserttype="equals" expectedvalue="bg2.jpg" assertmessage="Upload files before and after are not the same"></expectation>

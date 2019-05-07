@@ -15,11 +15,6 @@ namespace GenerateDocument.Common.WebElements
             _webElement = webElement;
         }
 
-        public SelectElement Selected()
-        {
-            return new SelectElement(this._webElement);
-        }
-
         public void SelectedByValue(string value)
         {
             SelectedByValue(value, BaseConfiguration.LongTimeout);
