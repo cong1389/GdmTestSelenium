@@ -380,8 +380,14 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                 Driver.GetElement<Button>(_completeRequiredFields).ClickTo();
             }
 
-            string currentPage = DriverContext.Driver.GetCurrentPage();
-            Driver.WaitUntilPresentedUrl(currentPage);
+            if (Driver.IsUrlEndsWith("usereditprinting"))
+            {
+                Driver.WaitUntilPresentedUrl("usereditprinting");
+            }
+            else if (Driver.IsUrlEndsWith("usereditfinish"))
+            {
+                Driver.WaitUntilPresentedUrl("usereditfinish");
+            }
 
             return this;
         }

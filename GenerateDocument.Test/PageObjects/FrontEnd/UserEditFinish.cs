@@ -27,6 +27,11 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public UserEditFinish ClickToFinishDesign()
         {
+            if (!DriverContext.Driver.IsUrlEndsWith("usereditfinish"))
+            {
+                return this;
+            }
+
             Logger.Info($"Perform to controlId: {_finishDesignButton.Value}");
 
             Driver.GetElement<Button>(_finishDesignButton).ClickTo();

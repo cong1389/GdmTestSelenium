@@ -33,8 +33,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
             Driver.GetElement<Button>(_nextStepButtonLocator).ClickTo();
 
-            string currentPage = DriverContext.Driver.GetCurrentPage();
-            Driver.WaitUntilPresentedUrl(currentPage);
+            Driver.WaitUntilPresentedUrl("usereditfinish");
 
             return this;
         }
