@@ -3,10 +3,12 @@
 
   <testcases>
 
-    <testcase name="VerifyAutosaveSomeControlTypes" description="Verify some control type" productname="[AUTOTEST][SWF] A4 Poster">
+    <!--<testcase name="VerifyAutosaveSomeControlTypes" description="Verify some control type" productname="[AUTOTEST][SWF] A4 Poster">
       <steps>
 
-        <!--Verify View design options-->
+        -->
+    <!--Verify View design options-->
+    <!--
         <step controltype="container" action="click" controlid="div1" controlvalue="View design options"></step>
         <step controltype="radio" action="click" controlid="FIELD_471" controlvalue="Circle"></step>
         <step controltype="radio" action="click" controlid="FIELD_845" controlvalue="54,43,0,52"></step>
@@ -18,7 +20,9 @@
           </expectations>
         </step>
 
-        <!--Verify View Text options-->
+        -->
+    <!--Verify View Text options-->
+    <!--
         <step controltype="container" action="click" controlid="div2" controlvalue="View Text options"></step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_828">
           <expectations>
@@ -46,7 +50,9 @@
           </expectations>
         </step>
 
-        <!--Verify View footer options*-->
+        -->
+    <!--Verify View footer options*-->
+    <!--
         <step controltype="container" action="click" controlid="div3" controlvalue="View footer options*"></step>
         <step controltype="dropbox" action="select" controlid="FIELD_499" controlvalue="logos">
           <expectations>
@@ -73,7 +79,9 @@
           </expectations>
         </step>
 
-        <!--Verify View Image options-->
+        -->
+    <!--Verify View Image options-->
+    <!--
         <step controltype="container" action="click" controlid="div4" controlvalue="View Image options"></step>
         <step controltype="image" action="click" controlid="DIV_837" controlvalue="bg2.jpg">
           <expectations>
@@ -82,7 +90,9 @@
           </expectations>
         </step>
 
-        <!--Add new control type-->
+        -->
+    <!--Add new control type-->
+    <!--
         <step controltype="multipleselectinclude" action="add" controlid="FIELD_1569" controlvalue="1,2"></step>
         <step controltype="multipleselectinclude" action="remove" controlid="FIELD_1569" controlvalue="1,2"></step>
 
@@ -127,7 +137,9 @@
 
         <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
 
-        <!--Edit printing page-->
+        -->
+    <!--Edit printing page-->
+    <!--
         <step controltype="textarea" action="sendkeys" controlid="FIELD_550">
           <expectations>
             <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
@@ -148,7 +160,9 @@
 
         <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
 
-        <!--Finished page-->
+        -->
+    <!--Finished page-->
+    <!--
         <step controltype="textbox" action="sendkeys" controlid="DocDescription_box" controlvalue="">
           <expectations>
             <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
@@ -158,6 +172,40 @@
 
       </steps>
 
+    </testcase>-->
+
+    <testcase name="BehaviousImage" description="Verify behavious of clear, reset, upload image control" productname="[AUTOTEST] Social Media - Advanced">
+      <steps>
+
+        <step controltype="container" action="click" controlid="div1" controlvalue="View style options"></step>
+        <step controltype="checkbox" action="click" controlid="FIELD_871" controlvalue="true"></step>
+
+        <step controltype="image" action="upload" controlid="DIV_482" controlvalue="adidas.png">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equals" expectedvalue="adidas.png" assertmessage="Upload files before and after are not the same"></expectation>
+          </expectations>
+        </step>
+        <step controltype="image" action="clear" controlid="DIV_482" controlvalue="adidas.png">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="Do not display notification"></expectation>
+            <expectation asserttype="equals" expectedvalue="" assertmessage="Clear value is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="image" action="upload" controlid="DIV_482" controlvalue="starbucks.jpeg">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="Do not display notification"></expectation>
+            <expectation asserttype="equals" expectedvalue="starbucks.jpeg" assertmessage="Upload files before and after are not the same"></expectation>
+          </expectations>
+        </step>
+        <step controltype="image" action="reset" controlid="DIV_482" controlvalue="adidas.png">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equals" expectedvalue="green.pdf" assertmessage="Reset value is wrong"></expectation>
+          </expectations>
+        </step>
+
+      </steps>
     </testcase>
 
   </testcases>

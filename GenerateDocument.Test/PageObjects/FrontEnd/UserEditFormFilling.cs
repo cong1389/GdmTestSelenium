@@ -33,8 +33,10 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             _textAreaLocator = new ElementLocator(Locator.XPath, "//textarea[@id='{0}']"),
             _passwordLocator = new ElementLocator(Locator.XPath, "//input[@id='{0}' and @type='password']"),
             _radioLocator = new ElementLocator(Locator.XPath, "//input[@type='radio' and @id='{0}' and @value='{1}']"),
-            _checkBoxLocator = new ElementLocator(Locator.XPath, "//input[@type='radio' and @id='{0}'"),
-            _imageUploadBtnLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//a//span[text()='Upload']"),
+            _checkBoxLocator = new ElementLocator(Locator.XPath, "//input[@type='checkbox' and @id='{0}']"),
+            _imageContainerLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']"),
+            //_imageUploadBtnLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//a//span[text()='Upload']"),
+            //_imageClearBtnLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//a[text()='Clear']"),
             _imageLableLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//input[@disabled and contains(@id,'_IMGNAME')]"),
             _includeMultipleLocator = new ElementLocator(Locator.XPath, "//select[@id='{0}']"),
             _checkboxMultipleLocator = new ElementLocator(Locator.XPath, "//input[@type='checkbox' and @name='{0}']"),
@@ -395,7 +397,21 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         private UserEditFormFilling UploadImageControl(string containerId, string fileName)
         {
             var imagePath = Path.Combine(ProjectBaseConfiguration.Contents, fileName);
-            Driver.GetElement<ImageUpload>(_imageUploadBtnLocator.Format(containerId)).Upload(imagePath);
+            Driver.GetElement<ImageUpload>(_imageContainerLocator.Format(containerId)).Upload(imagePath);
+
+            return this;
+        }
+
+        private UserEditFormFilling ClearImageControl(string containerId)
+        {
+            Driver.GetElement<ImageUpload>(_imageContainerLocator.Format(containerId)).ClearImage();
+
+            return this;
+        }
+
+        private UserEditFormFilling ResetImageControl(string containerId)
+        {
+            Driver.GetElement<ImageUpload>(_imageContainerLocator.Format(containerId)).ResetImage();
 
             return this;
         }
@@ -456,7 +472,19 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                     break;
 
                 case ControlTypes.Image:
-                    UploadImageControl(step.ControlId, step.ControlValue);
+                    if (step.Action.Equals("upload"))
+                    {
+                        UploadImageControl(step.ControlId, step.ControlValue);
+                    }
+                    else if (step.Action.Equals("clear"))
+                    {
+                        Console.WriteLine($"Image click to reset");
+                        ClearImageControl(step.ControlId);
+                    }
+                    else if (step.Action.Equals("reset"))
+                    {
+                        ResetImageControl(step.ControlId);
+                    }
                     break;
 
                 case ControlTypes.Button:
