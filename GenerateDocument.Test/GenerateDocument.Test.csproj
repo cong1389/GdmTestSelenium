@@ -76,7 +76,7 @@
     <Compile Include="PageObjects\BackEnd\AdminOptionField.cs" />
     <Compile Include="PageObjects\BackEnd\AdminOptionSet.cs" />
     <Compile Include="PageObjects\BackEnd\AdminProjects.cs" />
-    <Compile Include="PageObjects\FrontEnd\IAutoSave.cs" />
+    <Compile Include="Base\IAutoSave.cs" />
     <Compile Include="PageObjects\FrontEnd\NavigationMenu.cs" />
     <Compile Include="PageObjects\FrontEnd\UserCheckoutPayment.cs" />
     <Compile Include="PageObjects\FrontEnd\UserCheckoutSubmit.cs" />
@@ -86,6 +86,7 @@
     <Compile Include="PageObjects\NewApp\OneDesign.cs" />
     <Compile Include="PageObjects\PageBaseObject.cs" />
     <Compile Include="PageObjects\PageCommonAction.cs" />
+    <Compile Include="Base\AutoSaveContext.cs" />
     <Compile Include="PageTest\FrontEnd\AutoSaveTest.cs" />
     <Compile Include="PageTest\NewApp\NewAppHasApprovalWorkFlowTest.cs" />
     <Compile Include="PageTest\NewApp\NewAppHasNoApprovalWorkFlowTest.cs" />

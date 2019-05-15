@@ -11,6 +11,7 @@ using GenerateDocument.Common.Helpers;
 using GenerateDocument.Common.Types;
 using GenerateDocument.Test.PageObjects.BackEnd;
 using System.Collections.Generic;
+using GenerateDocument.Test.Base;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
 {
@@ -50,24 +51,24 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _myDesign = new MyDesign(DriverContext);
         }
 
-        [Test]
-        [TestCaseSource(typeof(DataDriven), "ConditionalControl")]
-        public void TestConditionalControlOfDataDriven(TestCase testcase)
-        {
-            UserSiteLoginStep();
+        //[Test]
+        //[TestCaseSource(typeof(DataDriven), "ConditionalControl")]
+        //public void TestConditionalControlOfDataDriven(TestCase testcase)
+        //{
+        //    UserSiteLoginStep();
 
-            _myDesign.CreateDesign();
+        //    _myDesign.CreateDesign();
 
-            var documentBefore = _userContentStart.SearchDocument(testcase.ProductName);
-            Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
-            _userContentStart.SelectDocument(documentBefore.Id);
+        //    var documentBefore = _userContentStart.SearchDocument(testcase.ProductName);
+        //    Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
+        //    _userContentStart.SelectDocument(documentBefore.Id);
 
-            foreach (var step in testcase.Steps)
-            {
-                PerformToPageType(step);
-                CheckingExpectation(step);
-            }
-        }
+        //    foreach (var step in testcase.Steps)
+        //    {
+        //        PerformToPageType(step);
+        //        ValidateExpectation(step);
+        //    }
+        //}
 
         [Test]
         [TestCaseSource(typeof(DataDriven), "SpecialCharacters")]
@@ -84,30 +85,33 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             foreach (var step in testcase.Steps)
             {
                 PerformToPageType(step);
-                CheckingExpectation(step);
+                ValidateExpectation(step);
             }
         }
 
-        [Test]
-        [TestCaseSource(typeof(DataDriven), "MigrationControl")]
-        public void MigrationControlOfDataDriven(TestCase testcase)
-        {
-            UserSiteLoginStep();
+        //[Test]
+        //[TestCaseSource(typeof(DataDriven), "MigrationControl")]
+        //public void MigrationControlOfDataDriven(TestCase testcase)
+        //{
+        //    UserSiteLoginStep();
 
-            _myDesign.CreateDesign();
+        //    _myDesign.CreateDesign();
 
-            var documentBefore = _userContentStart.SearchDocument(testcase.ProductName);
-            Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
-            _userContentStart.SelectDocument(documentBefore.Id);
+        //    var documentBefore = _userContentStart.SearchDocument(testcase.ProductName);
+        //    Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
+        //    _userContentStart.SelectDocument(documentBefore.Id);
 
-            foreach (var step in testcase.Steps)
-            {
-                PerformToPageType(step);
-                CheckingExpectation(step);
-            }
-        }
+        //    foreach (var step in testcase.Steps)
+        //    {
+        //        new AutoSaveContext(new UserEditFormFilling(DriverContext))
+        //            .ValidateSaveData(step);
 
-        [Test]
+        //        // PerformToPageType(step);
+        //        // ValidateExpectation(step);
+        //    }
+        //}
+
+        //  [Test]
         public void VerifyContentFromPdf()
         {
             var filePath = @"D:\Project\Practice\GdmTest\generateddocumenttest\GenerateDocument.Test\Content\imageTest\D-F6117503_00001.pdf";
@@ -135,13 +139,12 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _adminProductRetired.ClickToUpdateSetting();
         }
 
-        //Need to improve
         private void PerformToPageType(Step step)
         {
-            var currentPage = step.Action.Equals("navigate")? step.ControlValue: DriverContext.Driver.GetCurrentPage()?.Split('.')[0];
-         
+            var currentPage = step.Action.Equals("navigate") ? step.ControlValue : DriverContext.Driver.GetCurrentPage()?.Split('.')[0];
+
             Enum.TryParse(currentPage, out PageTypes pageTypes);
-            
+
             switch (pageTypes)
             {
                 case PageTypes.UserEditFormFilling:
@@ -161,7 +164,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             }
         }
 
-        private void CheckingExpectation(Step step)
+        private void ValidateExpectation(Step step)
         {
             if (!step.Expectations.Any())
             {

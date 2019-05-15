@@ -6,6 +6,7 @@ using GenerateDocument.Common.Helpers;
 using GenerateDocument.Common.Types;
 using GenerateDocument.Common.WebElements;
 using GenerateDocument.Domain.TestSenario;
+using GenerateDocument.Test.Base;
 using log4net;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
@@ -70,6 +71,11 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
 
             }
+        }
+
+        public void CheckingExpectation(Step step)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -35,19 +35,19 @@ namespace GenerateDocument.Test.DataProviders
             }
         }
 
-        public static IEnumerable MigrationControl
-        {
-            get
-            {
-                var dataDriven = DataDrivenHelper.ReadOnlyData(ProjectBaseConfiguration.GetDataDrivenForMigration);
-                foreach (var testCases in dataDriven.TestCases)
-                {
-                    var testCaseData = new TestCaseData(testCases);
-                    testCaseData.SetName($"{testCases.Name}_{testCases.ProductName}");
+        //public static IEnumerable MigrationControl
+        //{
+        //    get
+        //    {
+        //        var dataDriven = DataDrivenHelper.ReadOnlyData(ProjectBaseConfiguration.GetDataDrivenForMigration);
+        //        foreach (var testCases in dataDriven.TestCases)
+        //        {
+        //            var testCaseData = new TestCaseData(testCases);
+        //            testCaseData.SetName($"{testCases.Name}_{testCases.ProductName}");
 
-                    yield return testCaseData;
-                }
-            }
-        }
+        //            yield return testCaseData;
+        //        }
+        //    }
+        //}
     }
 }

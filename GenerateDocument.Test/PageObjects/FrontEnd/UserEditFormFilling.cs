@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using GenerateDocument.Common.Helpers;
 using GenerateDocument.Domain.TestSenario;
+using GenerateDocument.Test.Base;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
@@ -316,6 +317,11 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
                     break;
             }
+        }
+
+        public void CheckingExpectation(Step step)
+        {
+            throw new NotImplementedException();
         }
     }
 }
