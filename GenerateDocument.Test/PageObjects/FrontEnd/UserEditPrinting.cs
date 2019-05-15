@@ -24,7 +24,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public UserEditPrinting ClickToNextStep()
         {
-            if (!DriverContext.Driver.IsUrlEndsWith("usereditprinting"))
+            if (!DriverContext.Driver.IsUrlEndsWith(PageTypes.UserEditPrinting.ToString()))
             {
                 return this;
             }
@@ -32,8 +32,8 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             Logger.Info($"Perform to next button with id: {_nextStepButtonLocator.Value}");
 
             Driver.GetElement<Button>(_nextStepButtonLocator).ClickTo();
-
-            Driver.WaitUntilPresentedUrl("usereditfinish");
+            
+            Driver.WaitUntilPresentedUrl(PageTypes.UserEditFinish.ToString());
 
             return this;
         }

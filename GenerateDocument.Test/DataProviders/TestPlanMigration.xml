@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<testplan name="AutoSaveWithCheckingMigrationControl">
+
+  <testcases>
+
+    <testcase name="Migration_AddControl" description="Force user again place order when add new control " productname="[AUTOTEST][SWF] Invitation">
+      <steps>
+      
+        <step controltype="browser" action="navigate" controlid="" controlvalue="AdminProducts"></step>
+      
+      </steps>
+    </testcase>
+
+  </testcases>
+
+</testplan>

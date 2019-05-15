@@ -22,6 +22,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             _dataThumbnailBox = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']"),
             _dataMenuGoTo = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//ul//li//a[@name='go']"),
             _designStatus = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//div[contains(@class, 'design-info')]//span"),
+            _deletedLableLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//label"),
             _kitLable = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='caption']//div[@class='caption-container']//span[contains(@class, 'kit-label')]");
 
 
@@ -93,7 +94,9 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public string GetRetiredOrDeletedLabel(string designName)
         {
-            return DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath($"//div[@data-documentname='{designName}']//div[@class='thumbnail']//div[@class='content-wrapper']//label"))).Text;
+            Driver.WaitUntilPresentedElement(_dataDocumentName.Format(designName), BaseConfiguration.LongTimeout);
+            var element = Driver.WaitUntilPresentedElement(_deletedLableLocator.Format(designName), BaseConfiguration.LongTimeout);
+            return element.Text;
         }
 
         public string GetSelectedSortingOption()

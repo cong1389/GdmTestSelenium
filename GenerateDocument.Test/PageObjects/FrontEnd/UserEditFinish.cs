@@ -27,7 +27,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public UserEditFinish ClickToFinishDesign()
         {
-            if (!DriverContext.Driver.IsUrlEndsWith("usereditfinish"))
+            if (!DriverContext.Driver.IsUrlEndsWith(PageTypes.UserEditFinish.ToString()))
             {
                 return this;
             }
@@ -36,7 +36,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
             Driver.GetElement<Button>(_finishDesignButton).ClickTo();
 
-            Driver.WaitUntilPresentedUrl("onedesign");
+            Driver.WaitUntilPresentedUrl(PageTypes.OneDesign.ToString());
 
             return this;
         }
@@ -63,7 +63,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             switch (controlTypeValue)
             {
                 case ControlTypes.Textbox:
-                    var text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
+                    var text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : $"{step.ControlValue}_{NameHelper.RandomName(10)}";
                     EnterOrderName(text);
                     break;
 

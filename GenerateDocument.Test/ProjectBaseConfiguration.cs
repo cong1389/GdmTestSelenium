@@ -8,11 +8,27 @@ namespace GenerateDocument.Test
     {
         private static readonly string CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
 
-        public static string DataDrivenFile
+        public static string GetDataDrivenForConditional
         {
             get
             {
-                return Path.Combine(CurrentDirectory, ConfigurationManager.AppSettings["dataDrivenFile"]);
+                return Path.Combine(CurrentDirectory, ConfigurationManager.AppSettings["dataDrivenForConditional"]);
+            }
+        }
+
+        public static string GetDataDrivenForSpecialCharacters
+        {
+            get
+            {
+                return Path.Combine(CurrentDirectory, ConfigurationManager.AppSettings["dataDrivenForSpecialCharacters"]);
+            }
+        }
+
+        public static string GetDataDrivenForMigration
+        {
+            get
+            {
+                return Path.Combine(CurrentDirectory, ConfigurationManager.AppSettings["dataDrivenForMigration"]);
             }
         }
 

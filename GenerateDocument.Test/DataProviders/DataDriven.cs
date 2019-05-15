@@ -5,15 +5,45 @@ namespace GenerateDocument.Test.DataProviders
 {
     public static class DataDriven
     {
-        public static IEnumerable Conditional
+        public static IEnumerable ConditionalControl
         {
             get
             {
-                var testPlan = DataDrivenHelper.ReadOnlyData(ProjectBaseConfiguration.DataDrivenFile);
-                foreach (var testPlanTestcase in testPlan.TestCases)
+                var dataDriven = DataDrivenHelper.ReadOnlyData(ProjectBaseConfiguration.GetDataDrivenForConditional);
+                foreach (var testCases in dataDriven.TestCases)
                 {
-                    var testCaseData = new TestCaseData(testPlanTestcase);
-                    testCaseData.SetName($"{testPlanTestcase.Name}_{testPlanTestcase.ProductName}");
+                    var testCaseData = new TestCaseData(testCases);
+                    testCaseData.SetName($"{testCases.Name}_{testCases.ProductName}");
+
+                    yield return testCaseData;
+                }
+            }
+        }
+
+        public static IEnumerable SpecialCharacters
+        {
+            get
+            {
+                var dataDriven = DataDrivenHelper.ReadOnlyData(ProjectBaseConfiguration.GetDataDrivenForSpecialCharacters);
+                foreach (var testCases in dataDriven.TestCases)
+                {
+                    var testCaseData = new TestCaseData(testCases);
+                    testCaseData.SetName($"{testCases.Name}_{testCases.ProductName}");
+
+                    yield return testCaseData;
+                }
+            }
+        }
+
+        public static IEnumerable MigrationControl
+        {
+            get
+            {
+                var dataDriven = DataDrivenHelper.ReadOnlyData(ProjectBaseConfiguration.GetDataDrivenForMigration);
+                foreach (var testCases in dataDriven.TestCases)
+                {
+                    var testCaseData = new TestCaseData(testCases);
+                    testCaseData.SetName($"{testCases.Name}_{testCases.ProductName}");
 
                     yield return testCaseData;
                 }

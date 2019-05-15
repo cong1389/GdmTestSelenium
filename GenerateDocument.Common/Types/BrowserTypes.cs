@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GenerateDocument.Common.Types
+﻿namespace GenerateDocument.Common.Types
 {
     public enum BrowserTypes
     {
+        None,
         Firefox,
-        InternetExplorer,
+        IE,
         Edge,
-        Chrome,
-        NotSet
+        Chrome
     }
 }

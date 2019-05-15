@@ -1,34 +1,25 @@
-﻿using GenerateDocument.Common.Extensions;
+﻿using GenerateDocument.Common;
+using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Types;
+using GenerateDocument.Common.WebElements;
 using GenerateDocument.Test.Utilities;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.PageObjects;
 using System.Linq;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
-    public class UserContentStart : PageObject
+    public class UserContentStart : PageBaseObject
     {
-        public UserContentStart(IWebDriver browser) : base(browser)
+        private readonly ElementLocator
+            _searchBoxLocator = new ElementLocator(Locator.XPath, "//div//input[@id='txtSearch']"),
+            _selectProductHrefLocator = new ElementLocator(Locator.XPath, "//table[@class='catalogThumbnailArea']//a[@href='CreateUserDocument.aspx?product={0}']"),
+            _searchButtonLocator = new ElementLocator(Locator.Id, "btnSearch");
+
+        public UserContentStart(DriverContext driverContext) : base(driverContext)
         {
         }
 
-        [FindsBy(How = How.LinkText, Using = "Advanced Flyer")]
-        private IWebElement AdvanceFlyerLink { get; set; }
-
-        [FindsBy(How = How.Id, Using = "txtSearch")]
-        private IWebElement SearchBox { get; set; }
-
-        [FindsBy(How = How.Id, Using = "btnSearch")]
-        private IWebElement SearchButton { get; set; }
-
-        [FindsBy(How = How.Id, Using = "il_autosavestartdoc_title")]
-        private IWebElement AutoSaveModalTitle { get; set; }
-
-        [FindsBy(How = How.Id, Using = "il_autosavestartdoc_btn-ok")]
-        private IWebElement AutoSaveModalCompleteExistingDocumentButton { get; set; }
-        
         public ProductInfo SearchDocument(string input)
         {
             var productInfo = new ProductInfo();
@@ -36,10 +27,10 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             if (string.IsNullOrEmpty(input))
                 return productInfo;
 
-            SearchBox.SendKeys(input);
-            SearchButton.Click();
+            Driver.GetElement<Textbox>(_searchBoxLocator).SetValue(input);
+            Driver.GetElement<Button>(_searchButtonLocator).ClickTo();
 
-            var result = Browser.FindElement(By.XPath($"//div[contains(@class, 'catalogItemFooter')]//a[contains(@title, '{input}')]"));
+            var result = Driver.FindElement(By.XPath($"//div[contains(@class, 'catalogItemFooter')]//a[contains(@title, '{input}')]"));
             string href = result?.GetAttribute("href");
 
             int hash = href.LastIndexOf('=') + 1;
@@ -53,49 +44,29 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public void ClickToCreateDesign(string productName)
         {
-            var element = Browser.FindElement(By.LinkText(productName));
-            var actions = new Actions(Browser);
-            actions.MoveToElement(element);
+            var element = Driver.FindElement(By.LinkText(productName));
+            Driver.Actions().MoveToElement(element);
             element.Click();
         }
 
         public void SelectDocument(string id)
         {
-            var document = Browser.FindElement(By.CssSelector($"[href*='CreateUserDocument.aspx?product={id}']"));
-
-            document.Click();
-        }
-
-        public bool IsInprogressDocument()
-        {
-            try
-            {
-                return AutoSaveModalTitle.Displayed;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public void SelectCompleteExistingDocument()
-        {
-            AutoSaveModalCompleteExistingDocumentButton.Click();
+            Driver.GetElement<Button>(_selectProductHrefLocator.Format(id)).ClickTo();
         }
 
         public void AgreeWithPrivacy()
         {
-            var element = Browser.FindElements(By.ClassName("gdpr-consent-modal"));
+            var element = Driver.FindElements(By.ClassName("gdpr-consent-modal"));
             if (element.Any())
             {
-                Browser.FindElement(By.Id("gdprConsentAcknowledge")).Click();
-                Browser.FindElement(By.Id("gdprConsentContinue")).Click();
+                Driver.FindElement(By.Id("gdprConsentAcknowledge")).Click();
+                Driver.FindElement(By.Id("gdprConsentContinue")).Click();
             }
         }
 
         public void NavigateTo()
         {
-            Browser.NavigateTo(UserContentStartPage);
+            Driver.NavigateTo(UserContentStartPage);
         }
     }
 }

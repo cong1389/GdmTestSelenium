@@ -7,7 +7,7 @@ using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageTest.BackEnd
 {
-    [TestFixture, Order(1)]
+    [TestFixture("Chrome"), Order(1)]
     public class ManagedExtensionTest : PageTestBase
     {
         private AdminManagedConfiguration _adminManagedConfiguration;
@@ -29,9 +29,9 @@ namespace GenerateDocument.Test.PageTest.BackEnd
         private const string RightMarketUserName = "rightmarket";
         private const string AdminSiteOptionsLabel = "Site Options";
 
-        public ManagedExtensionTest()
+        public ManagedExtensionTest(string environment) : base(environment)
         {
-            // ChangeDefaultForAdminSite();
+
         }
 
         private static IEnumerable<string> ProductsCase(bool isKit)

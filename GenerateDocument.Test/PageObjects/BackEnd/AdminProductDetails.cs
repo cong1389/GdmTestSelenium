@@ -3,7 +3,6 @@ using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using GenerateDocument.Common.WebElements;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd

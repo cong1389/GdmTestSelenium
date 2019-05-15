@@ -1,31 +1,33 @@
-﻿using GenerateDocument.Common;
+﻿using System;
+using GenerateDocument.Common;
+using GenerateDocument.Common.Types;
 using NUnit.Framework;
 
 namespace GenerateDocument.Test.PageTest
 {
     public class PageTestBase
     {
-        private readonly DriverContext driverContext = new DriverContext();
+        private readonly DriverContext _driverContext = new DriverContext();
 
-        protected DriverContext DriverContext
+        protected DriverContext DriverContext => this._driverContext;
+
+        public PageTestBase(string environment)
         {
-            get
-            {
-                return this.driverContext;
-            }
+            Enum.TryParse(environment, out BrowserTypes browserType);
+            _driverContext.CrossBrowserEnvironment = browserType;
         }
 
         [OneTimeSetUp]
         public void SetUp()
         {
-            driverContext.Start();
-            driverContext.Driver.Manage().Window.Maximize();
+            _driverContext.Start();
+            _driverContext.Driver.Manage().Window.Maximize();
         }
 
         [OneTimeTearDown]
         public void CleanUp()
         {
-            driverContext.Stop();
+            _driverContext.Stop();
         }
     }
 }

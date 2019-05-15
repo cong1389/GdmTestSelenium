@@ -1,25 +1,29 @@
-﻿using OpenQA.Selenium;
+﻿using GenerateDocument.Common;
+using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Types;
+using GenerateDocument.Common.WebElements;
+using OpenQA.Selenium;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {
-    public class AdminOptionSet : PageObject
+    public class AdminOptionSet : PageBaseObject
     {
-        public AdminOptionSet(IWebDriver browser) : base(browser)
+        private readonly ElementLocator
+            _footerLinkLocator = new ElementLocator(Locator.Id, "AdminMaster_ContentPlaceHolderBody__XF_DND_OptionSet1_grid_ctl31_hlEditField"),
+            _goBackLocator = new ElementLocator(Locator.Id, "AdminMaster_ContentPlaceHolderBody_GoBack");
+
+        public AdminOptionSet(DriverContext driverContext) : base(driverContext)
         {
         }
 
         public void ClickToFooterLink()
         {
-            var footerLink = Browser.FindElement(By.Id("AdminMaster_ContentPlaceHolderBody__XF_DND_OptionSet1_grid_ctl31_hlEditField"));
-            ScrollToView(footerLink);
-            footerLink.Click();
+            Driver.GetElement<Button>(_footerLinkLocator).ClickTo();
         }
 
         public void ClickToGoback()
         {
-            var gobackLink = Browser.FindElement(By.Id("AdminMaster_ContentPlaceHolderBody_GoBack"));
-            ScrollToView(gobackLink);
-            gobackLink.Click();
+            Driver.GetElement<Button>(_goBackLocator).ClickTo();
         }
     }
 }

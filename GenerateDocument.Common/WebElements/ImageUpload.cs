@@ -16,6 +16,8 @@ namespace GenerateDocument.Common.WebElements
         private string _id;
 
         private readonly ElementLocator
+            _modalOverlayLocator = new ElementLocator(Locator.XPath, "//div[contains(@class,'modal-overlay-fallback')]"),
+            _acceptScropedLocator = new ElementLocator(Locator.XPath, "//div[contains(@class,'modal-overlay-fallback')]//button[text()='OK']"),
             _uploadBtnLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//a//span[text()='Upload']"),
             _clearBtnLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//a[text()='Clear']"),
             _resetBtnLocator = new ElementLocator(Locator.XPath, "//div[@id='{0}']//a[text()='Reset']"),
@@ -39,12 +41,13 @@ namespace GenerateDocument.Common.WebElements
             Driver.ScrollToView(buttonEle);
             buttonEle.Click();
 
+            //waiting modal overlay to hidden
+            Driver.WaitUntilElementIsNoLongerFound(_modalOverlayLocator, BaseConfiguration.ShortTimeout);
+
             //Check display upload new image button
             var isDisplayNewImageBtn = Driver.IsElementPresent(_chooseNewImageLocator, BaseConfiguration.ShortTimeout);
             if (isDisplayNewImageBtn)
             {
-                Driver.WaitUntilPresentedElement(_chooseNewImageLocator, BaseConfiguration.LongTimeout);
-                Console.WriteLine($"_chooseNewImageLocator value: {_chooseNewImageLocator.Value}");
                 Driver.GetElement(_chooseNewImageLocator).Click();
             }
 
@@ -55,7 +58,14 @@ namespace GenerateDocument.Common.WebElements
             //Click submit upload
             Driver.GetElement(_submitUploadBtnLocator).Click();
 
-            //Waiting closed modal
+            //Scroping image
+            var isAccepScrop = Driver.IsElementPresent(_acceptScropedLocator, BaseConfiguration.ShortTimeout);
+            if (isAccepScrop)
+            {
+                Driver.GetElement(_acceptScropedLocator).Click();
+            }
+
+            //Waiting modal close
             Driver.WaitUntilElementIsNoLongerFound(_modalLarge, BaseConfiguration.LongTimeout);
         }
 

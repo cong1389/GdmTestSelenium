@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<testplan name="AutoSaveWithSpecialCharacters">
+
+  <testcases>
+
+    <testcase name="SendSpecialCharacters" description="Send keys to textbox with special characters" productname="[AUTOTEST][SWF] Invitation">
+      <steps>
+
+        <!---Text options-->
+        <step controltype="container" action="click" controlid="div3" controlvalue="Text options"></step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_497" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_485" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+       
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_473" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_488" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_503" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
+        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
+
+        <!--Finished page-->
+        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
+
+      </steps>
+    </testcase>
+
+  </testcases>
+
+</testplan>

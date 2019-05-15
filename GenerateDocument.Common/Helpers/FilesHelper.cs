@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using OpenQA.Selenium.Internal;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 
 namespace GenerateDocument.Common.Helpers
 {
@@ -31,6 +31,29 @@ namespace GenerateDocument.Common.Helpers
             {
                 file.Delete();
             }
+        }
+
+        public static string ExtractTextFromPdf(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new Exception("File path must be not null");
+            }
+
+            var sbTexts = new StringBuilder();
+
+            using (PdfReader reader = new PdfReader(filePath))
+            {
+
+                for (int page = 1; page <= reader.NumberOfPages; page++)
+                {
+                    var strategy = new SimpleTextExtractionStrategy();
+                    var text = PdfTextExtractor.GetTextFromPage(reader, page, strategy);
+                    sbTexts.Append(text);
+                }
+            }
+
+            return sbTexts.ToString();
         }
 
 

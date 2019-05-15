@@ -15,7 +15,7 @@ using System.Threading;
 
 namespace GenerateDocument.Test.PageTest.NewApp
 {
-    //[TestFixture(BrowserTypes.Chrome)]
+    [TestFixture("Chrome")]
     public partial class NewApp_Test : PageTestBase
     {
         private PageCommonAction _action;
@@ -37,6 +37,10 @@ namespace GenerateDocument.Test.PageTest.NewApp
         private bool _isShowSurveyInvitationModal = true;
         private bool _isShowPolicyAgreementModal = true;
 
+        public NewApp_Test(string environment) : base(environment)
+        {
+        }
+
         [SetUp]
         public void StartTestCase()
         {
@@ -45,7 +49,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _action = new PageCommonAction(DriverContext.Driver);
             new UserLogin(DriverContext);
             _myDesign = new MyDesign(DriverContext);
-            _userContentStart = new UserContentStart(DriverContext.Driver);
+            _userContentStart = new UserContentStart(DriverContext);
             _userEditFormFilling = new UserEditFormFilling(DriverContext);
             _userEditPrinting = new UserEditPrinting(DriverContext);
             _userEditFinish = new UserEditFinish(DriverContext);
