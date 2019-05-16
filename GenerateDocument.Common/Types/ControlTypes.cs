@@ -14,6 +14,8 @@
         Container,
         MultipleSelectInclude,
         MultipleSelectCheckbox,
-        MultipleSelectListbox
+        MultipleSelectListbox,
+        Hyperlink,
+        Browser
     }
 }

@@ -1,17 +1,26 @@
 ﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Types;
+using GenerateDocument.Domain.TestSenario;
+using GenerateDocument.Test.Base;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
+using System;
 using System.Linq;
 using System.Threading;
+using GenerateDocument.Common.WebElements;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {
-    public class AdminProducts : PageBaseObject
+    public class AdminProducts : PageBaseObject, IAutoSave
     {
         private readonly AdminProductDetails _adminProductDetails;
+        private readonly ElementLocator
+            _hyperlinkProductNameLocator = new ElementLocator(Locator.XPath, "//a[contains(text(),'{0}')]"),
+            _checkboxProductNameLocator = new ElementLocator(Locator.XPath, "//a[contains(text(),'{0}')]//ancestor::tr[1]//td//input[@type='checkbox']"),
+            _buttonLocator = new ElementLocator(Locator.XPath, "//*[@type='submit' and contains(@name,'{0}') or contains(@id,'{0}')]");
 
         public AdminProducts(DriverContext driverContext) : base(driverContext)
         {
@@ -66,9 +75,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
         public void GoToAdminProductDetails(string productName)
         {
-            var xPath = $"//a[contains(text(),'{productName}')]";
-
-            Driver.FindElement(By.XPath(xPath)).Click();
+            Driver.GetElement(_hyperlinkProductNameLocator.Format(productName)).Click();
         }
 
         private void SelectProductToEnableActions(string productName)
@@ -154,9 +161,34 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
             } while (i < 3);
         }
 
-        public void Open()
+        public void NavigateTo()
         {
             Driver.NavigateTo(AdminProductsPage);
+        }
+
+        public void PerformToControlType(Step step)
+        {
+            string controlType = step.ControlType;
+            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+
+            switch (controlTypeValue)
+            {
+                case ControlTypes.Browser:
+                    NavigateTo();
+                    break;
+
+                case ControlTypes.Hyperlink:
+                    Driver.GetElement(_hyperlinkProductNameLocator.Format(step.ControlValue)).Click();
+                    break;
+
+                case ControlTypes.Button:
+                    Driver.GetElement<Checkbox>(_buttonLocator.Format(step.ControlId)).TickCheckBox();
+                    break;
+
+                case ControlTypes.Checkbox:
+                    Driver.GetElement<Checkbox>(_checkboxProductNameLocator.Format(step.ControlValue)).TickCheckBox();
+                    break;
+            }
         }
     }
 }

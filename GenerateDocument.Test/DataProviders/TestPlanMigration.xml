@@ -3,11 +3,127 @@
 
   <testcases>
 
-    <testcase name="Migration_AddControl" description="Force user again place order when add new control " productname="[AUTOTEST][SWF] Invitation">
+    <testcase name="Migration_AddControl" description="Force user again place order when add new control " productname="[Test migration] [AUTOTEST][SWF] Invitation">
       <steps>
-      
+
+        <!--Start clone new product-->
+        <!--Admin login-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
+
+        <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
+        <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue="RightMarket"></step>
+        <step controltype="password" action="sendkeys" controlid="Password" controlvalue="123"></step>
+        <step controltype="button" action="click" controlid="ButtonLogin" controlvalue=""></step>
+
+        <!--Admin product page-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminProducts"></step>
-      
+
+        <!--Cloning-->
+        <step controltype="checkbox" action="tick" controlid="ItemSelectedCheckbox" controlvalue="[AUTOTEST][SWF] Invitation"></step>
+        <step controltype="button" action="click" controlid="btnDuplicate_spnActive" controlvalue=""></step>
+
+        <step controltype="hyperlink" action="click" controlid="" controlvalue="Copy of [AUTOTEST][SWF] Invitation"></step>
+
+        <!--Rename product name-->
+        <step controltype="button" action="click" controlid="btnChangeSettings" controlvalue=""></step>
+        <step controltype="textbox" action="sendkeys" controlid="tbProductName" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
+        <step controltype="textarea" action="sendkeys" controlid="tbToolTip" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
+        <step controltype="textarea" action="sendkeys" controlid="tbProductDescription" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
+        <step controltype="textarea" action="sendkeys" controlid="tbSearchKeywords" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
+
+        <step controltype="button" action="click" controlid="btnUpdate" controlvalue="Update"></step>
+        <step controltype="button" action="click" controlid="btnRelease" controlvalue="Release"></step>
+        <step controltype="button" action="click" controlid="btnUpdate" controlvalue="Release"></step>
+        <!--End clone new product-->
+        
+
+        <!--Start Create new Design-->
+        <!--User login-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="Login"></step>
+        
+        <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue=""></step>
+        <step controltype="password" action="sendkeys" controlid="Password" controlvalue=""></step>
+        <step controltype="button" action="click" controlid="Login" controlvalue="Login"></step>
+
+        <step controltype="browser" action="navigate" controlid="" controlvalue="UserContentStart"></step>
+        <step controltype="hyperlink" action="click" controlid="" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
+        <!---Text options-->
+        <step controltype="container" action="click" controlid="div3" controlvalue="Text options"></step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_497" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_485" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_473" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_488" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_503" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
+        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
+
+        <!--Finished page-->
+        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
+
+        <!--End Create new Design-->
+
+        
+
+        <!--Start Add new control type-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
+
+        <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
+        <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue="RightMarket"></step>
+        <step controltype="password" action="sendkeys" controlid="Password" controlvalue="123"></step>
+        <step controltype="button" action="click" controlid="ButtonLogin" controlvalue=""></step>
+
+        <!--Admin product page-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="AdminProducts"></step>
+        <step controltype="hyperlink" action="click" controlid="" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
+        <step controltype="hyperlink" action="click" controlid="Customise" controlvalue="Customise"></step>
+
+        <!--AdminOptionSet-->
+        <step controltype="button" action="click" controlid="btnAddNewItem_spnActive" controlvalue=""></step>
+
+        <!--AdminOptionField-->
+        <step controltype="textbox" action="sendkeys" controlid="txtName" controlvalue="TestSinglelineText"></step>
+        <step controltype="dropbox" action="select" controlid="comboType" controlvalue="TXT_ONE"></step>
+        <step controltype="textbox" action="sendkeys" controlid="txtDisplay" controlvalue="Test single line text"></step>
+        <step controltype="button" action="click" controlid="btnUpdate1" controlvalue=""></step>
+
+        <!--AdminOptionSet-->
+        <step controltype="button" action="click" controlid="_GoBack" controlvalue="Go Back"></step>
+
+        <!--AdminProductDetails-->
+        <step controltype="button" action="click" controlid="btnRelease" controlvalue="Release"></step>
+
+        <!--AdminProductRetired-->
+        <step controltype="radio" action="tick" controlid="radConvert" controlvalue="tick"></step>
+        <step controltype="button" action="click" controlid="btnUpdate2" controlvalue=""></step>
+
+
       </steps>
     </testcase>
 

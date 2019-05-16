@@ -60,7 +60,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
             _contentCollectionsPage = new ContentCollectionsPage(DriverContext.Driver);
             _adminProductsPage = new AdminProducts(DriverContext);
             _adminProductContentPage = new AdminProductContent(DriverContext.Driver);
-            _adminProductRetired = new AdminProductRetired(DriverContext.Driver);
+            _adminProductRetired = new AdminProductRetired(DriverContext);
             _adminProductDetails = new AdminProductDetails(DriverContext);
             _siteOptionsPage = new AdminSiteOptions(DriverContext.Driver);
             _adminSiteOptions = new AdminSiteOptions(DriverContext.Driver);
@@ -291,7 +291,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
         {
             ChangeRMLayoutForAdminSite();
 
-            _adminProductsPage.Open();
+            _adminProductsPage.NavigateTo();
 
             Assert.IsTrue(_adminProductsPage.GetLinkProjectText().IsEquals("Import Projects"));
 
@@ -303,7 +303,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
         {
             ChangeRMLayoutForAdminSite();
 
-            _adminProductsPage.Open();
+            _adminProductsPage.NavigateTo();
 
             var kitIconUrl = $"{ProjectBaseConfiguration.HostUrl}/Images/ROI360ProductKit.gif";
 
@@ -317,7 +317,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
         {
             ChangeRMLayoutForAdminSite();
 
-            _adminProductsPage.Open();
+            _adminProductsPage.NavigateTo();
 
             var vdpIconUrl = $"{ProjectBaseConfiguration.HostUrl}/Images/ROI360ProductVariableData.gif";
 
@@ -345,7 +345,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
         {
             ChangeRMLayoutForAdminSite();
 
-            _adminProductsPage.Open();
+            _adminProductsPage.NavigateTo();
             _adminProductsPage.ClickToAdvanceFlyer();
 
             _adminProductDetails.ClickToChangeSetting();

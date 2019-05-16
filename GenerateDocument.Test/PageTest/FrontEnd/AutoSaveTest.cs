@@ -1,17 +1,16 @@
-﻿using System;
-using GenerateDocument.Common.Extensions;
+﻿using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Helpers;
+using GenerateDocument.Common.Types;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.DataProviders;
 using GenerateDocument.Test.PageObjects;
+using GenerateDocument.Test.PageObjects.BackEnd;
 using GenerateDocument.Test.PageObjects.FrontEnd;
 using GenerateDocument.Test.PageObjects.NewApp;
 using NUnit.Framework;
-using System.Linq;
-using GenerateDocument.Common.Helpers;
-using GenerateDocument.Common.Types;
-using GenerateDocument.Test.PageObjects.BackEnd;
-using System.Collections.Generic;
-using GenerateDocument.Test.Base;
+using System;
+using System.Reflection;
+using log4net;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
 {
@@ -24,15 +23,13 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         private UserEditFormFilling _userEditFormFilling;
         private UserEditPrinting _userEditPrinting;
         private UserEditFinish _userEditFinish;
-        private AdminExtensions _adminExtensions;
+
+        private AdminLogin _adminLogin;
         private AdminProducts _adminProducts;
-        private AdminProductDetails _adminProductDetails;
-        private AdminOptionSet _adminOptionSet;
-        private AdminOptionField _adminOptionField;
-        private AdminProductRetired _adminProductRetired;
 
         private MyDesign _myDesign;
-        private OneDesign _oneDesign;
+
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public AutoSaveTest(string environment) : base(environment)
         {
@@ -47,6 +44,10 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _userEditFormFilling = new UserEditFormFilling(DriverContext);
             _userEditPrinting = new UserEditPrinting(DriverContext);
             _userEditFinish = new UserEditFinish(DriverContext);
+
+            _adminLogin = new AdminLogin(DriverContext);
+            _adminProducts = new AdminProducts(DriverContext);
+
 
             _myDesign = new MyDesign(DriverContext);
         }
@@ -89,27 +90,16 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             }
         }
 
-        //[Test]
-        //[TestCaseSource(typeof(DataDriven), "MigrationControl")]
-        //public void MigrationControlOfDataDriven(TestCase testcase)
-        //{
-        //    UserSiteLoginStep();
-
-        //    _myDesign.CreateDesign();
-
-        //    var documentBefore = _userContentStart.SearchDocument(testcase.ProductName);
-        //    Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
-        //    _userContentStart.SelectDocument(documentBefore.Id);
-
-        //    foreach (var step in testcase.Steps)
-        //    {
-        //        new AutoSaveContext(new UserEditFormFilling(DriverContext))
-        //            .ValidateSaveData(step);
-
-        //        // PerformToPageType(step);
-        //        // ValidateExpectation(step);
-        //    }
-        //}
+        [Test]
+        [TestCaseSource(typeof(DataDriven), "MigrationControl")]
+        public void MigrationControlOfDataDriven(TestCase testcase)
+        {
+            foreach (var step in testcase.Steps)
+            {
+                PerformToPageType(step);
+                ValidateExpectation(step);
+            }
+        }
 
         //  [Test]
         public void VerifyContentFromPdf()
@@ -120,23 +110,23 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
         private void AdminCustomA4PosterProduct(string productName)
         {
-            _adminProducts.Open();
+            _adminProducts.NavigateTo();
 
             _adminProducts.GoToAdminProductDetails(productName);
 
-            _adminProductDetails.ClickToFormFilling();
+            //_adminProductDetails.ClickToFormFilling();
 
-            _adminOptionSet.ClickToFooterLink();
+            //_adminOptionSet.ClickToFooterLink();
 
-            _adminOptionField.ClickToSelectLogoAndSupportingLogos();
+            //_adminOptionField.ClickToSelectLogoAndSupportingLogos();
 
-            _adminOptionField.ClickToUpdateSetting();
+            //_adminOptionField.ClickToUpdateSetting();
 
-            _adminOptionSet.ClickToGoback();
+            //_adminOptionSet.ClickToGoback();
 
-            _adminProductDetails.ClickToRelease();
+            //_adminProductDetails.ClickToRelease();
 
-            _adminProductRetired.ClickToUpdateSetting();
+            //_adminProductRetired.ClickToUpdateSetting();
         }
 
         private void PerformToPageType(Step step)
@@ -145,8 +135,18 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             Enum.TryParse(currentPage, out PageTypes pageTypes);
 
+            logger.Info($"currentPage: {currentPage}; contronlType: {step.ControlType}; controlId: {step.ControlId}; controlValue: {step.ControlValue}");
+
             switch (pageTypes)
             {
+                case PageTypes.Login:
+                    new UserLogin(DriverContext).PerformToControlType(step);
+                    break;
+
+                case PageTypes.UserContentStart:
+                    _userContentStart.PerformToControlType(step);
+                    break;
+
                 case PageTypes.UserEditFormFilling:
                     _userEditFormFilling.PerformToControlType(step);
                     break;
@@ -159,18 +159,38 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                     _userEditFinish.PerformToControlType(step);
                     break;
 
+                case PageTypes.AdminLogin:
+                    _adminLogin.PerformToControlType(step);
+                    break;
+
                 case PageTypes.AdminProducts:
+                    new AdminProducts(DriverContext).PerformToControlType(step);
+                    break;
+
+                case PageTypes.AdminProductDetails:
+                    new AdminProductDetails(DriverContext)
+                        .PerformToControlType(step);
+                    break;
+
+                case PageTypes.AdminOptionSet:
+                    new AdminOptionSet(DriverContext)
+                        .PerformToControlType(step);
+                    break;
+
+                case PageTypes.AdminOptionField:
+                    new AdminOptionField(DriverContext)
+                        .PerformToControlType(step);
+                    break;
+
+                case PageTypes.AdminProductRetired:
+                    new AdminProductRetired(DriverContext)
+                        .PerformToControlType(step);
                     break;
             }
         }
 
         private void ValidateExpectation(Step step)
         {
-            if (!step.Expectations.Any())
-            {
-                return;
-            }
-
             step.Expectations.ForEach(x =>
             {
                 switch (x.AssertType)

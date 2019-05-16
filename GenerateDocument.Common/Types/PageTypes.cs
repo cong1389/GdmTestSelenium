@@ -8,13 +8,19 @@ namespace GenerateDocument.Common.Types
 {
     public enum PageTypes
     {
+        UserContentStart,
         UserEditFormFilling,
         UserEditPrinting,
         UserEditFinish,
         OneDesign,
         MyDesign,
+        Login,
+        AdminLogin,
         AdminProducts,
         AdminProductDetails,
-        AdminOptionSet
+        AdminOptionSet,
+        AdminOptionField,
+        AdminProductRetired
+
     }
 }

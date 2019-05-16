@@ -298,11 +298,11 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                     break;
 
                 case ControlTypes.MultipleSelectCheckbox:
-                    if (step.Action.Equals("checked"))
+                    if (step.Action.Equals("tick"))
                     {
                         TickItemsToListCheckbox(step.ControlId, step.ControlValue);
                     }
-                    else if (step.Action.Equals("unchecked"))
+                    else if (step.Action.Equals("untick"))
                     {
                         UnTickItemsToCheckListbox(step.ControlId, step.ControlValue);
                     }
@@ -317,11 +317,6 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
                     break;
             }
-        }
-
-        public void CheckingExpectation(Step step)
-        {
-            throw new NotImplementedException();
         }
     }
 }

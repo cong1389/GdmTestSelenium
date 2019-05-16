@@ -75,6 +75,19 @@ namespace GenerateDocument.Test.DataProviders
 
                                 }
 
+                                var customValueChildNode = stepChild.Current.SelectChildren("customvaluecontrol", xpn.NamespaceURI);
+                                while (customValueChildNode.MoveNext())//Read each customvalue node
+                                {
+                                    var customCurrentNode = customValueChildNode.Current;
+                                    int.TryParse(customCurrentNode.GetAttribute("length", xpn.NamespaceURI), out int length);
+                                    step.CustomValueStep = new CustomValueStep
+                                    {
+                                        FormatType = customCurrentNode.GetAttribute("formatype", xpn.NamespaceURI),
+                                        Length = length,
+                                        Value = customCurrentNode.GetAttribute("value", xpn.NamespaceURI),
+                                    };
+                                }
+
                                 testCase.Steps.Add(step);
                             }
 

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestSenario\CustomValueStep.cs" />
     <Compile Include="TestSenario\Expectation.cs" />
     <Compile Include="TestSenario\Step.cs" />
     <Compile Include="TestSenario\TestCase.cs" />

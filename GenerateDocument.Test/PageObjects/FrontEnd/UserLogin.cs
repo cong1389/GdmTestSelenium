@@ -5,20 +5,25 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Reflection;
+using GenerateDocument.Common.WebElements;
+using GenerateDocument.Domain.TestSenario;
+using GenerateDocument.Test.Base;
 using log4net;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
-    public class UserLogin : PageBaseObject
+    public class UserLogin : PageBaseObject, IAutoSave
     {
         private readonly ElementLocator
             _cookieconsent = new ElementLocator(Locator.Id, "cookieconsent:desc"),
             _gotItLink = new ElementLocator(Locator.LinkText, "Got it!"),
-            _userName = new ElementLocator(Locator.XPath, "//input[@name='Username']"),
-            _passWord = new ElementLocator(Locator.XPath, "//input[@name='Password']"),
+            _userNameLocator = new ElementLocator(Locator.XPath, "//input[@name='Username']"),
+            _passWordLocator = new ElementLocator(Locator.XPath, "//input[@name='Password']"),
             _loginButton = new ElementLocator(Locator.XPath, "//div[@id='btnLogin_div']//a[@class='siteButton']"),
-            _cookiePolicyButton = new ElementLocator(Locator.ClassName, "cc-dismiss");
+
+            _textboxLocator = new ElementLocator(Locator.XPath, "//input[@name='{0}']"),
+            _loginButtonLocator = new ElementLocator(Locator.XPath, "//div[@id='btnLogin_div']//a[text()='{0}']");
 
         public UserLogin(DriverContext driverContext) : base(driverContext)
         {
@@ -28,13 +33,9 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         {
             CookieConfirmation();
 
-            Driver.GetElement(_userName).Clear();
-            Driver.GetElement(_userName).SendKeys(userName);
-
-            Driver.GetElement(_passWord).Clear();
-            Driver.GetElement(_passWord).SendKeys(password);
-
-            Driver.GetElement(_loginButton).Click();
+            Driver.GetElement<Textbox>(_userNameLocator).SetValue(userName);
+            Driver.GetElement<Textbox>(_passWordLocator).SetValue(password);
+            Driver.GetElement<Button>(_loginButton).ClickTo();
 
             return this;
         }
@@ -42,6 +43,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public UserLogin NavigateTo()
         {
             Driver.NavigateTo(UserLoginPage);
+            Driver.IsUrlEndsWith(PageTypes.Login.ToString());
 
             return this;
         }
@@ -77,6 +79,38 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         private bool NeedToLogin()
         {
             return Driver.IsUrlEndsWith("login.aspx") || Driver.IsUrlEndsWith("restrictlogin");
+        }
+
+        public void PerformToControlType(Step step)
+        {
+            string text;
+            string controlType = step.ControlType;
+            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+
+            switch (controlTypeValue)
+            {
+                case ControlTypes.Browser:
+                    NavigateTo();
+                    break;
+
+                case ControlTypes.Hyperlink:
+                    CookieConfirmation();
+                    break;
+
+                case ControlTypes.Textbox:
+                    text = string.IsNullOrEmpty(step.ControlValue) ? ProjectBaseConfiguration.UserId : step.ControlValue;
+                    Driver.GetElement<Textbox>(_textboxLocator.Format(step.ControlId)).SetValue(text);
+                    break;
+
+                case ControlTypes.Password:
+                    text = string.IsNullOrEmpty(step.ControlValue) ? ProjectBaseConfiguration.UserPassword : step.ControlValue;
+                    Driver.GetElement<Textbox>(_textboxLocator.Format(step.ControlId)).SetValue(text);
+                    break;
+
+                case ControlTypes.Button:
+                    Driver.GetElement<Button>(_loginButtonLocator.Format(step.ControlId)).ClickTo();
+                    break;
+            }
         }
     }
 }

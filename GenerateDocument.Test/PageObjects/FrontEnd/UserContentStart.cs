@@ -1,15 +1,18 @@
-﻿using GenerateDocument.Common;
+﻿using System;
+using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using GenerateDocument.Common.WebElements;
 using GenerateDocument.Test.Utilities;
 using OpenQA.Selenium;
 using System.Linq;
+using GenerateDocument.Domain.TestSenario;
+using GenerateDocument.Test.Base;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
-    public class UserContentStart : PageBaseObject
+    public class UserContentStart : PageBaseObject, IAutoSave
     {
         private readonly ElementLocator
             _searchBoxLocator = new ElementLocator(Locator.XPath, "//div//input[@id='txtSearch']"),
@@ -67,6 +70,23 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public void NavigateTo()
         {
             Driver.NavigateTo(UserContentStartPage);
+        }
+
+        public void PerformToControlType(Step step)
+        {
+            string controlType = step.ControlType;
+            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+
+            switch (controlTypeValue)
+            {
+                case ControlTypes.Browser:
+                    NavigateTo();
+                    break;
+
+                case ControlTypes.Hyperlink:
+                    ClickToCreateDesign(step.ControlValue);
+                    break;
+            }
         }
     }
 }

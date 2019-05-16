@@ -1,67 +1,44 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using GenerateDocument.Common;
+using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Types;
+using GenerateDocument.Common.WebElements;
+using GenerateDocument.Domain.TestSenario;
+using GenerateDocument.Test.Base;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {
-    public class AdminOptionField : PageObject
+    public class AdminOptionField : PageBaseObject,IAutoSave
     {
-        public AdminOptionField(IWebDriver browser) : base(browser)
+        private  readonly ElementLocator 
+            _textboxLocator = new ElementLocator(Locator.XPath, "//input[contains(@name,'{0}') or contains(@id,'{0}')]"),
+            _dropboxLocator = new ElementLocator(Locator.XPath, "//select[contains(@name,'{0}') or contains(@id,'{0}')]"),
+            _buttonLocator = new ElementLocator(Locator.XPath, "//*[@type='submit' and contains(@name,'{0}') or contains(@id,'{0}')]");
+
+        public AdminOptionField(DriverContext driverContext) : base(driverContext)
         {
         }
 
-
-
-        public void ClickToSelectLogoAndSupportingLogos()
+        public void PerformToControlType(Step step)
         {
-            var container = Browser.FindElement(By.ClassName("list"));
+            string text;
+            string controlType = step.ControlType;
+            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
 
-            ScrollToView(container);
+            switch (controlTypeValue)
+            {
+                case ControlTypes.Button:
+                    Driver.GetElement<Button>(_buttonLocator.Format(step.ControlId)).ClickTo();
+                    break;
 
-            var link = container.FindElement(By.XPath("//*[@id=\"AdminMaster_ContentPlaceHolderBody__XF_DND_OptionValueTable1_ListView1_ctrl0_item\"]/div[1]"));
+                case ControlTypes.Textbox:
+                    Driver.GetElement<Textbox>(_textboxLocator.Format(step.ControlId)).SetValue(step.ControlValue);
+                    break;
 
-            //ScrollToView(link);
-
-            //key: Logo and supporting logos
-            //value: logos
-
-            link.Click();
-        }
-
-        public void ClickToDeleteOptionItem()
-        {
-            var button = Browser.FindElement(By.XPath("//img[contains(@src, 'Delete.gif')]/ancestor::div[@class='adminButtonLabel adminButtonNoLabel']"));
-
-            button.Click();
-        }
-
-        public void ClickToUpdateSetting()
-        {
-            var buttonUpdate = Browser.FindElement(By.Id("AdminMaster_ContentPlaceHolderBody_btnUpdate1"));
-            ScrollToView(buttonUpdate);
-            buttonUpdate.Click();
-        }
-
-        public void ClickToAddNewOptionItem()
-        {
-            var button = Browser.FindElement(By.XPath("//img[contains(@src, 'AddNew.gif')]/ancestor::div[@class='adminButtonLabel adminButtonNoLabel']"));
-
-            button.Click();
-        }
-
-        public void InsertSelectLogoAndSupportingLogosOption()
-        {
-            var container = Browser.FindElement(By.ClassName("list"));
-
-            ScrollToView(container);
-
-            var wrapper = container.FindElement(By.Id("dojoUnique1"));
-
-            var textboxKey = wrapper.FindElement(By.Name("TextBoxDisplayText"));
-            textboxKey.Clear();
-            textboxKey.SendKeys("Logo and supporting logos");
-
-            var textboxValue = wrapper.FindElement(By.Name("TextBoxValue"));
-            textboxValue.Clear();
-            textboxValue.SendKeys("logos");
+                case ControlTypes.Dropbox:
+                    Driver.GetElement<Select>(_dropboxLocator.Format(step.ControlId)).SelectedByValue(step.ControlValue);
+                    break;
+            }
         }
     }
 }

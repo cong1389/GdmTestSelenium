@@ -9,9 +9,9 @@
     <!--Verify View design options-->
     
         <step controltype="container" action="click" controlid="div1" controlvalue="View design options"></step>
-        <step controltype="radio" action="click" controlid="FIELD_471" controlvalue="Circle"></step>
-        <step controltype="radio" action="click" controlid="FIELD_845" controlvalue="54,43,0,52"></step>
-        <step controltype="radio" action="click" controlid="FIELD_846" controlvalue="0,0,0,63"></step>
+        <step controltype="radio" action="tick" controlid="FIELD_471" controlvalue="Circle"></step>
+        <step controltype="radio" action="tick" controlid="FIELD_845" controlvalue="54,43,0,52"></step>
+        <step controltype="radio" action="tick" controlid="FIELD_846" controlvalue="0,0,0,63"></step>
         <step controltype="image" action="upload" controlid="DIV_482" controlvalue="adidas.png">
           <expectations>
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
@@ -95,8 +95,8 @@
         <step controltype="multipleselectinclude" action="add" controlid="FIELD_1569" controlvalue="1,2"></step>
         <step controltype="multipleselectinclude" action="remove" controlid="FIELD_1569" controlvalue="1,2"></step>
 
-        <step controltype="multipleselectcheckbox" action="checked" controlid="FIELD_1571" controlvalue="1,2"></step>
-        <step controltype="multipleselectcheckbox" action="unchecked" controlid="FIELD_1571" controlvalue="1,2"></step>
+        <step controltype="multipleselectcheckbox" action="tick" controlid="FIELD_1571" controlvalue="1,2"></step>
+        <step controltype="multipleselectcheckbox" action="untick" controlid="FIELD_1571" controlvalue="1,2"></step>
 
         <step controltype="multipleselectlistbox" action="selected" controlid="FIELD_1570" controlvalue="1,2"></step>
         <step controltype="password" action="sendkeys" controlid="FIELD_1572" controlvalue=""></step>
@@ -177,7 +177,7 @@
       <steps>
 
         <step controltype="container" action="click" controlid="div1" controlvalue="View style options"></step>
-        <step controltype="checkbox" action="click" controlid="FIELD_871" controlvalue="true"></step>
+        <step controltype="checkbox" action="tick" controlid="FIELD_871" controlvalue="true"></step>
 
         <step controltype="image" action="upload" controlid="DIV_482" controlvalue="adidas.png">
           <expectations>

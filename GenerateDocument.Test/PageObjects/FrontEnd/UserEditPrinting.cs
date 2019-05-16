@@ -73,9 +73,5 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             }
         }
 
-        public void CheckingExpectation(Step step)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

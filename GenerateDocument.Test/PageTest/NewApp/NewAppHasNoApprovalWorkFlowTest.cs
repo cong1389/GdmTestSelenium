@@ -68,7 +68,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             //step 1: prepare product from admin
             AdminLoginStep(AdminAccount);
-            _adminProducts.Open();
+            _adminProducts.NavigateTo();
             _adminProducts.CloneToNewProduct(templateName, RetiredPrefix);
 
             //step 2: user create design
@@ -77,7 +77,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             //step 3: admin retired this product
             AdminLoginStep(AdminAccount);
-            _adminProducts.Open();
+            _adminProducts.NavigateTo();
             _adminProducts.RetireProduct($"{RetiredPrefix}{templateName}");
 
             //step 4: verify design actions
@@ -95,7 +95,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             //Delete product retired
             AdminLoginStep(AdminAccount);
-            _adminProducts.Open();
+            _adminProducts.NavigateTo();
             _adminProducts.DeleteProduct($"{RetiredPrefix}{templateName}");
         }
 
@@ -104,7 +104,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             //step 1: prepare product from admin
             AdminLoginStep(AdminAccount);
-            _adminProducts.Open();
+            _adminProducts.NavigateTo();
             _adminProducts.CloneToNewProduct(templateName, DeletedPrefix);
 
             //step 2: user create design
@@ -113,7 +113,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             //step 3: admin retired this product
             AdminLoginStep(AdminAccount);
-            _adminProducts.Open();
+            _adminProducts.NavigateTo();
             _adminProducts.DeleteProduct($"{DeletedPrefix}{templateName}");
 
             LoginStep(_returnPage);
@@ -172,7 +172,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             AdminLoginStep(AdminAccount);
 
-            _adminProducts.Open();
+            _adminProducts.NavigateTo();
 
             _adminProducts.GoToAdminProductDetails(templateName);
 
@@ -215,7 +215,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
                 AdminLoginStep(AdminAccount);
 
-                _adminProducts.Open();
+                _adminProducts.NavigateTo();
 
                 _adminProducts.GoToAdminProductDetails(templateName);
 
