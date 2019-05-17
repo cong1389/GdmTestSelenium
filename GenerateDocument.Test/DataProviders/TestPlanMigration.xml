@@ -6,7 +6,7 @@
     <testcase name="Migration_AddControl" description="Force user again place order when add new control " productname="[Test migration] [AUTOTEST][SWF] Invitation">
       <steps>
 
-        <!--Start clone new product-->
+        <!--START CLONE NEW PRODUCT-->
         <!--Admin login-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
 
@@ -34,13 +34,13 @@
         <step controltype="button" action="click" controlid="btnUpdate" controlvalue="Update"></step>
         <step controltype="button" action="click" controlid="btnRelease" controlvalue="Release"></step>
         <step controltype="button" action="click" controlid="btnUpdate" controlvalue="Release"></step>
-        <!--End clone new product-->
-        
+        <!--END CLONE NEW PRODUCT-->
 
-        <!--Start Create new Design-->
+
+        <!--START CREATE NEW DESIGN-->
         <!--User login-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="Login"></step>
-        
+
         <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue=""></step>
         <step controltype="password" action="sendkeys" controlid="Password" controlvalue=""></step>
         <step controltype="button" action="click" controlid="Login" controlvalue="Login"></step>
@@ -49,28 +49,28 @@
         <step controltype="hyperlink" action="click" controlid="" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
         <!---Text options-->
         <step controltype="container" action="click" controlid="div3" controlvalue="Text options"></step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_497" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_497" controlvalue="">
           <expectations>
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_485" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_485" controlvalue="">
           <expectations>
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_473" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_473" controlvalue="">
           <expectations>
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_488" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_488" controlvalue="">
           <expectations>
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_503" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_503" controlvalue="">
           <expectations>
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
@@ -80,18 +80,20 @@
         <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
 
         <!--Finished page-->
-        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box" controlvalue="">
           <expectations>
             <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
 
-        <!--End Create new Design-->
+        <!--Place order design-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <!--END CREATE NEW DESIGN-->
 
-        
 
-        <!--Start Add new control type-->
+
+        <!--START ADD NEW CONTROL TYPE-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
 
         <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
@@ -122,6 +124,8 @@
         <!--AdminProductRetired-->
         <step controltype="radio" action="tick" controlid="radConvert" controlvalue="tick"></step>
         <step controltype="button" action="click" controlid="btnUpdate2" controlvalue=""></step>
+        <!--END ADD NEW CONTROL TYPE-->
+
 
 
       </steps>
