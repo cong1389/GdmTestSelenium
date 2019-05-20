@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using GenerateDocument.Common.Helpers;
+using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
 
@@ -39,7 +40,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public UserEditFormFilling(DriverContext driverContext) : base(driverContext)
         {
         }
-        
+
         public void ClickToViewTextOptions()
         {
             var groupEle = Driver.GetElement(_optionsLabel.Format("View text options", "View Text options"));
@@ -48,7 +49,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
             Driver.WaitUntilPresentedElement(_optionsContain.Format("div2"), BaseConfiguration.LongTimeout);
         }
-        
+
         public List<IWebElement> GetAllInputFields()
         {
             try
@@ -74,7 +75,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                 return null;
             }
         }
-        
+
         private UserEditFormFilling ExpandOptions(string groupName, string groupId)
         {
             if (string.IsNullOrEmpty(groupName) || string.IsNullOrEmpty(groupId))
@@ -165,18 +166,18 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             Driver.GetElement<Button>(_nextStepButtonLocator).ClickTo();
 
             //Check required fields
-            if (Driver.IsUrlEndsWith("usereditformfilling") && Driver.IsElementPresent(_completeRequiredFields))
+            if (Driver.IsUrlEndsWith(PageTypes.UserEditFormFilling.ToString()) && Driver.IsElementPresent(_completeRequiredFields, BaseConfiguration.ShortTimeout))
             {
                 Driver.GetElement<Button>(_completeRequiredFields).ClickTo();
             }
 
-            if (Driver.IsUrlEndsWith("usereditprinting"))
+            if (Driver.IsUrlEndsWith(PageTypes.UserEditPrinting.ToString()))
             {
-                Driver.WaitUntilPresentedUrl("usereditprinting");
+                Driver.WaitUntilPresentedUrl(PageTypes.UserEditPrinting.ToString());
             }
-            else if (Driver.IsUrlEndsWith("usereditfinish"))
+            else if (Driver.IsUrlEndsWith(PageTypes.UserEditFinish.ToString()))
             {
-                Driver.WaitUntilPresentedUrl("usereditfinish");
+                Driver.WaitUntilPresentedUrl(PageTypes.UserEditFinish.ToString());
             }
 
             return this;
@@ -222,7 +223,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             return Driver.GetElement<ImageUpload>(_imageLableLocator.Format(containerId), e => e.Displayed).GetImageName();
         }
 
-        public void PerformToControlType(Step step)
+        public void PerformToControlType(Step step, DesignModel designModel)
         {
             string text;
 

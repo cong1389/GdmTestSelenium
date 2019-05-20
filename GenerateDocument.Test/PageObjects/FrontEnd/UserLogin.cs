@@ -6,6 +6,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Reflection;
 using GenerateDocument.Common.WebElements;
+using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
 using log4net;
@@ -81,7 +82,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             return Driver.IsUrlEndsWith("login.aspx") || Driver.IsUrlEndsWith("restrictlogin");
         }
 
-        public void PerformToControlType(Step step)
+        public void PerformToControlType(Step step, DesignModel designModel)
         {
             string text;
             string controlType = step.ControlType;

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using GenerateDocument.Domain.Designs;
 
 namespace GenerateDocument.Domain.TestSenario
 {
     public class Step
     {
         private string _controlValue;
-        private CustomValueStep _customValueStep;
+
+        private MappingModel<DesignModel> _mappingModel;
 
         public string ControlId { get; set; }
 
@@ -15,42 +17,52 @@ namespace GenerateDocument.Domain.TestSenario
         {
             get
             {
-                if (CustomValueStep != null)
-                {
-                    string currentType = CustomValueStep.FormatType.ToLower();
-
-                    switch (currentType)
-                    {
-                        case "random":
-                            _controlValue = $"{_controlValue} {RandomString(_customValueStep.Length)}";
-                            break;
-
-                        case "appendprefix":
-                            _controlValue = $"{_customValueStep.Value} {_controlValue}";
-                            break;
-                    }
-                }
-
+                _controlValue = GetControlValueByCustomFormat(CustomValueStep, _controlValue);
                 return _controlValue;
             }
-            set { _controlValue = value; }
+            set => _controlValue = value;
         }
 
         public string ControlType { get; set; }
 
         public string Action { get; set; }
 
-        public CustomValueStep CustomValueStep
+        public CustomValueStep CustomValueStep { get; set; }
+
+        public MappingModel<DesignModel> MappingModel
         {
-            get { return _customValueStep; }
-            set { _customValueStep = value; }
+            get
+            {
+                if (_mappingModel == null)
+                {
+                    return _mappingModel;
+                }
+
+                foreach (var propertyInfo in typeof(DesignModel).GetProperties())
+                {
+                    if (_mappingModel.PropertyName.Equals(propertyInfo.Name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        _mappingModel.PropertyValue = _controlValue;
+                    }
+                }
+
+                return _mappingModel;
+            }
+            set => _mappingModel = value;
         }
 
-        public List<Expectation> Expectations { get; set; }
+        public List<Expectation> Expectations { get; }
 
         public Step()
         {
             Expectations = new List<Expectation>();
+        }
+
+        private enum FormatTypes
+        {
+            Random,
+            AppendPrefix,
+            Suffixes
         }
 
         private string RandomString(int size)
@@ -65,5 +77,35 @@ namespace GenerateDocument.Domain.TestSenario
 
             return builder.ToString();
         }
+
+        private string GetControlValueByCustomFormat(CustomValueStep customValueStep, string controlValue)
+        {
+            if (customValueStep == null)
+            {
+                return controlValue;
+            }
+
+            string result = string.Empty;
+
+            Enum.TryParse(customValueStep.FormatType, true, out FormatTypes customFormatType);
+
+            switch (customFormatType)
+            {
+                case FormatTypes.Random:
+                    result = $"{controlValue} {RandomString(customValueStep.Length)}";
+                    break;
+
+                case FormatTypes.AppendPrefix:
+                    result = $"{customValueStep.Value} {controlValue}";
+                    break;
+
+                case FormatTypes.Suffixes:
+                    result = $"{controlValue} {RandomString(customValueStep.Length)}";
+                    break;
+            }
+
+            return result;
+        }
+
     }
 }

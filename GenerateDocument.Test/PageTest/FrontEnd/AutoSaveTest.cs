@@ -10,6 +10,7 @@ using GenerateDocument.Test.PageObjects.NewApp;
 using NUnit.Framework;
 using System;
 using System.Reflection;
+using GenerateDocument.Domain.Designs;
 using log4net;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
@@ -85,7 +86,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             foreach (var step in testcase.Steps)
             {
-                PerformToPageType(step);
+                PerformToPageType(step, testcase.DesignModel);
                 ValidateExpectation(step);
             }
         }
@@ -96,7 +97,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         {
             foreach (var step in testcase.Steps)
             {
-                PerformToPageType(step);
+                PerformToPageType(step, testcase.DesignModel);
                 ValidateExpectation(step);
             }
         }
@@ -129,62 +130,67 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             //_adminProductRetired.ClickToUpdateSetting();
         }
 
-        private void PerformToPageType(Step step)
+        private void PerformToPageType(Step step, DesignModel designModel)
         {
-            var currentPage = step.Action.Equals("navigate") ? step.ControlValue : DriverContext.Driver.GetCurrentPage()?.Split('.')[0];
+            var currentPage = step.Action.Equals("navigate") ? step.ControlValue : DriverContext.Driver.GetCurrentPage();
 
-            Enum.TryParse(currentPage, out PageTypes pageTypes);
+            Enum.TryParse(currentPage, true, out PageTypes pageTypes);
 
             logger.Info($"currentPage: {currentPage}; contronlType: {step.ControlType}; controlId: {step.ControlId}; controlValue: {step.ControlValue}");
 
             switch (pageTypes)
             {
                 case PageTypes.Login:
-                    new UserLogin(DriverContext).PerformToControlType(step);
+                    new UserLogin(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.UserContentStart:
-                    _userContentStart.PerformToControlType(step);
+                    _userContentStart.PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.UserEditFormFilling:
-                    _userEditFormFilling.PerformToControlType(step);
+                    _userEditFormFilling.PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.UserEditPrinting:
-                    _userEditPrinting.PerformToControlType(step);
+                    _userEditPrinting.PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.UserEditFinish:
-                    _userEditFinish.PerformToControlType(step);
+                    _userEditFinish.PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminLogin:
-                    _adminLogin.PerformToControlType(step);
+                    _adminLogin.PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminProducts:
-                    new AdminProducts(DriverContext).PerformToControlType(step);
+                    new AdminProducts(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminProductDetails:
                     new AdminProductDetails(DriverContext)
-                        .PerformToControlType(step);
+                        .PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminOptionSet:
                     new AdminOptionSet(DriverContext)
-                        .PerformToControlType(step);
+                        .PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminOptionField:
                     new AdminOptionField(DriverContext)
-                        .PerformToControlType(step);
+                        .PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminProductRetired:
                     new AdminProductRetired(DriverContext)
-                        .PerformToControlType(step);
+                        .PerformToControlType(step, designModel);
+                    break;
+
+                case PageTypes.Designs:
+                    new MyDesign(DriverContext)
+                        .PerformToControlType(step, designModel);
                     break;
             }
         }

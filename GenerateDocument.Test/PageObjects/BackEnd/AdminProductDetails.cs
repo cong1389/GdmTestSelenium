@@ -3,6 +3,7 @@ using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using GenerateDocument.Common.WebElements;
+using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
 using GenerateDocument.Test.PageObjects.FrontEnd;
@@ -107,7 +108,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
             }
         }
 
-        public void PerformToControlType(Step step)
+        public void PerformToControlType(Step step, DesignModel designModel)
         {
             string controlType = step.ControlType;
             Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);

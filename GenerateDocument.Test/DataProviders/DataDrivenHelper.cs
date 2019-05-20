@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 
 namespace GenerateDocument.Test.DataProviders
@@ -78,15 +79,26 @@ namespace GenerateDocument.Test.DataProviders
                                 var customValueChildNode = stepChild.Current.SelectChildren("customvaluecontrol", xpn.NamespaceURI);
                                 while (customValueChildNode.MoveNext())//Read each customvalue node
                                 {
-                                    var customCurrentNode = customValueChildNode.Current;
-                                    int.TryParse(customCurrentNode.GetAttribute("length", xpn.NamespaceURI), out int length);
+                                    var currentNode = customValueChildNode.Current;
+                                    int.TryParse(currentNode.GetAttribute("length", xpn.NamespaceURI), out int length);
                                     step.CustomValueStep = new CustomValueStep
                                     {
-                                        FormatType = customCurrentNode.GetAttribute("formatype", xpn.NamespaceURI),
+                                        FormatType = currentNode.GetAttribute("formatype", xpn.NamespaceURI),
                                         Length = length,
-                                        Value = customCurrentNode.GetAttribute("value", xpn.NamespaceURI),
+                                        Value = currentNode.GetAttribute("value", xpn.NamespaceURI),
                                     };
                                 }
+
+                                var mappingModelChildNode = stepChild.Current.SelectChildren("mappingmodel", xpn.NamespaceURI);
+                                while (mappingModelChildNode.MoveNext())
+                                {
+                                    var currentNode = mappingModelChildNode.Current;
+                                    step.MappingModel = new MappingModel<DesignModel>()
+                                    {
+                                        PropertyName = currentNode.GetAttribute("property", xpn.NamespaceURI)
+                                    };
+                                }
+
 
                                 testCase.Steps.Add(step);
                             }

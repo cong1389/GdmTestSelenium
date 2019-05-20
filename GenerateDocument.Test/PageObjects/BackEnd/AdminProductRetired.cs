@@ -7,6 +7,7 @@ using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using GenerateDocument.Common.WebElements;
+using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
 
@@ -36,7 +37,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
             return Driver.GetElements(_releaseOptionsLocator).Select(x => x.Text).ToArray();
         }
 
-        public void PerformToControlType(Step step)
+        public void PerformToControlType(Step step, DesignModel designModel)
         {
             string controlType = step.ControlType;
             Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);

@@ -13,7 +13,7 @@ namespace GenerateDocument.Common.Types
         UserEditPrinting,
         UserEditFinish,
         OneDesign,
-        MyDesign,
+        Designs,
         Login,
         AdminLogin,
         AdminProducts,

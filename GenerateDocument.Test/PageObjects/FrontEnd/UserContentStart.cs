@@ -6,6 +6,7 @@ using GenerateDocument.Common.WebElements;
 using GenerateDocument.Test.Utilities;
 using OpenQA.Selenium;
 using System.Linq;
+using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
 using static GenerateDocument.Test.Utilities.PageCommon;
@@ -72,10 +73,9 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             Driver.NavigateTo(UserContentStartPage);
         }
 
-        public void PerformToControlType(Step step)
+        public void PerformToControlType(Step step, DesignModel designModel)
         {
-            string controlType = step.ControlType;
-            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+            Enum.TryParse(step.ControlType, true, out ControlTypes controlTypeValue);
 
             switch (controlTypeValue)
             {

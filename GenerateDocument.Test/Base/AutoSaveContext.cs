@@ -17,16 +17,5 @@ namespace GenerateDocument.Test.Base
         {
             _autoSaves = autoSaves;
         }
-
-        public void ValidateSaveData(List<Step> steps)
-        {
-            foreach (var item in _autoSaves)
-            {
-                foreach (var step in steps)
-                {
-                    item.PerformToControlType(step);
-                }
-            }
-        }
     }
 }

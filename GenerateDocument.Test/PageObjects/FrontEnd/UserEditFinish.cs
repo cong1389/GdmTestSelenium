@@ -10,6 +10,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Reflection;
+using GenerateDocument.Domain.Designs;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
@@ -56,10 +57,9 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             return DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.Id("descriptionErrorMessage"))).Text;
         }
 
-        public void PerformToControlType(Step step)
+        public void PerformToControlType(Step step, DesignModel designModel)
         {
-            string controlType = step.ControlType;
-            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+            Enum.TryParse(step.ControlType, true, out ControlTypes controlTypeValue);
 
             switch (controlTypeValue)
             {

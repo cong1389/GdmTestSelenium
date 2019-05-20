@@ -5,6 +5,7 @@ using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Helpers;
 using GenerateDocument.Common.Types;
 using GenerateDocument.Common.WebElements;
+using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
 using log4net;
@@ -46,7 +47,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             Driver.GetElement<Textbox>(_inputLocator.Format(controlId)).SetValue(text);
         }
 
-        public void PerformToControlType(Step step)
+        public void PerformToControlType(Step step, DesignModel designModel)
         {
             string text;
 

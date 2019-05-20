@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using GenerateDocument.Common.WebElements;
+using GenerateDocument.Domain.Designs;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
@@ -166,7 +167,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
             Driver.NavigateTo(AdminProductsPage);
         }
 
-        public void PerformToControlType(Step step)
+        public void PerformToControlType(Step step, DesignModel designModel)
         {
             string controlType = step.ControlType;
             Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);

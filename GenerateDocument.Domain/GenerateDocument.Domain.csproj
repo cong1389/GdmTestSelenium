@@ -41,13 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Designs\DesignModel.cs" />
     <Compile Include="TestSenario\CustomValueStep.cs" />
+    <Compile Include="TestSenario\MappingModel.cs" />
     <Compile Include="TestSenario\Expectation.cs" />
     <Compile Include="TestSenario\Step.cs" />
     <Compile Include="TestSenario\TestCase.cs" />
     <Compile Include="TestSenario\TestPlan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

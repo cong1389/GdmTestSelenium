@@ -1,4 +1,5 @@
-﻿using GenerateDocument.Common;
+﻿using System;
+using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
@@ -7,12 +8,16 @@ using OpenQA.Selenium.Support.UI;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using GenerateDocument.Common.WebElements;
+using GenerateDocument.Domain.Designs;
+using GenerateDocument.Domain.TestSenario;
+using GenerateDocument.Test.Base;
 using log4net;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.NewApp
 {
-    public class MyDesign : PageBaseObject
+    public class MyDesign : PageBaseObject, IAutoSave
     {
         private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -23,7 +28,9 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             _dataMenuGoTo = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//ul//li//a[@name='go']"),
             _designStatus = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//div[contains(@class, 'design-info')]//span"),
             _deletedLableLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//label"),
-            _kitLable = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='caption']//div[@class='caption-container']//span[contains(@class, 'kit-label')]");
+            _kitLable = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='caption']//div[@class='caption-container']//span[contains(@class, 'kit-label')]"),
+
+            _actionMenuLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//li//a[text()='{1}']");
 
 
         public MyDesign(DriverContext driverContext) : base(driverContext)
@@ -33,6 +40,8 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         public MyDesign NavigateTo()
         {
             Driver.NavigateTo(MyDesignPage);
+
+            Driver.WaitUntilPresentedUrl(PageTypes.Designs.ToString());
 
             return this;
         }
@@ -80,7 +89,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
             Driver.WaitUntilPresentedElement(_dataDocumentName.Format(designName));
             var designStatusEle = Driver.WaitUntilPresentedElement(_designStatus.Format(designName), e => e.Displayed, BaseConfiguration.LongTimeout);
-            
+
             return designStatusEle == null ? string.Empty : designStatusEle.Text;
         }
 
@@ -300,6 +309,22 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             txtSearch.SendKeys(designName);
 
             DriverContext.Driver.FindElement(By.Id("doSearching")).Click();
+        }
+
+        public void PerformToControlType(Step step, DesignModel designModel)
+        {
+            Enum.TryParse(step.ControlType, true, out ControlTypes controlTypeValue);
+
+            switch (controlTypeValue)
+            {
+                case ControlTypes.Browser:
+                    NavigateTo();
+                    break;
+
+                case ControlTypes.Hyperlink:
+                    Driver.GetElement<Button>(_actionMenuLocator.Format(designModel.DesignName, step.ControlId)).OnClickJavaScript();
+                    break;
+            }
         }
     }
 }
