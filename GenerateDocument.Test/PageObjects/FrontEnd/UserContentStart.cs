@@ -71,6 +71,8 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public void NavigateTo()
         {
             Driver.NavigateTo(UserContentStartPage);
+
+            Driver.WaitUntilPresentedUrl(PageTypes.UserContentStart.ToString());
         }
 
         public void PerformToControlType(Step step, DesignModel designModel)

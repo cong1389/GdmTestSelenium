@@ -260,8 +260,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
         private void PlaceOrderStep(string name, bool isKit, bool needToPublishFirst = true)
         {
-            //_myDesign.GoToActions(name);
-
             var designName = _oneDesign.GetDesignName();
             Assert.IsTrue(!string.IsNullOrEmpty(designName) && designName.IsEquals(name), "Design name is displayed correctly");
 
@@ -269,10 +267,9 @@ namespace GenerateDocument.Test.PageTest.NewApp
             Assert.IsTrue(countButtons >= 1, "Download options should be available");
 
             FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.NewAppTestDir);
-            _oneDesign.DownloadDesign(needToPublishFirst, ref _isShowSurveyInvitationModal, name);
+            _oneDesign.DownloadDesign(needToPublishFirst, ref _isShowSurveyInvitationModal);
 
             var downloadedFilesCount = FilesHelper.CountFiles(ProjectBaseConfiguration.NewAppTestDir);
-            //var downloadedFilesCount = CountDownloadFiles(downloadOptionsCount);
             Assert.IsTrue(downloadedFilesCount == countButtons, $"Files downloaded successfully; files count: {downloadedFilesCount}");
 
             var componentName = $"{_oneDesign.GetSelectedComponentName(isKit)}";

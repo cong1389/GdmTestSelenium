@@ -30,6 +30,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             _deletedLableLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//label"),
             _kitLable = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='caption']//div[@class='caption-container']//span[contains(@class, 'kit-label')]"),
 
+            _menusLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']"),
             _actionMenuLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//li//a[text()='{1}']");
 
 
@@ -177,7 +178,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             return DriverContext.Driver.FindElements(By.XPath("//div[@class='thumbnail']//div[@class='content-wrapper']//div[contains(@class, 'design-info')]//span")).Where(x => x.Text.IsEquals(status)).Count();
         }
 
-        public bool CheckDesignExists(string designName)
+        private bool CheckDesignExists(string designName)
         {
             return DriverContext.Driver.FindElements(By.XPath($"//div[@data-documentname='{designName}']//div[@class='thumbnail']//div[@class='caption']//div[@class='caption-container']//h4")).Any(x => x.Text.IsEquals(designName));
         }
@@ -243,8 +244,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public void GoToActions(string documentName)
         {
-            var isthumbnailBoxEle = Driver.IsElementPresent(_dataThumbnailBox.Format(documentName));
-            if (isthumbnailBoxEle != null)
+            Driver.IsElementPresent(_dataThumbnailBox.Format(documentName));
             {
                 var thumbnailBoxEle = Driver.WaitUntilPresentedElement(_dataThumbnailBox.Format(documentName), BaseConfiguration.LongTimeout);
                 Driver.Actions().MoveToElement(thumbnailBoxEle).Perform();
@@ -322,7 +322,14 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                     break;
 
                 case ControlTypes.Hyperlink:
-                    Driver.GetElement<Button>(_actionMenuLocator.Format(designModel.DesignName, step.ControlId)).OnClickJavaScript();
+                    Driver.IsElementPresent(_dataThumbnailBox.Format(designModel.DesignName));
+                    {
+                        var thumbnailBoxEle = Driver.WaitUntilPresentedElement(_dataThumbnailBox.Format(designModel.DesignName), BaseConfiguration.LongTimeout);
+                        Driver.Actions().MoveToElement(thumbnailBoxEle).Perform();
+
+                        Driver.GetElement(_actionMenuLocator.Format(designModel.DesignName, step.ControlId)).Click();
+                    }
+
                     break;
             }
         }

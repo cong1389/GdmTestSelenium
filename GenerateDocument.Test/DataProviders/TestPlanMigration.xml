@@ -91,10 +91,6 @@
           </expectations>
         </step>
         <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
-
-        <!--Place order design-->
-        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
-        <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step>
         <!--END CREATE NEW DESIGN-->
 
 
@@ -132,6 +128,15 @@
         <step controltype="button" action="click" controlid="btnUpdate2" controlvalue=""></step>
         <!--END ADD NEW CONTROL TYPE-->
 
+
+        <!--Again place order design-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step>
+        <step controltype="button" action="published">
+          <expectations>
+            <expectation asserttype="compareoutputfile" expectedvalue="5"  assertmessage="The output files do not same"></expectation>
+          </expectations>
+        </step>
 
 
       </steps>

@@ -64,7 +64,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             switch (controlTypeValue)
             {
                 case ControlTypes.Textbox:
-                    var text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : $"{step.ControlValue}_{NameHelper.RandomName(10)}";
+                    var text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : $"{step.ControlValue}";
                     EnterOrderName(text);
                     break;
 

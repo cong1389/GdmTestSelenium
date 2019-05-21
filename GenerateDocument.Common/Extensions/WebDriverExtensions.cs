@@ -4,7 +4,6 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
-using OpenQA.Selenium.Internal;
 
 namespace GenerateDocument.Common.Extensions
 {
@@ -167,7 +166,7 @@ namespace GenerateDocument.Common.Extensions
         public static string GetCurrentPage(this IWebDriver driver)
         {
             var uri = new Uri(driver.Url);
-            return string.IsNullOrEmpty(uri.Fragment) ? uri.Segments.Last()?.Split('.')[0] : uri.Fragment.Split('#')[1];
+            return string.IsNullOrEmpty(uri.Fragment) ? uri.Segments.Last()?.Split('.')[0] : uri.Fragment.Split('/')[1];
         }
 
         public static void NavigateTo(this IWebDriver driver, string url)

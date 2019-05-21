@@ -7,12 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using GenerateDocument.Domain.Designs;
+using GenerateDocument.Domain.TestSenario;
+using GenerateDocument.Test.Base;
 
 namespace GenerateDocument.Test.PageObjects.NewApp
 {
-    public class OneDesign : PageBaseObject
+    public class OneDesign : PageBaseObject, IAutoSave
     {
-        private ElementLocator
+        private readonly ElementLocator
             _modalOpen = new ElementLocator(Locator.XPath, "//body[@class='modal-open']"),
             _surveyWindow = new ElementLocator(Locator.XPath, "//iframe[@id='surveyWindow']"),
             _takeTheSurveyButton = new ElementLocator(Locator.XPath, "//button[@ng-click='openSurveyForm()']"),
@@ -73,7 +76,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             return DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='dropdown']//button"))).Text.Trim();
         }
 
-        public void DownloadDesign(bool needToPublishFirst, ref bool isShowSurveyInvitationModal, string designName = null)
+        public void DownloadDesign(bool needToPublishFirst, ref bool isShowSurveyInvitationModal)
         {
             var downloadButtons = GetDownloadDesignButtons();
 
@@ -100,11 +103,11 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
                 ExitForDownloadCompletedModal(account);
 
-                TakeSurveyIfVisible(isShowSurveyInvitationModal, account);
+                TakeSurveyIfVisible(isShowSurveyInvitationModal);
 
             }
             account = -1;
-            TakeSurveyIfVisible(isShowSurveyInvitationModal, account);
+            TakeSurveyIfVisible(isShowSurveyInvitationModal);
 
             if (isShowSurveyInvitationModal)
             {
@@ -136,7 +139,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                 if (modalEle != null)
                 {
                     var closedLink = Driver.WaitUntilPresentedElement(_completedModalCloseBtn, e => e.Displayed, BaseConfiguration.LongTimeout);
-                    
+
                     Console.WriteLine($"modalEle onClick: { closedLink.Text}, count before: {count}");
                     closedLink.OnClickJavaScript();
 
@@ -164,7 +167,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             Thread.Sleep(2000);
         }
 
-        public void TakeSurveyIfVisible(bool visibility, int countAccess)
+        private void TakeSurveyIfVisible(bool visibility)
         {
             var hasFeedbackCookies = Driver.CheckExistedCookie($"MSFeedbackSent{ProjectBaseConfiguration.MopinionFormId}");
             Console.WriteLine($"TakeSurveyIfVisible with visibility:{visibility}, hasFeedbackCookies:{hasFeedbackCookies} ");
@@ -183,7 +186,6 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                         Driver.SwitchTo().Frame(surveyWindowEle);
                         Driver.GetElement(_surveySubmitBtn).Click();
 
-                        // Driver.WaitUntilElementIsNoLongerFound(_surveySubmitBtn, BaseConfiguration.ShortTimeout);
                         Driver.GetElement(_closeModalBtn).Click();
 
                         Driver.SwitchToParent();
@@ -283,5 +285,29 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         }
 
+        public void PerformToControlType(Step step, DesignModel designModel)
+        {
+            Enum.TryParse(step.ControlType, true, out ControlTypes controlTypeValue);
+
+            switch (controlTypeValue)
+            {
+                case ControlTypes.Button:
+                    TakeButtonActionTypes(step);
+                    break;
+            }
+        }
+
+        private void TakeButtonActionTypes(Step step)
+        {
+            Enum.TryParse(step.Action, true, out ActionTypes actionResult);
+
+            switch (actionResult)
+            {
+                case ActionTypes.Published:
+                    bool isShowSurveyInvitationModal = true;
+                    DownloadDesign(true, ref isShowSurveyInvitationModal);
+                    break;
+            }
+        }
     }
 }

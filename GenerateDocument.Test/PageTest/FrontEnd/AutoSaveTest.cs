@@ -136,7 +136,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
             Enum.TryParse(currentPage, true, out PageTypes pageTypes);
 
-            logger.Info($"currentPage: {currentPage}; contronlType: {step.ControlType}; controlId: {step.ControlId}; controlValue: {step.ControlValue}");
+            logger.Info($"currentPage: {currentPage}; controlType: {step.ControlType}; controlId: {step.ControlId}; controlValue: {step.ControlValue}");
 
             switch (pageTypes)
             {
@@ -192,6 +192,11 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                     new MyDesign(DriverContext)
                         .PerformToControlType(step, designModel);
                     break;
+
+                case PageTypes.OneDesign:
+                    new OneDesign(DriverContext)
+                        .PerformToControlType(step, designModel);
+                    break;
             }
         }
 
@@ -211,6 +216,11 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                             var actualValue = _userEditFormFilling.GetImageNameAfterUploaded(step.ControlId);
                             Assert.AreEqual(actualValue, x.ExpectedValue, x.AssertMessage);
                         }
+                        break;
+
+                    case "compareoutputfile":
+                        var downloadedFilesCount = FilesHelper.CountFiles(ProjectBaseConfiguration.NewAppTestDir);
+                        Assert.IsTrue(int.Parse(x.ExpectedValue) == downloadedFilesCount, x.AssertMessage);
                         break;
 
                 }

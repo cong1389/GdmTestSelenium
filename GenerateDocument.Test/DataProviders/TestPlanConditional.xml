@@ -163,6 +163,7 @@
     <!--Finished page-->
     
         <step controltype="textbox" action="sendkeys" controlid="DocDescription_box" controlvalue="">
+          <customvaluecontrol formatype="suffixes" length="5"></customvaluecontrol>
           <expectations>
             <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
           </expectations>
