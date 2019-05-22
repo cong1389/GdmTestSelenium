@@ -169,8 +169,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
         public void PerformToControlType(Step step, DesignModel designModel)
         {
-            string controlType = step.ControlType;
-            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+            Enum.TryParse(step.ControlType, true, out ControlTypes controlTypeValue);
 
             switch (controlTypeValue)
             {

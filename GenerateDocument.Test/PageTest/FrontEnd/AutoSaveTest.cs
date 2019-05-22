@@ -53,24 +53,24 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _myDesign = new MyDesign(DriverContext);
         }
 
-        //[Test]
-        //[TestCaseSource(typeof(DataDriven), "ConditionalControl")]
-        //public void TestConditionalControlOfDataDriven(TestCase testcase)
-        //{
-        //    UserSiteLoginStep();
+        [Test]
+        [TestCaseSource(typeof(DataDriven), "ConditionalControl")]
+        public void TestConditionalControlOfDataDriven(TestCase testcase)
+        {
+            UserSiteLoginStep();
 
-        //    _myDesign.CreateDesign();
+            _myDesign.CreateDesign();
 
-        //    var documentBefore = _userContentStart.SearchDocument(testcase.ProductName);
-        //    Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
-        //    _userContentStart.SelectDocument(documentBefore.Id);
+            var documentBefore = _userContentStart.SearchDocument(testcase.ProductName);
+            Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
+            _userContentStart.SelectDocument(documentBefore.Id);
 
-        //    foreach (var step in testcase.Steps)
-        //    {
-        //        PerformToPageType(step);
-        //        ValidateExpectation(step);
-        //    }
-        //}
+            foreach (var step in testcase.Steps)
+            {
+                PerformToPageType(step, testcase.DesignModel);
+                ValidateExpectation(step);
+            }
+        }
 
         [Test]
         [TestCaseSource(typeof(DataDriven), "SpecialCharacters")]

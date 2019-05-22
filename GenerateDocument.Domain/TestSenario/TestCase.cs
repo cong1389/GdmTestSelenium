@@ -37,7 +37,7 @@ namespace GenerateDocument.Domain.TestSenario
                 return DictionaryToObject<DesignModel>(dic);
             }
         }
-
+        
         private static T DictionaryToObject<T>(IDictionary<string, string> dict) where T : new()
         {
             var t = new T();

@@ -1,13 +1,10 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using System.Xml.XPath;
+﻿using System;
 using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Xml.XPath;
 
 namespace GenerateDocument.Test.DataProviders
 {
@@ -15,9 +12,11 @@ namespace GenerateDocument.Test.DataProviders
     {
         public static TestPlan ReadOnlyData(string dataPath)
         {
-            XPathDocument xpd = new XPathDocument(dataPath);
-            XPathNavigator xpn = xpd.CreateNavigator();
-            XPathNodeIterator xpi = xpn.Select("/testplan");
+            var xpd = new XPathDocument(dataPath);
+            var xpn = xpd.CreateNavigator();
+            var xpi = xpn.Select("/testplan");
+
+            var arguments = new Dictionary<string, string>();
 
             var testPlan = new TestPlan();
 
@@ -41,6 +40,16 @@ namespace GenerateDocument.Test.DataProviders
                             Steps = new List<Step>()
                         };
 
+                        var argumentsChildNode = testCaseChildNode.Current.SelectChildren("arguments", xpn.NamespaceURI);
+                        while (argumentsChildNode.MoveNext())//Read each argument node
+                        {
+                            var argumentChildNode = argumentsChildNode.Current.SelectChildren("argument", xpn.NamespaceURI);
+                            while (argumentChildNode.MoveNext())
+                            {
+                                arguments.Add(argumentChildNode.Current.GetAttribute("name", xpn.NamespaceURI), argumentChildNode.Current.GetAttribute("value", xpn.NamespaceURI));
+                            }
+                        }
+
                         var stepsNode = testCaseChildNode.Current.SelectChildren("steps", xpn.NamespaceURI);
                         while (stepsNode.MoveNext())//Read each steps node
                         {
@@ -54,7 +63,8 @@ namespace GenerateDocument.Test.DataProviders
                                     ControlType = stepCurrentNode.GetAttribute("controltype", xpn.NamespaceURI),
                                     Action = stepCurrentNode.GetAttribute("action", xpn.NamespaceURI),
                                     ControlId = stepCurrentNode.GetAttribute("controlid", xpn.NamespaceURI),
-                                    ControlValue = stepCurrentNode.GetAttribute("controlvalue", xpn.NamespaceURI)
+                                    ControlValue = stepCurrentNode.GetAttribute("controlvalue", xpn.NamespaceURI),
+                                    Argument = DictionaryToObject<ArgumentModel>(arguments)
                                 };
 
                                 var expectationsChildNode = stepChild.Current.SelectChildren("expectations", xpn.NamespaceURI);
@@ -80,12 +90,14 @@ namespace GenerateDocument.Test.DataProviders
                                 while (customValueChildNode.MoveNext())//Read each customvalue node
                                 {
                                     var currentNode = customValueChildNode.Current;
-                                    int.TryParse(currentNode.GetAttribute("length", xpn.NamespaceURI), out int length);
+                                    int.TryParse(currentNode.GetAttribute("length", xpn.NamespaceURI), out var length);
                                     step.CustomValueStep = new CustomValueStep
                                     {
                                         FormatType = currentNode.GetAttribute("formatype", xpn.NamespaceURI),
                                         Length = length,
                                         Value = currentNode.GetAttribute("value", xpn.NamespaceURI),
+                                        ArgumentName = currentNode.GetAttribute("argumentname", xpn.NamespaceURI),
+                                        Expression = currentNode.GetAttribute("expression", xpn.NamespaceURI)
                                     };
                                 }
 
@@ -95,7 +107,7 @@ namespace GenerateDocument.Test.DataProviders
                                     var currentNode = mappingModelChildNode.Current;
                                     step.MappingModel = new MappingModel<DesignModel>()
                                     {
-                                        PropertyName = currentNode.GetAttribute("property", xpn.NamespaceURI)
+                                        PropertyName = currentNode.GetAttribute("propertyname", xpn.NamespaceURI)
                                     };
                                 }
 
@@ -112,7 +124,34 @@ namespace GenerateDocument.Test.DataProviders
             }
 
             return testPlan;
-
         }
+
+        private static T DictionaryToObject<T>(IDictionary<string, string> dict) where T : new()
+        {
+            var t = new T();
+
+            var properties = t.GetType().GetProperties();
+
+            foreach (var property in properties)
+            {
+                if (!dict.Any(x => x.Key.Equals(property.Name, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    continue;
+                }
+
+                var item = dict.First(x => x.Key.Equals(property.Name, StringComparison.InvariantCultureIgnoreCase));
+
+                var tPropertyType = t.GetType().GetProperty(property.Name)?.PropertyType;
+
+                var newT = Nullable.GetUnderlyingType(tPropertyType) ?? tPropertyType;
+
+                object newA = Convert.ChangeType(item.Value, newT);
+
+                t.GetType().GetProperty(property.Name)?.SetValue(t, newA, null);
+            }
+
+            return t;
+        }
+
     }
 }

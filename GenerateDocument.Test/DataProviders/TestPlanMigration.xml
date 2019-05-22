@@ -1,9 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <testplan name="AutoSaveWithCheckingMigrationControl">
 
+
+
   <testcases>
 
     <testcase name="Migration_AddControl" description="Force user again place order when add new control " productname="[Test migration] [AUTOTEST][SWF] Invitation">
+
+      <arguments>
+        <argument name="productname" value="[AUTOTEST][SWF] Invitation"></argument>
+        <argument name="productdescription" value="[Test migration] [AUTOTEST][SWF] Invitation test {random}"></argument>
+      </arguments>
+
       <steps>
 
         <!--START CLONE NEW PRODUCT-->
@@ -11,8 +19,7 @@
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
 
         <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
-        <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue="RightMarket"></step>
-
+        <step controltype="textbox" action="sendkeys" controlid="Username"></step>
         <step controltype="password" action="sendkeys" controlid="Password" controlvalue="123"></step>
         <step controltype="button" action="click" controlid="ButtonLogin" controlvalue=""></step>
 
@@ -20,19 +27,30 @@
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminProducts"></step>
 
         <!--Cloning-->
-        <step controltype="checkbox" action="tick" controlid="ItemSelectedCheckbox" controlvalue="[AUTOTEST][SWF] Invitation"></step>
+        <step controltype="checkbox" action="tick" controlid="ItemSelectedCheckbox">
+          <customvaluecontrol formatype="expression" expression="{productname}"></customvaluecontrol>
+        </step>
         <step controltype="button" action="click" controlid="btnDuplicate_spnActive" controlvalue=""></step>
 
-        <step controltype="hyperlink" action="click" controlid="" controlvalue="Copy of [AUTOTEST][SWF] Invitation"></step>
+        <step controltype="hyperlink" action="click" controlid="">
+          <customvaluecontrol formatype="expression" expression="Copy of {productname}"></customvaluecontrol>
+        </step>
 
         <!--Rename product name-->
-        <step controltype="button" action="click" controlid="btnChangeSettings" controlvalue=""></step>
-        <step controltype="textbox" action="sendkeys" controlid="tbProductName" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
-        <step controltype="textarea" action="sendkeys" controlid="tbToolTip" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
-        <step controltype="textarea" action="sendkeys" controlid="tbProductDescription" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation">
-          <mappingmodel property="productname"></mappingmodel>
+        <step controltype="button" action="click" controlid="btnChangeSettings"></step>
+        <step controltype="textbox" action="sendkeys" controlid="tbProductName">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
         </step>
-        <step controltype="textarea" action="sendkeys" controlid="tbSearchKeywords" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
+        <step controltype="textarea" action="sendkeys" controlid="tbToolTip">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="tbProductDescription">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+          <mappingmodel propertyname="productname"></mappingmodel>
+        </step>
+        <step controltype="textarea" action="sendkeys" controlid="tbSearchKeywords">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        </step>
 
         <step controltype="button" action="click" controlid="btnUpdate" controlvalue="Update"></step>
         <step controltype="button" action="click" controlid="btnRelease" controlvalue="Release"></step>
@@ -49,7 +67,9 @@
         <step controltype="button" action="click" controlid="Login" controlvalue="Login"></step>
 
         <step controltype="browser" action="navigate" controlid="" controlvalue="UserContentStart"></step>
-        <step controltype="hyperlink" action="click" controlid="" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
+        <step controltype="hyperlink" action="click" controlid="">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        </step>
         <!---Text options-->
         <step controltype="container" action="click" controlid="div3" controlvalue="Text options"></step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_497" controlvalue="">
@@ -83,9 +103,10 @@
         <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
 
         <!--Finished page-->
-        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation">
-          <customvaluecontrol formatype="suffixes" length="5"></customvaluecontrol>
-          <mappingmodel property="designname"></mappingmodel>
+        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box">
+          <customvaluecontrol formatype="expression" expression="{productdescription} {random}"></customvaluecontrol>
+          <!--<customvaluecontrol formatype="suffixes" length="5"></customvaluecontrol>-->
+          <mappingmodel propertyname="designname"></mappingmodel>
           <expectations>
             <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
           </expectations>
@@ -140,6 +161,7 @@
 
 
       </steps>
+
     </testcase>
 
   </testcases>

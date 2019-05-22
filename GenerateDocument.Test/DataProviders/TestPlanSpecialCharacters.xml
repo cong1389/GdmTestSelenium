@@ -18,7 +18,7 @@
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
-       
+
         <step controltype="textarea" action="sendkeys" controlid="FIELD_473" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
           <expectations>
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
@@ -40,6 +40,8 @@
 
         <!--Finished page-->
         <step controltype="textbox" action="sendkeys" controlid="DocDescription_box" controlvalue="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt;">
+          <customvaluecontrol formatype="suffixes" length="5"></customvaluecontrol>
+          <mappingmodel propertyname="designname"></mappingmodel>
           <expectations>
             <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
           </expectations>

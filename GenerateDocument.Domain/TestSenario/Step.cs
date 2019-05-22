@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using GenerateDocument.Domain.Designs;
 
 namespace GenerateDocument.Domain.TestSenario
@@ -8,6 +10,7 @@ namespace GenerateDocument.Domain.TestSenario
     public class Step
     {
         private string _controlValue;
+        private ArgumentModel _argument;
 
         private MappingModel<DesignModel> _mappingModel;
 
@@ -20,7 +23,7 @@ namespace GenerateDocument.Domain.TestSenario
                 _controlValue = GetControlValueByCustomFormat(CustomValueStep, _controlValue);
                 return _controlValue;
             }
-            set => _controlValue = value;
+            set { _controlValue = value;}
         }
 
         public string ControlType { get; set; }
@@ -28,6 +31,42 @@ namespace GenerateDocument.Domain.TestSenario
         public string Action { get; set; }
 
         public CustomValueStep CustomValueStep { get; set; }
+
+        public ArgumentModel Argument
+        {
+            get => _argument;
+
+            set
+            {
+                _argument = value;
+
+                var pattern = @"{([A-Za-z0-9\-]+)}";
+
+                foreach (var prop in typeof(ArgumentModel).GetProperties())
+                {
+                    var argValue = prop.GetValue(_argument)?.ToString();
+                    if (!string.IsNullOrEmpty(argValue))
+                    {
+                        var matches = Regex.Matches(argValue, pattern, RegexOptions.IgnoreCase);
+                        foreach (Match match in matches)
+                        {
+                            var expressionValue = match.Groups[1].Value;
+
+                            Enum.TryParse(expressionValue, true, out FormatTypes customFormatType);
+                            switch (customFormatType)
+                            {
+                                case FormatTypes.Random:
+                                    argValue = Regex.Replace(argValue, match.Groups[0].Value, RandomString(5));
+                                    break;
+                            }
+
+                            prop.SetValue(_argument, argValue);
+                        }
+                    }
+                }
+
+            }
+        }
 
         public MappingModel<DesignModel> MappingModel
         {
@@ -48,6 +87,7 @@ namespace GenerateDocument.Domain.TestSenario
 
                 return _mappingModel;
             }
+
             set => _mappingModel = value;
         }
 
@@ -62,7 +102,9 @@ namespace GenerateDocument.Domain.TestSenario
         {
             Random,
             AppendPrefix,
-            Suffixes
+            Suffixes,
+            Argument,
+            Expression
         }
 
         private string RandomString(int size)
@@ -102,10 +144,42 @@ namespace GenerateDocument.Domain.TestSenario
                 case FormatTypes.Suffixes:
                     result = $"{controlValue} {RandomString(customValueStep.Length)}";
                     break;
+
+                case FormatTypes.Argument:
+                    result = typeof(ArgumentModel).GetProperties()
+                        .FirstOrDefault(x => x.Name.Equals(customValueStep.ArgumentName, StringComparison.OrdinalIgnoreCase))?.GetValue(Argument).ToString();
+                    break;
+
+                case FormatTypes.Expression:
+                    result = customValueStep.Expression;
+
+                    var pattern = @"{([A-Za-z0-9\-]+)}";
+                    var matchs = Regex.Matches(customValueStep.Expression, pattern, RegexOptions.IgnoreCase);
+                    foreach (Match match in matchs)
+                    {
+                        var expressionValue = match.Groups[1].Value;
+
+                        var argValue = typeof(ArgumentModel).GetProperties()
+                            .FirstOrDefault(x => x.Name.Equals(expressionValue, StringComparison.OrdinalIgnoreCase))?.GetValue(Argument).ToString();
+
+                        if (expressionValue != null && expressionValue.Equals("random"))
+                        {
+                            argValue = RandomString(4);
+                        }
+
+                        result = Regex.Replace(result, match.Groups[0].Value, argValue);
+                    }
+
+                    break;
             }
 
             return result;
         }
+
+        //private string SetValuebyFormatType()
+        //{
+
+        //}
 
     }
 }

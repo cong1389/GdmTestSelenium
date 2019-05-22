@@ -101,7 +101,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                     DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("modal-open")));
                 }
 
-                ExitForDownloadCompletedModal(account);
+                WaitToClosedCompletedModal(account);
 
                 TakeSurveyIfVisible(isShowSurveyInvitationModal);
 
@@ -129,21 +129,18 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             makeSureAllOutputsAreDownloaded(downloadButtons.Count);
         }
 
-        private void ExitForDownloadCompletedModal(int count)
+        private void WaitToClosedCompletedModal(int count)
         {
             bool.TryParse(Driver.GetSessionStorage("hasShowedFeedback"), out bool hasShowedFeedback);
-            Console.WriteLine($"hasShowedFeedback: {hasShowedFeedback}");
+           
             if (hasShowedFeedback)
             {
                 var modalEle = Driver.WaitUntilPresentedElement(_modalOpen, e => e.Displayed, BaseConfiguration.LongTimeout);
                 if (modalEle != null)
                 {
                     var closedLink = Driver.WaitUntilPresentedElement(_completedModalCloseBtn, e => e.Displayed, BaseConfiguration.LongTimeout);
-
-                    Console.WriteLine($"modalEle onClick: { closedLink.Text}, count before: {count}");
+                    
                     closedLink.OnClickJavaScript();
-
-                    Console.WriteLine($"modalEle onClick: { closedLink.Text}, count after: {count}");
 
                     //Driver.SwitchToParent();
                     Driver.WaitUntilElementIsNoLongerFound(_modalOpen, BaseConfiguration.ShortTimeout);
@@ -292,12 +289,12 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             switch (controlTypeValue)
             {
                 case ControlTypes.Button:
-                    TakeButtonActionTypes(step);
+                    TakeActionButtonTypes(step);
                     break;
             }
         }
 
-        private void TakeButtonActionTypes(Step step)
+        private void TakeActionButtonTypes(Step step)
         {
             Enum.TryParse(step.Action, true, out ActionTypes actionResult);
 
