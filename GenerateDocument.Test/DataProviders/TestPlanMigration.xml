@@ -19,7 +19,9 @@
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
 
         <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
-        <step controltype="textbox" action="sendkeys" controlid="Username"></step>
+        <step controltype="textbox" action="sendkeys" controlid="Username">
+          <customvaluecontrol formatype="expression" expression="{productdescription} {random()}"></customvaluecontrol>
+        </step>
         <step controltype="password" action="sendkeys" controlid="Password" controlvalue="123"></step>
         <step controltype="button" action="click" controlid="ButtonLogin" controlvalue=""></step>
 
@@ -104,7 +106,7 @@
 
         <!--Finished page-->
         <step controltype="textbox" action="sendkeys" controlid="DocDescription_box">
-          <customvaluecontrol formatype="expression" expression="{productdescription} {random}"></customvaluecontrol>
+          <customvaluecontrol formatype="expression" expression="{productdescription} {$random}"></customvaluecontrol>
           <!--<customvaluecontrol formatype="suffixes" length="5"></customvaluecontrol>-->
           <mappingmodel propertyname="designname"></mappingmodel>
           <expectations>

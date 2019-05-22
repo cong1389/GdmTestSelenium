@@ -20,10 +20,10 @@ namespace GenerateDocument.Domain.TestSenario
         {
             get
             {
-                _controlValue = GetControlValueByCustomFormat(CustomValueStep, _controlValue);
+                _controlValue = CustomControlValue(CustomValueStep, _controlValue);
                 return _controlValue;
             }
-            set { _controlValue = value;}
+            set { _controlValue = value; }
         }
 
         public string ControlType { get; set; }
@@ -120,13 +120,46 @@ namespace GenerateDocument.Domain.TestSenario
             return builder.ToString();
         }
 
-        private string GetControlValueByCustomFormat(CustomValueStep customValueStep, string controlValue)
+        private string CustomControlValue(CustomValueStep customValueStep, string controlValue)
         {
             if (customValueStep == null)
             {
                 return controlValue;
             }
 
+            string result = customValueStep.Expression;
+
+            var patternArg = @"{([A-Za-z0-9\-]+)}";
+            var patternFn = @"{([A-Za-z0-9\-]+)\(\)}";
+
+            result= ExpressionValueByPattern(patternArg, result);
+            result = ExpressionValueByPattern(patternFn, result);
+
+            //result = SetValuebyFormatType(customValueStep, controlValue);
+
+            return result;
+        }
+
+        private string ExpressionValueByPattern(string pattern, string input)
+        {
+            string result = input;
+
+            var matches = Regex.Matches(input, pattern, RegexOptions.IgnoreCase);
+            foreach (Match match in matches)
+            {
+                var expressionValue = match.Groups[1].Value;
+
+                var argValue = typeof(ArgumentModel).GetProperties()
+                    .FirstOrDefault(x => x.Name.Equals(expressionValue, StringComparison.OrdinalIgnoreCase))?.GetValue(Argument).ToString();
+
+                result = Regex.Replace(result, match.Groups[0].Value, argValue);
+            }
+
+            return result;
+        }
+
+        private string SetValuebyFormatType(CustomValueStep customValueStep, string controlValue)
+        {
             string result = string.Empty;
 
             Enum.TryParse(customValueStep.FormatType, true, out FormatTypes customFormatType);
@@ -175,11 +208,6 @@ namespace GenerateDocument.Domain.TestSenario
 
             return result;
         }
-
-        //private string SetValuebyFormatType()
-        //{
-
-        //}
 
     }
 }
