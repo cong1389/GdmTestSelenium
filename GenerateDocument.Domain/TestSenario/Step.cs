@@ -40,7 +40,7 @@ namespace GenerateDocument.Domain.TestSenario
             {
                 _argument = value;
 
-                var pattern = @"{([A-Za-z0-9\-]+)}";
+                var pattern = @"{([A-Za-z0-9\-]+)\(\)}";
 
                 foreach (var prop in typeof(ArgumentModel).GetProperties())
                 {
@@ -56,7 +56,7 @@ namespace GenerateDocument.Domain.TestSenario
                             switch (customFormatType)
                             {
                                 case FormatTypes.Random:
-                                    argValue = Regex.Replace(argValue, match.Groups[0].Value, RandomString(5));
+                                    argValue = Regex.Replace(argValue, pattern, RandomString(5));
                                     break;
                             }
 
@@ -129,22 +129,36 @@ namespace GenerateDocument.Domain.TestSenario
 
             string result = customValueStep.Expression;
 
-            var patternArg = @"{([A-Za-z0-9\-]+)}";
-            var patternFn = @"{([A-Za-z0-9\-]+)\(\)}";
-
-            result= ExpressionValueByPattern(patternArg, result);
-            result = ExpressionValueByPattern(patternFn, result);
-
-            //result = SetValuebyFormatType(customValueStep, controlValue);
+            result = SetValueExpressionByPattern(result);
+            result = SetValueExpressionByFunctionPattern(result);
 
             return result;
         }
 
-        private string ExpressionValueByPattern(string pattern, string input)
+        private string SetValueExpressionByFunctionPattern(string  input)
         {
             string result = input;
 
-            var matches = Regex.Matches(input, pattern, RegexOptions.IgnoreCase);
+            var patternFn = @"{([A-Za-z0-9\-]+)\(\)}";
+            var matches = Regex.Matches(input, patternFn, RegexOptions.IgnoreCase);
+            foreach (Match match in matches)
+            {
+                var formatType = match.Groups[1].Value;
+                var argValue = SetValuebyFormatType(formatType);
+
+                result = Regex.Replace(result, patternFn, argValue);
+            }
+
+            return result;
+        }
+
+        private string SetValueExpressionByPattern(string input)
+        {
+            var patternArg = @"{([A-Za-z0-9\-]+)}";
+
+            string result = input;
+
+            var matches = Regex.Matches(input, patternArg, RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
                 var expressionValue = match.Groups[1].Value;
@@ -158,51 +172,16 @@ namespace GenerateDocument.Domain.TestSenario
             return result;
         }
 
-        private string SetValuebyFormatType(CustomValueStep customValueStep, string controlValue)
+        private string SetValuebyFormatType(string formatType)
         {
             string result = string.Empty;
 
-            Enum.TryParse(customValueStep.FormatType, true, out FormatTypes customFormatType);
+            Enum.TryParse(formatType, true, out FormatTypes customFormatType);
 
             switch (customFormatType)
             {
                 case FormatTypes.Random:
-                    result = $"{controlValue} {RandomString(customValueStep.Length)}";
-                    break;
-
-                case FormatTypes.AppendPrefix:
-                    result = $"{customValueStep.Value} {controlValue}";
-                    break;
-
-                case FormatTypes.Suffixes:
-                    result = $"{controlValue} {RandomString(customValueStep.Length)}";
-                    break;
-
-                case FormatTypes.Argument:
-                    result = typeof(ArgumentModel).GetProperties()
-                        .FirstOrDefault(x => x.Name.Equals(customValueStep.ArgumentName, StringComparison.OrdinalIgnoreCase))?.GetValue(Argument).ToString();
-                    break;
-
-                case FormatTypes.Expression:
-                    result = customValueStep.Expression;
-
-                    var pattern = @"{([A-Za-z0-9\-]+)}";
-                    var matchs = Regex.Matches(customValueStep.Expression, pattern, RegexOptions.IgnoreCase);
-                    foreach (Match match in matchs)
-                    {
-                        var expressionValue = match.Groups[1].Value;
-
-                        var argValue = typeof(ArgumentModel).GetProperties()
-                            .FirstOrDefault(x => x.Name.Equals(expressionValue, StringComparison.OrdinalIgnoreCase))?.GetValue(Argument).ToString();
-
-                        if (expressionValue != null && expressionValue.Equals("random"))
-                        {
-                            argValue = RandomString(4);
-                        }
-
-                        result = Regex.Replace(result, match.Groups[0].Value, argValue);
-                    }
-
+                    result = RandomString(5);
                     break;
             }
 

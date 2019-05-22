@@ -220,6 +220,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
                     case "compareoutputfile":
                         var downloadedFilesCount = FilesHelper.CountFiles(ProjectBaseConfiguration.NewAppTestDir);
+                        Console.WriteLine($"downloadedFilesCount: {downloadedFilesCount}; ExpectedValue: {x.ExpectedValue}");
                         Assert.IsTrue(int.Parse(x.ExpectedValue) == downloadedFilesCount, x.AssertMessage);
                         break;
 

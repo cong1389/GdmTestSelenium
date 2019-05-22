@@ -9,7 +9,7 @@
 
       <arguments>
         <argument name="productname" value="[AUTOTEST][SWF] Invitation"></argument>
-        <argument name="productdescription" value="[Test migration] [AUTOTEST][SWF] Invitation test {random}"></argument>
+        <argument name="productdescription" value="[Test migration] [AUTOTEST][SWF] Invitation test {random()}"></argument>
       </arguments>
 
       <steps>
@@ -19,9 +19,7 @@
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
 
         <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
-        <step controltype="textbox" action="sendkeys" controlid="Username">
-          <customvaluecontrol formatype="expression" expression="{productdescription} {random()}"></customvaluecontrol>
-        </step>
+        <step controltype="textbox" action="sendkeys" controlid="Username"></step>
         <step controltype="password" action="sendkeys" controlid="Password" controlvalue="123"></step>
         <step controltype="button" action="click" controlid="ButtonLogin" controlvalue=""></step>
 
@@ -106,8 +104,7 @@
 
         <!--Finished page-->
         <step controltype="textbox" action="sendkeys" controlid="DocDescription_box">
-          <customvaluecontrol formatype="expression" expression="{productdescription} {$random}"></customvaluecontrol>
-          <!--<customvaluecontrol formatype="suffixes" length="5"></customvaluecontrol>-->
+          <customvaluecontrol formatype="expression" expression="{productdescription} {random()}"></customvaluecontrol>
           <mappingmodel propertyname="designname"></mappingmodel>
           <expectations>
             <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
@@ -128,7 +125,9 @@
 
         <!--Admin product page-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminProducts"></step>
-        <step controltype="hyperlink" action="click" controlid="" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation"></step>
+        <step controltype="hyperlink" action="click" controlid="" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        </step>
         <step controltype="hyperlink" action="click" controlid="Customise" controlvalue="Customise"></step>
 
         <!--AdminOptionSet-->
