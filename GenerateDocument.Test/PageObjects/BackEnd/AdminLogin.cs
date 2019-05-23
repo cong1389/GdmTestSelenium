@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
@@ -6,6 +7,7 @@ using GenerateDocument.Common.WebElements;
 using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
+using OpenQA.Selenium;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd

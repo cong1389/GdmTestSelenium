@@ -328,6 +328,11 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                         Driver.Actions().MoveToElement(thumbnailBoxEle).Perform();
 
                         Driver.GetElement(_actionMenuLocator.Format(designModel.DesignName, step.ControlId)).Click();
+
+                        if (step.ControlId.Equals("edit",StringComparison.OrdinalIgnoreCase))
+                        {
+                            Driver.WaitUntilPresentedUrl(PageTypes.UserEditFormFilling.ToString());
+                        }
                     }
 
                     break;

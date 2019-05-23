@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <testplan name="AutoSaveWithCheckingMigrationControl">
 
-
-
   <testcases>
 
     <testcase name="Migration_AddControl" description="Force user again place order when add new control " productname="[Test migration] [AUTOTEST][SWF] Invitation">
@@ -114,14 +112,14 @@
         <!--END CREATE NEW DESIGN-->
 
 
-        <!--First place order design--><!--
+        <!--First place order design-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
         <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step>
         <step controltype="button" action="published">
           <expectations>
             <expectation asserttype="compareoutputfile" expectedvalue="5"  assertmessage="The output files do not same"></expectation>
           </expectations>
-        </step>-->
+        </step>
 
 
         <!--START ADD NEW CONTROL TYPE-->
@@ -143,7 +141,9 @@
         <step controltype="button" action="click" controlid="btnAddNewItem_spnActive" controlvalue=""></step>
 
         <!--AdminOptionField-->
-        <step controltype="textbox" action="sendkeys" controlid="txtName" controlvalue="TestSinglelineText"></step>
+        <step controltype="textbox" action="sendkeys" controlid="txtName" controlvalue="TestSinglelineText">
+
+        </step>
         <step controltype="dropbox" action="select" controlid="comboType" controlvalue="TXT_ONE"></step>
         <step controltype="textbox" action="sendkeys" controlid="txtDisplay" controlvalue="Test single line text"></step>
         <step controltype="button" action="click" controlid="btnUpdate1" controlvalue=""></step>
@@ -160,14 +160,23 @@
         <!--END ADD NEW CONTROL TYPE-->
 
 
+        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <step controltype="hyperlink" action="click" controlid="Edit" controlvalue="Edit"></step>
+
+        <step controltype="textbox" action="sendkeys" controlid="{GetSfFieldId(TestSinglelineText)}">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
         <!--Again place order design-->
-        <!--<step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
         <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step>
         <step controltype="button" action="published">
           <expectations>
             <expectation asserttype="compareoutputfile" expectedvalue="5" assertmessage="The output files do not same"></expectation>
           </expectations>
-        </step>-->
+        </step>
 
 
         <!--START REMOVE CONTROL TYPE-->

@@ -26,7 +26,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         private UserEditFinish _userEditFinish;
 
         private AdminLogin _adminLogin;
-        private AdminProducts _adminProducts;
 
         private MyDesign _myDesign;
 
@@ -47,8 +46,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             _userEditFinish = new UserEditFinish(DriverContext);
 
             _adminLogin = new AdminLogin(DriverContext);
-            _adminProducts = new AdminProducts(DriverContext);
-
 
             _myDesign = new MyDesign(DriverContext);
         }
@@ -102,34 +99,6 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             }
         }
 
-        //  [Test]
-        public void VerifyContentFromPdf()
-        {
-            var filePath = @"D:\Project\Practice\GdmTest\generateddocumenttest\GenerateDocument.Test\Content\imageTest\D-F6117503_00001.pdf";
-            var text = FilesHelper.ExtractTextFromPdf(filePath);
-        }
-
-        private void AdminCustomA4PosterProduct(string productName)
-        {
-            _adminProducts.NavigateTo();
-
-            _adminProducts.GoToAdminProductDetails(productName);
-
-            //_adminProductDetails.ClickToFormFilling();
-
-            //_adminOptionSet.ClickToFooterLink();
-
-            //_adminOptionField.ClickToSelectLogoAndSupportingLogos();
-
-            //_adminOptionField.ClickToUpdateSetting();
-
-            //_adminOptionSet.ClickToGoback();
-
-            //_adminProductDetails.ClickToRelease();
-
-            //_adminProductRetired.ClickToUpdateSetting();
-        }
-
         private void PerformToPageType(Step step, DesignModel designModel)
         {
             var currentPage = step.Action.Equals("navigate") ? step.ControlValue : DriverContext.Driver.GetCurrentPage();
@@ -180,7 +149,7 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
                 case PageTypes.AdminOptionField:
                     new AdminOptionField(DriverContext)
-                        .PerformToControlType(step, designModel);
+                        .PerformToControlType(step, designModel);   
                     break;
 
                 case PageTypes.AdminProductRetired:

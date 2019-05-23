@@ -135,7 +135,7 @@ namespace GenerateDocument.Domain.TestSenario
             return result;
         }
 
-        private string SetValueExpressionByFunctionPattern(string  input)
+        private string SetValueExpressionByFunctionPattern(string input)
         {
             string result = input;
 

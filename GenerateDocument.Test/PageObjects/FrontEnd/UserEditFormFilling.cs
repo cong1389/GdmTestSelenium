@@ -8,6 +8,7 @@ using OpenQA.Selenium.Support.UI;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using GenerateDocument.Common.Helpers;
 using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
@@ -225,21 +226,24 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public void PerformToControlType(Step step, DesignModel designModel)
         {
-            string text;
+            string text, sfId;
 
-            string controlType = step.ControlType;
-            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+            Enum.TryParse(step.ControlType, true, out ControlTypes controlTypeValue);
 
             switch (controlTypeValue)
             {
                 case ControlTypes.Textbox:
                     text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(10) : step.ControlValue;
-                    SendValueToInputText(step.ControlId, text);
+
+                    sfId = GetSfFieldId(step.ControlId);
+                    SendValueToInputText(sfId, text);
                     break;
 
                 case ControlTypes.TextArea:
                     text = string.IsNullOrEmpty(step.ControlValue) ? NameHelper.RandomName(100) : step.ControlValue;
-                    SendValueToTextArea(step.ControlId, text);
+
+                    sfId = GetSfFieldId(step.ControlId);
+                    SendValueToTextArea(sfId, text);
                     break;
 
                 case ControlTypes.Password:
@@ -315,9 +319,31 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                     {
                         SelectItemsToListbox(step.ControlId, step.ControlValue);
                     }
-
                     break;
             }
+        }
+
+        private string GetSfFieldId(string controlId)
+        {
+            var pattern = @"{GetSfFieldId\(([A-Za-z0-9\-]+)\)}";
+
+            var match = Regex.Match(controlId, pattern, RegexOptions.IgnoreCase);
+            if (!match.Success)
+            {
+                return controlId;
+            }
+
+            var fieldName = Regex.Replace(controlId, @"{GetSfFieldId\(", "");
+            fieldName = Regex.Replace(fieldName, "\\)\\}", "");
+
+            var jsExecutor = (IJavaScriptExecutor)Driver;
+            var sfId = jsExecutor.ExecuteScript($"return FieldIDs['{fieldName}'];")?.ToString();
+            if (string.IsNullOrEmpty(sfId))
+            {
+                return sfId;
+            }
+
+            return $"FIELD_{sfId}";
         }
     }
 }
