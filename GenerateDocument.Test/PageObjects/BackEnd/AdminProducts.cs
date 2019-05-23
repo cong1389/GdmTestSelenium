@@ -69,7 +69,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
         public void ClickToAdvanceFlyer()
         {
-            var xPath = $"//a[contains(text(),'[AUTOTEST]Advanced Flyer')]";
+            var xPath = "//a[contains(text(),'[AUTOTEST]Advanced Flyer')]";
 
             Driver.FindElement(By.XPath(xPath)).Click();
         }
@@ -178,11 +178,11 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
                     break;
 
                 case ControlTypes.Hyperlink:
-                    Driver.GetElement(_hyperlinkProductNameLocator.Format(step.ControlValue)).Click();
+                    Driver.GetElement<Button>(_hyperlinkProductNameLocator.Format(step.ControlValue)).ClickTo();
                     break;
 
                 case ControlTypes.Button:
-                    Driver.GetElement<Checkbox>(_buttonLocator.Format(step.ControlId)).TickCheckBox();
+                    Driver.GetElement<Button>(_buttonLocator.Format(step.ControlId)).ClickTo();
                     break;
 
                 case ControlTypes.Checkbox:

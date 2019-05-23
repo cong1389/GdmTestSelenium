@@ -13,10 +13,13 @@ namespace GenerateDocument.Common.WebElements
             _webElement = webElement;
         }
 
+        private IWebDriver Driver => _webElement.ToDriver();
+
         public void TickCheckBox()
         {
             if (!_webElement.Selected)
             {
+                Driver.ScrollToView(_webElement);
                 _webElement.Click();
             }
         }
@@ -25,6 +28,7 @@ namespace GenerateDocument.Common.WebElements
         {
             if (_webElement.Selected)
             {
+                Driver.ScrollToView(_webElement);
                 _webElement.Click();
             }
         }
