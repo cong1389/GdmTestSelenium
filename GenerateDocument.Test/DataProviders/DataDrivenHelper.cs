@@ -1,9 +1,8 @@
-﻿using System;
-using GenerateDocument.Domain.Designs;
+﻿using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml.XPath;
 
 namespace GenerateDocument.Test.DataProviders
@@ -15,8 +14,6 @@ namespace GenerateDocument.Test.DataProviders
             var xpd = new XPathDocument(dataPath);
             var xpn = xpd.CreateNavigator();
             var xpi = xpn.Select("/testplan");
-
-            var arguments = new Dictionary<string, string>();
 
             var testPlan = new TestPlan();
 
@@ -31,6 +28,8 @@ namespace GenerateDocument.Test.DataProviders
                     var testCaseChildNode = testCasesChildNode.Current.SelectChildren("testcase", xpn.NamespaceURI);
                     while (testCaseChildNode.MoveNext())//Read each testcase node
                     {
+                        var arguments = new Dictionary<string, string>();
+
                         //Get attr for test case
                         var testCase = new TestCase
                         {
@@ -83,7 +82,6 @@ namespace GenerateDocument.Test.DataProviders
 
                                         step.Expectations.Add(expectation);
                                     }
-
                                 }
 
                                 var customValueChildNode = stepChild.Current.SelectChildren("customvaluecontrol", xpn.NamespaceURI);
@@ -110,7 +108,6 @@ namespace GenerateDocument.Test.DataProviders
                                         PropertyName = currentNode.GetAttribute("propertyname", xpn.NamespaceURI)
                                     };
                                 }
-
 
                                 testCase.Steps.Add(step);
                             }

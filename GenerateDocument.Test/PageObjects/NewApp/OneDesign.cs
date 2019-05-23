@@ -21,7 +21,6 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             _surveyWindow = new ElementLocator(Locator.XPath, "//iframe[@id='surveyWindow']"),
             _takeTheSurveyButton = new ElementLocator(Locator.XPath, "//button[@ng-click='openSurveyForm()']"),
             _surveySubmitBtn = new ElementLocator(Locator.Id, "surveySubmitBtn"),
-            _lastPage = new ElementLocator(Locator.Id, "lastPage"),
             _closeModalBtn = new ElementLocator(Locator.Id, "closeModalBtn"),
             _mopinionActiveClass = new ElementLocator(Locator.ClassName, "mopinion-slider-active"),
             _completedModalCloseBtn = new ElementLocator(Locator.XPath, "//a[@ng-click='$dismiss()']"),
@@ -81,10 +80,8 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         {
             var downloadButtons = GetDownloadDesignButtons();
 
-            int account = 0;
             foreach (var button in downloadButtons)
             {
-                account++;
                 Driver.ScrollToView(button);
                 button.OnClickJavaScript();
 
@@ -102,12 +99,12 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                     DriverContext.BrowserWait().Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("modal-open")));
                 }
 
-                WaitToClosedCompletedModal(account);
+                WaitToClosedCompletedModal();
 
                 TakeSurveyIfVisible(isShowSurveyInvitationModal);
 
             }
-            account = -1;
+
             TakeSurveyIfVisible(isShowSurveyInvitationModal);
 
             if (isShowSurveyInvitationModal)
@@ -130,7 +127,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             makeSureAllOutputsAreDownloaded(downloadButtons.Count);
         }
 
-        private void WaitToClosedCompletedModal(int count)
+        private void WaitToClosedCompletedModal()
         {
             bool.TryParse(Driver.GetSessionStorage("hasShowedFeedback"), out bool hasShowedFeedback);
            
@@ -303,6 +300,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             {
                 case ActionTypes.Published:
                     FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.NewAppTestDir);
+
                     bool isShowSurveyInvitationModal = true;
                     DownloadDesign(true, ref isShowSurveyInvitationModal);
                     break;

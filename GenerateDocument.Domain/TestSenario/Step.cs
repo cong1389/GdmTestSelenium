@@ -10,8 +10,8 @@ namespace GenerateDocument.Domain.TestSenario
     public class Step
     {
         private string _controlValue;
-        private ArgumentModel _argument;
 
+        private ArgumentModel _argument;
         private MappingModel<DesignModel> _mappingModel;
 
         public string ControlId { get; set; }
