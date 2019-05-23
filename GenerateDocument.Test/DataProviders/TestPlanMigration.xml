@@ -3,11 +3,11 @@
 
   <testcases>
 
-    <testcase name="Migration_RemoveControl" description="Force user again place order when add new control " productname="[Test migration] [AUTOTEST][SWF] Invitation">
+    <testcase name="Migration_ChangeControlType" description="Force user again place order when add new control " productname="[AUTOTEST] Advert">
 
       <arguments>
-        <argument name="productname" value="[AUTOTEST][SWF] Invitation"></argument>
-        <argument name="productdescription" value="[Test migration] [AUTOTEST][SWF] Invitation test {random()}"></argument>
+        <argument name="productname" value="[AUTOTEST] Advert"></argument>
+        <argument name="productdescription" value="[Test migration] Advert {random()}"></argument>
       </arguments>
 
       <steps>
@@ -29,6 +29,7 @@
           <customvaluecontrol formatype="expression" expression="{productname}"></customvaluecontrol>
         </step>
         <step controltype="button" action="click" controlid="btnDuplicate_spnActive" controlvalue=""></step>
+
         <step controltype="hyperlink" action="click" controlid="">
           <customvaluecontrol formatype="expression" expression="Copy of {productname}"></customvaluecontrol>
         </step>
@@ -55,8 +56,8 @@
         <!--END CLONE NEW PRODUCT-->
 
 
-        <!--START CREATE NEW DESIGN--><!--
-        --><!--User login--><!--
+        <!--START CREATE NEW DESIGN-->
+        <!--User login-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="Login"></step>
 
         <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue=""></step>
@@ -67,9 +68,9 @@
         <step controltype="hyperlink" action="click" controlid="">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
         </step>
-        --><!---Text options--><!--
-        <step controltype="container" action="click" controlid="div3" controlvalue="Text options"></step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_497" controlvalue="">
+        <!---Text options-->
+        <step controltype="container" action="click" controlid="div1" controlvalue="Edit the text"></step>
+        <step controltype="textbox" action="sendkeys" controlid="FIELD_1484" controlvalue="">
           <expectations>
             <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
@@ -80,26 +81,30 @@
           </expectations>
         </step>
 
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_473" controlvalue="">
+        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
+
+        <!--Edit printing page-->
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_550">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_488" controlvalue="">
+
+        <step controltype="textbox" action="sendkeys" controlid="FIELD_50" controlvalue="123456">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_503" controlvalue="">
+
+        <step controltype="textbox" action="sendkeys" controlid="FIELD_481">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
-        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
 
-        --><!--Finished page--><!--
+        <!--Finished page-->
         <step controltype="textbox" action="sendkeys" controlid="DocDescription_box">
           <customvaluecontrol formatype="expression" expression="{productdescription} {random()}"></customvaluecontrol>
           <mappingmodel propertyname="designname"></mappingmodel>
@@ -107,57 +112,52 @@
             <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
-        <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>-->
-        <!--END CREATE NEW DESIGN-->
-
+        <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
 
         <!--First place order design-->
-        <!--<step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
-         <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step> 
-         <step controltype="button" action="published"> 
-         <expectations> 
-         <expectation asserttype="compareoutputfile" expectedvalue="5"  assertmessage="The output files do not same"></expectation> 
-         </expectations> 
-         </step>-->
+        <step controltype="button" action="published">
+          <expectations>
+            <expectation asserttype="compareoutputfile" expectedvalue="2"  assertmessage="The output files do not same"></expectation>
+          </expectations>
+        </step>
 
-
-        <!--START ADD SINGLE CONTROL -->
-        <!--<step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
+          <!--START ADD SINGLE CONTROL -->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
 
         <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
         <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue="RightMarket"></step>
         <step controltype="password" action="sendkeys" controlid="Password" controlvalue="123"></step>
         <step controltype="button" action="click" controlid="ButtonLogin" controlvalue=""></step>
 
-        --><!--Admin product page--><!--
+        <!--Admin product page-->
         <step controltype="browser" action="navigate" controlvalue="AdminProducts"></step>
         <step controltype="hyperlink" action="click">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
         </step>
-        <step controltype="hyperlink" action="click" controlid="Customise" controlvalue="Customise"></step>
+        <step controltype="hyperlink" action="click" controlid="[Form Filling]" controlvalue="[Form Filling]"></step>
 
-        --><!--AdminOptionSet--><!--
+        <!--AdminOptionSet-->
         <step controltype="button" action="click" controlid="btnAddNewItem_spnActive" controlvalue=""></step>
 
-        --><!--AdminOptionField--><!--
+        <!--AdminOptionField-->
         <step controltype="textbox" action="sendkeys" controlid="txtName" controlvalue="TestRemoveSinglelineText"></step>
         <step controltype="dropbox" action="select" controlid="comboType" controlvalue="TXT_ONE"></step>
         <step controltype="textbox" action="sendkeys" controlid="txtDisplay" controlvalue="Test single line text"></step>
         <step controltype="button" action="click" controlid="btnUpdate1" controlvalue=""></step>
 
-        --><!--AdminOptionSet--><!--
+        <!--AdminOptionSet-->
         <step controltype="button" action="click" controlid="_GoBack" controlvalue="Go Back"></step>
 
-        --><!--AdminProductDetails--><!--
+        <!--AdminProductDetails-->
         <step controltype="button" action="click" controlid="btnRelease" controlvalue="Release"></step>
 
-        --><!--AdminProductRetired--><!--
+        <!--AdminProductRetired-->
         <step controltype="radio" action="tick" controlid="radConvert" controlvalue="tick"></step>
         <step controltype="button" action="click" controlid="btnUpdate2" controlvalue=""></step>
-        --><!--END ADD SINGLE CONTROL --><!--
+        <!--END ADD SINGLE CONTROL -->
 
 
-        --><!--START EDIT DESIGN--><!--
+        <!--START EDIT DESIGN-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
         <step controltype="hyperlink" action="click" controlid="Edit" controlvalue="Edit"></step>
 
@@ -165,20 +165,20 @@
           <expectations>
             <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
           </expectations>
-        </step>-->
+        </step>
 
         <!--Again place order design-->
-        <!--<step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
         <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step>
         <step controltype="button" action="published">
           <expectations>
-            <expectation asserttype="compareoutputfile" expectedvalue="5" assertmessage="The output files do not same"></expectation>
+            <expectation asserttype="compareoutputfile" expectedvalue="2" assertmessage="The output files do not same"></expectation>
           </expectations>
-        </step>-->
+        </step>
         <!--END EDIT DESIGN-->
 
         <!--START REMOVE SINGLE CONTROL -->
-        <!--<step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
+        <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
 
         <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
         <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue="RightMarket"></step>
@@ -189,11 +189,39 @@
         <step controltype="hyperlink" action="click" controlid="" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
         </step>
-        <step controltype="hyperlink" action="click" controlid="Customise" controlvalue="Customise"></step>
+        <step controltype="hyperlink" action="click" controlid="[Form Filling]" controlvalue="[Form Filling]"></step>
 
-        <step controltype="image" action="draganddrop" controlid="TestSinglelineText"></step>
-        <step controltype="button" action="delete" controlid="btnDeleteSelected_spnActive"></step>-->
-        <!--END REMOVE SINGLE CONTROL -->
+        <step controltype="hyperlink" action="click" controlid="TestRemoveSinglelineText" controlvalue="TestRemoveSinglelineText"></step>
+
+        <step controltype="dropbox" action="select" controlid="comboType" controlvalue="TXT_MULT"></step>
+        <step controltype="button" action="click" controlid="btnUpdate1" controlvalue=""></step>
+
+        <step controltype="button" action="click" controlid="_GoBack" controlvalue="Go Back"></step>
+        <step controltype="button" action="click" controlid="btnRelease" controlvalue="Release"></step>
+
+        <!--AdminProductRetired-->
+        <step controltype="radio" action="tick" controlid="radConvert" controlvalue="tick"></step>
+        <step controltype="button" action="click" controlid="btnUpdate2" controlvalue=""></step>
+
+        <!--START EDIT DESIGN-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <step controltype="hyperlink" action="click" controlid="Edit" controlvalue="Edit"></step>
+
+        <step controltype="textarea" action="sendkeys" controlid="{GetSfFieldId(TestRemoveSinglelineText)}">
+          <expectations>
+            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+
+        <!--Again place order design-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step>
+        <step controltype="button" action="published">
+          <expectations>
+            <expectation asserttype="compareoutputfile" expectedvalue="2" assertmessage="The output files do not same 11"></expectation>
+          </expectations>
+        </step>
+        <!--END EDIT DESIGN-->
 
       </steps>
 

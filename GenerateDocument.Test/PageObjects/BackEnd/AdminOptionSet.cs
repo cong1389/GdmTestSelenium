@@ -17,6 +17,7 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
             _goBackLocator = new ElementLocator(Locator.Id, "AdminMaster_ContentPlaceHolderBody_GoBack"),
 
             _buttonLocator = new ElementLocator(Locator.XPath, "//*[@type='submit' and contains(@name,'{0}') or contains(@id,'{0}')]"),
+            _hyperlinkLocator = new ElementLocator(Locator.XPath, "//*[contains(text(),'{0}')]"),
             _dragAndDropImageLocator = new ElementLocator(Locator.XPath, "//*[contains(text(),'{0}')]//ancestor::tr[1]//img[@title='Drag And Drop']");
 
         public AdminOptionSet(DriverContext driverContext) : base(driverContext)
@@ -45,6 +46,10 @@ namespace GenerateDocument.Test.PageObjects.BackEnd
 
                 case ControlTypes.Image:
                     Driver.GetElement<Button>(_dragAndDropImageLocator.Format(step.ControlId)).ClickTo();
+                    break;
+
+                case ControlTypes.Hyperlink:
+                    Driver.GetElement<Button>(_hyperlinkLocator.Format(step.ControlId)).ClickTo();
                     break;
             }
         }
