@@ -1,17 +1,17 @@
 ﻿using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Helpers;
 using GenerateDocument.Common.Types;
+using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.DataProviders;
 using GenerateDocument.Test.PageObjects;
 using GenerateDocument.Test.PageObjects.BackEnd;
 using GenerateDocument.Test.PageObjects.FrontEnd;
 using GenerateDocument.Test.PageObjects.NewApp;
+using log4net;
 using NUnit.Framework;
 using System;
 using System.Reflection;
-using GenerateDocument.Domain.Designs;
-using log4net;
 
 namespace GenerateDocument.Test.PageTest.FrontEnd
 {

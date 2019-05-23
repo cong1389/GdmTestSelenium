@@ -6,6 +6,11 @@
         Tick,
         UnTick,
         Navigate,
-        Published
+        Published,
+        Upload,
+        Delete,
+        Clear,
+        Remove,
+        DragAndDrop
     }
 }

@@ -6,15 +6,19 @@ using GenerateDocument.Common.WebElements;
 using GenerateDocument.Test.Utilities;
 using OpenQA.Selenium;
 using System.Linq;
+using System.Reflection;
 using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
+using log4net;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
 {
     public class UserContentStart : PageBaseObject, IAutoSave
     {
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly ElementLocator
             _searchBoxLocator = new ElementLocator(Locator.XPath, "//div//input[@id='txtSearch']"),
             _selectProductHrefLocator = new ElementLocator(Locator.XPath, "//table[@class='catalogThumbnailArea']//a[@href='CreateUserDocument.aspx?product={0}']"),
@@ -48,6 +52,8 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         public void ClickToCreateDesign(string productName)
         {
+            logger.Info($"Creating design: {productName}");
+
             var element = Driver.FindElement(By.LinkText(productName));
             Driver.Actions().MoveToElement(element);
             element.Click();

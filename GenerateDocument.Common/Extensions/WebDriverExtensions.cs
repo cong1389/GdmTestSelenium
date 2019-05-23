@@ -183,5 +183,10 @@ namespace GenerateDocument.Common.Extensions
         {
             driver.SwitchTo().Window(driver.WindowHandles.First());
         }
+
+        public static void AcceptAlert(this IWebDriver driver)
+        {
+            driver.SwitchTo().Alert().Accept();
+        }
     }
 }

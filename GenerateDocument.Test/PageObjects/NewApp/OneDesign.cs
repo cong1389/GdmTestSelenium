@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using GenerateDocument.Common.Helpers;
 using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
@@ -301,6 +302,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             switch (actionResult)
             {
                 case ActionTypes.Published:
+                    FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.NewAppTestDir);
                     bool isShowSurveyInvitationModal = true;
                     DownloadDesign(true, ref isShowSurveyInvitationModal);
                     break;

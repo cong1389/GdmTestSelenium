@@ -28,5 +28,13 @@ namespace GenerateDocument.Common.WebElements
             Driver.ScrollToView(_webElement);
             _webElement?.Click();
         }
+
+        public void DeleteTo()
+        {
+            Driver.ScrollToView(_webElement);
+            _webElement?.Click();
+
+            Driver.AcceptAlert();
+        }
     }
 }

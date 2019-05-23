@@ -16,6 +16,7 @@
         MultipleSelectCheckbox,
         MultipleSelectListbox,
         Hyperlink,
-        Browser
+        Browser,
+        Popup
     }
 }

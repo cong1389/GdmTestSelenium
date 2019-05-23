@@ -114,6 +114,15 @@
         <!--END CREATE NEW DESIGN-->
 
 
+        <!--First place order design--><!--
+        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step>
+        <step controltype="button" action="published">
+          <expectations>
+            <expectation asserttype="compareoutputfile" expectedvalue="5"  assertmessage="The output files do not same"></expectation>
+          </expectations>
+        </step>-->
+
 
         <!--START ADD NEW CONTROL TYPE-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
@@ -152,14 +161,33 @@
 
 
         <!--Again place order design-->
-        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <!--<step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
         <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step>
         <step controltype="button" action="published">
           <expectations>
-            <expectation asserttype="compareoutputfile" expectedvalue="5"  assertmessage="The output files do not same"></expectation>
+            <expectation asserttype="compareoutputfile" expectedvalue="5" assertmessage="The output files do not same"></expectation>
           </expectations>
-        </step>
+        </step>-->
 
+
+        <!--START REMOVE CONTROL TYPE-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
+
+        <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
+        <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue="RightMarket"></step>
+        <step controltype="password" action="sendkeys" controlid="Password" controlvalue="123"></step>
+        <step controltype="button" action="click" controlid="ButtonLogin" controlvalue=""></step>
+
+        <step controltype="browser" action="navigate" controlid="" controlvalue="AdminProducts"></step>
+        <step controltype="hyperlink" action="click" controlid="" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        </step>
+        <step controltype="hyperlink" action="click" controlid="Customise" controlvalue="Customise"></step>
+
+        <step controltype="image" action="draganddrop" controlid="TestSinglelineText"></step>
+        <step controltype="button" action="delete" controlid="btnDeleteSelected_spnActive"></step>
+
+        <!--END REMOVE CONTROL TYPE-->
 
       </steps>
 

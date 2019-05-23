@@ -144,7 +144,7 @@ namespace GenerateDocument.Domain.TestSenario
             foreach (Match match in matches)
             {
                 var formatType = match.Groups[1].Value;
-                var argValue = SetValuebyFormatType(formatType);
+                var argValue = SetValueByFormatType(formatType);
 
                 result = Regex.Replace(result, patternFn, argValue);
             }
@@ -172,7 +172,7 @@ namespace GenerateDocument.Domain.TestSenario
             return result;
         }
 
-        private string SetValuebyFormatType(string formatType)
+        private string SetValueByFormatType(string formatType)
         {
             string result = string.Empty;
 
