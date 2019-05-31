@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using GenerateDocument.Common.Extensions;
+using GenerateDocument.Common.Helpers;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using GenerateDocument.Test.Utilities;
-using GenerateDocument.Test.Extensions;
-using NUnit.Framework;
-
-using static GenerateDocument.Test.Utilities.TestUtil;
 
 namespace GenerateDocument.Test.PageTest.NewApp
 {
-    [TestFixture]
     public partial class NewApp_Test : PageTestBase
     {
+        private static IEnumerable<string> DesignStatuses => new List<string> { "Unpublished", "Unreviewed", "Rejected", "Shipped" };
+        private IDictionary<string, string[]> _designsByStatuses = new Dictionary<string, string[]>();
+
         [Test]
         public void Paging_ShouldWorkCorrectly()
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             VerifyPaging();
 
@@ -34,7 +29,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test]
         public void SortingFunction_DefaultOption_MustBe_LastEditedFirst()
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             var selectedSortingOption = _myDesign.GetSelectedSortingOption();
 
@@ -44,7 +39,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test]
         public void SortingFunction_ShouldWorkedCorrectly_WithDefaultOption()
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             Assert.IsTrue(_myDesign.GetDesignNames().Length > 0, "Designs should displayed when sort by default option");
         }
@@ -54,7 +49,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             var sortValue = "All (name A-Z)";
 
-            LoginStep(_returnPage);
+            LoginStep();
 
             var designNamesBefore = _myDesign.GetDesignNames();
 
@@ -87,7 +82,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test, TestCaseSource(nameof(DesignStatuses))]
         public void FilteringFunction_ShouldWorkedCorrectly_WithEachOption(string status)
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             var expectedNumber = _designsByStatuses[status].Length;
             if (expectedNumber == 0)
@@ -112,9 +107,9 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test, TestCaseSource(nameof(DesignStatuses))]
         public void SearchFunction_ShouldReturnResultsCorrectly_WhenCombinedWithEachFilteringOption(string status)
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
-            _browser.RefreshPage();
+            DriverContext.Driver.RefreshPage();
 
             var designNames = _designsByStatuses[status];
             if (designNames.Length == 0)
@@ -127,10 +122,10 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             _myDesign.DoSort(status);
 
-            var designName = TestUtil.RandomName(designNames);
+            var designName = $"{designNames} {NameHelper.RandomName(05)}";
             _myDesign.DoSearchAndWaitResults(designName);
             var actualCount = CountResults();
-            var expectedCount = designNames.Where(x => x.IsEquals(designName)).Count();
+            var expectedCount = designNames.Count(x => x.IsEquals(designName));
 
             Assert.IsTrue(expectedCount == actualCount, $"Search function should return designs correctly when combined with filtering function; expectedCount: {expectedCount}; return designs count: {actualCount}");
         }
@@ -138,11 +133,11 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test]
         public void SearchFunction_ShouldReturnMessage_IfInputDoesNotMachAny()
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
-            _browser.RefreshPage();
+            DriverContext.Driver.RefreshPage();
 
-            _myDesign.DoSearchAndWaitResults(RandomName(10));
+            _myDesign.DoSearchAndWaitResults(NameHelper.RandomName(10));
             var message = _myDesign.GetNoDesignsMessage();
 
             Assert.IsTrue(!string.IsNullOrEmpty(message), $"Search function should return no designs message if not found; message content: {message}");

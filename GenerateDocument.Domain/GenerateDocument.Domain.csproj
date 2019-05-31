@@ -45,7 +45,7 @@
     <Compile Include="TestSenario\ArgumentModel.cs" />
     <Compile Include="TestSenario\CustomValueStep.cs" />
     <Compile Include="TestSenario\MappingModel.cs" />
-    <Compile Include="TestSenario\Expectation.cs" />
+    <Compile Include="TestSenario\ValidationModel.cs" />
     <Compile Include="TestSenario\Step.cs" />
     <Compile Include="TestSenario\TestCase.cs" />
     <Compile Include="TestSenario\TestPlan.cs" />

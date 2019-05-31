@@ -1,18 +1,18 @@
-﻿using System;
-using GenerateDocument.Common;
+﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.UI;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using GenerateDocument.Common.WebElements;
 using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
 using log4net;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using GenerateDocument.Common.WebElements;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.NewApp
@@ -27,11 +27,16 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             _dataThumbnailBox = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']"),
             _dataMenuGoTo = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//ul//li//a[@name='go']"),
             _designStatus = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//div[contains(@class, 'design-info')]//span"),
+            _designNamesLocator = new ElementLocator(Locator.XPath, "//div[@class='thumbnail']//div[@class='caption']//div[@class='caption-container']//h4"),
             _deletedLableLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='content-wrapper']//label"),
             _kitLable = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//div[@class='thumbnail']//div[@class='caption']//div[@class='caption-container']//span[contains(@class, 'kit-label')]"),
 
             _menusLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']"),
-            _actionMenuLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//li//a[text()='{1}']");
+            _textBoxLocator = new ElementLocator(Locator.XPath, "//input[@id='txtDesignSearch' or @name='txtDesignSearch']"),
+            _actionMenuLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//li//a[@name='{1}']"),
+
+            _labelLocator = new ElementLocator(Locator.XPath, "//div[@data-documentname='{0}']//*[@id='{1}']"),
+            _buttonLocator = new ElementLocator(Locator.XPath, "//button[@name='{0}' or @id='{0}']");
 
 
         public MyDesign(DriverContext driverContext) : base(driverContext)
@@ -49,7 +54,6 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public MyDesign CreateDesign()
         {
-            logger.Info($"Click create design: {_browseTemplateCatalog.Value}");
             Driver.ScrollToTop();
             Driver.GetElement(_browseTemplateCatalog).OnClickJavaScript();
 
@@ -123,18 +127,10 @@ namespace GenerateDocument.Test.PageObjects.NewApp
 
         public string[] GetDesignNames()
         {
-            DriverContext.BrowserWait().Until(ExpectedConditions.ElementIsVisible(By.Id("products")));
+            Driver.WaitForAngular(BaseConfiguration.LongTimeout);
 
-            var designs = DriverContext.Driver
-                .FindElements(
-                    By.XPath("//div[@class='thumbnail']//div[@class='caption']//div[@class='caption-container']//h4"));
-
-            if (designs.Any())
-            {
-                return designs.Select(x => x.Text).ToArray();
-            }
-
-            return new string[] { };
+            var eles = Driver.GetElements(_designNamesLocator, 1);
+            return eles.Select(x => x.Text).ToArray();
         }
 
         public string[] GetDesignNamesByStatus(string status)
@@ -322,19 +318,36 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                     break;
 
                 case ControlTypes.Hyperlink:
-                    Driver.IsElementPresent(_dataThumbnailBox.Format(designModel.DesignName));
+                    Driver.IsElementPresent(_dataThumbnailBox.Format(step.Argument.ProductDescription));
                     {
-                        var thumbnailBoxEle = Driver.WaitUntilPresentedElement(_dataThumbnailBox.Format(designModel.DesignName), BaseConfiguration.LongTimeout);
+                        logger.Info($"ProductDescription: {step.Argument.ProductDescription}; element value: {_dataThumbnailBox.Format(step.Argument.ProductDescription).Value}");
+
+                        var thumbnailBoxEle = Driver.WaitUntilPresentedElement(_dataThumbnailBox.Format(step.Argument.ProductDescription), BaseConfiguration.LongTimeout);
                         Driver.Actions().MoveToElement(thumbnailBoxEle).Perform();
 
-                        Driver.GetElement(_actionMenuLocator.Format(designModel.DesignName, step.ControlId)).Click();
+                        Driver.GetElement(_actionMenuLocator.Format(step.Argument.ProductDescription, step.ControlId)).OnClickJavaScript();
 
-                        if (step.ControlId.Equals("edit",StringComparison.OrdinalIgnoreCase))
+                        if (step.ControlId.Equals(ActionTypes.Edit.ToString(), StringComparison.OrdinalIgnoreCase))
                         {
                             Driver.WaitUntilPresentedUrl(PageTypes.UserEditFormFilling.ToString());
                         }
                     }
+                    break;
 
+                case ControlTypes.Textbox:
+                    Driver.GetElement<Textbox>(_textBoxLocator.Format(step.ControlId)).SetValue(step.ControlValue);
+                    break;
+
+                case ControlTypes.Button:
+                    Driver.GetElement<Button>(_buttonLocator.Format(step.ControlId)).ClickTo();
+                    break;
+
+                case ControlTypes.Label:
+                    Driver.IsElementPresent(_dataThumbnailBox.Format(step.Argument.ProductDescription));
+                    {
+                        var result = Driver.GetElement<Label>(_labelLocator.Format(step.Argument.ProductDescription, step.ControlId)).GetValue();
+                        Console.WriteLine($"get designname: {result}");
+                    }
                     break;
             }
         }

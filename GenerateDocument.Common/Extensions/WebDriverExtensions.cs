@@ -4,6 +4,7 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace GenerateDocument.Common.Extensions
 {
@@ -166,7 +167,13 @@ namespace GenerateDocument.Common.Extensions
         public static string GetCurrentPage(this IWebDriver driver)
         {
             var uri = new Uri(driver.Url);
-            return string.IsNullOrEmpty(uri.Fragment) ? uri.Segments.Last()?.Split('.')[0] : uri.Fragment.Split('/')[1];
+            var result = Regex.Match(uri.Segments.Last(), @"([A-Za-z0-9\-]+)\.aspx$", RegexOptions.IgnoreCase);
+            if (result.Success)
+            {
+                return result.Groups[1].Value.ToString();
+            }
+
+            return uri.Fragment.Split('/')[1];
         }
 
         public static void NavigateTo(this IWebDriver driver, string url)
@@ -187,6 +194,19 @@ namespace GenerateDocument.Common.Extensions
         public static void AcceptAlert(this IWebDriver driver)
         {
             driver.SwitchTo().Alert().Accept();
+        }
+
+        public static void WaitForAngular(this IWebDriver webDriver, double timeout)
+        {
+            new WebDriverWait(webDriver, TimeSpan.FromSeconds(timeout)).Until(
+                driver =>
+                {
+                    var javaScriptExecutor = driver as IJavaScriptExecutor;
+                    return javaScriptExecutor != null
+                           &&
+                           (bool)javaScriptExecutor.ExecuteScript(
+                               "return window.angular != undefined && window.angular.element(document.body).injector().get('$http').pendingRequests.length == 0");
+                });
         }
     }
 }

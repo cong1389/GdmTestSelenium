@@ -4,30 +4,28 @@ using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
 using System;
 using System.Linq;
+using GenerateDocument.Common.WebElements;
 
 namespace GenerateDocument.Test.PageObjects
 {
-    public class PageCommonAction : PageObject
+    public class PageCommonAction : PageBaseObject
     {
-        private readonly ElementLocator notifyMsg = new ElementLocator(Locator.ClassName, "cg-notify-message-template");
+        private readonly ElementLocator
+            _logoutLinkLocator = new ElementLocator(Locator.XPath, "//a[contains(@href, 'GeneratedDocumentMngExtension/Logout.aspx')]"),
+            _notifyMsgLocator = new ElementLocator(Locator.ClassName, "cg-notify-message-template");
 
-        public PageCommonAction(IWebDriver browser) : base(browser)
+        public PageCommonAction(DriverContext driverContext) : base(driverContext)
         {
         }
 
         public void UserLogout()
         {
-            var logoutLink = Browser.FindElement(By.XPath("//a[contains(@href, 'GeneratedDocumentMngExtension/Logout.aspx')]"));
-            ScrollToView(logoutLink);
-            logoutLink.Click();
+            Driver.GetElement<Button>(_logoutLinkLocator).ClickTo();
         }
 
-        public bool GetNotifyMessage
+        public bool GetNotifyMessage()
         {
-            get
-            {
-                return Browser.IsElementPresent(notifyMsg);
-            }
+            return Driver.IsElementPresent(_notifyMsgLocator);
         }
 
         /// <summary>
@@ -40,11 +38,12 @@ namespace GenerateDocument.Test.PageObjects
         public void CreateMopinionCookie()
         {
             var cookieName = $"MSFeedbackSent{ProjectBaseConfiguration.MopinionFormId}";
-            if (!Browser.Manage().Cookies.AllCookies.Any(x => x.Name.Equals(cookieName)))
+
+            if (!Driver.Manage().Cookies.AllCookies.Any(x => x.Name.Equals(cookieName)))
             {
                 var mopinionCookie = new Cookie(cookieName, "true", "/", DateTime.Now.AddDays(-1));
 
-                Browser.Manage().Cookies.AddCookie(mopinionCookie);
+                Driver.Manage().Cookies.AddCookie(mopinionCookie);
             }
         }
     }

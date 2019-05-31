@@ -13,7 +13,7 @@ namespace GenerateDocument.Test.DataProviders
                 foreach (var testCases in dataDriven.TestCases)
                 {
                     var testCaseData = new TestCaseData(testCases);
-                    testCaseData.SetName($"{testCases.Name}_{testCases.ProductName}");
+                    testCaseData.SetName(testCases.Name);
 
                     yield return testCaseData;
                 }
@@ -28,7 +28,7 @@ namespace GenerateDocument.Test.DataProviders
                 foreach (var testCases in dataDriven.TestCases)
                 {
                     var testCaseData = new TestCaseData(testCases);
-                    testCaseData.SetName($"{testCases.Name}_{testCases.ProductName}");
+                    testCaseData.SetName(testCases.Name);
 
                     yield return testCaseData;
                 }
@@ -43,7 +43,22 @@ namespace GenerateDocument.Test.DataProviders
                 foreach (var testCases in dataDriven.TestCases)
                 {
                     var testCaseData = new TestCaseData(testCases);
-                    testCaseData.SetName($"{testCases.Name}_{testCases.ProductName}");
+                    testCaseData.SetName(testCases.Name);
+
+                    yield return testCaseData;
+                }
+            }
+        }
+
+        public static IEnumerable NewAppWorkFlow
+        {
+            get
+            {
+                var dataDriven = DataDrivenHelper.ReadOnlyData(ProjectBaseConfiguration.GetDataDrivenForNewApp);
+                foreach (var testCases in dataDriven.TestCases)
+                {
+                    var testCaseData = new TestCaseData(testCases);
+                    testCaseData.SetName(testCases.Name);
 
                     yield return testCaseData;
                 }

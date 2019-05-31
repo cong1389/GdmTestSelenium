@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using GenerateDocument.Common.Types;
 
 namespace GenerateDocument.Test.PageTest.NewApp
 {
@@ -31,8 +31,6 @@ namespace GenerateDocument.Test.PageTest.NewApp
         private AdminProducts _adminProducts;
         private AdminProductDetails _adminProductDetails;
 
-        private const string _returnPage = "designs";
-
         private string _designNamePrefix = string.Empty;
         private bool _isShowSurveyInvitationModal = true;
         private bool _isShowPolicyAgreementModal = true;
@@ -46,21 +44,18 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             _designNamePrefix = Guid.NewGuid().ToString();
 
-            _action = new PageCommonAction(DriverContext.Driver);
-            new UserLogin(DriverContext);
+            _action = new PageCommonAction(DriverContext);
             _myDesign = new MyDesign(DriverContext);
             _userContentStart = new UserContentStart(DriverContext);
             _userEditFormFilling = new UserEditFormFilling(DriverContext);
             _userEditPrinting = new UserEditPrinting(DriverContext);
             _userEditFinish = new UserEditFinish(DriverContext);
             _oneDesign = new OneDesign(DriverContext);
-            _userContentApprovals = new UserContentApprovals(DriverContext.Driver);
-            _userContentApprovalsReview = new UserContentApprovalsReview(DriverContext.Driver);
+            _userContentApprovals = new UserContentApprovals(DriverContext);
+            _userContentApprovalsReview = new UserContentApprovalsReview(DriverContext);
             _adminLogin = new AdminLogin(DriverContext);
             _adminProducts = new AdminProducts(DriverContext);
             _adminProductDetails = new AdminProductDetails(DriverContext);
-
-            new AdminLogout(DriverContext);
         }
 
         [TearDown]
@@ -123,15 +118,15 @@ namespace GenerateDocument.Test.PageTest.NewApp
             }
         }
 
-        private void LoginStep(string returnPage)
+        private void LoginStep()
         {
             var userLogin = new UserLogin(DriverContext)
                    .NavigateTo()
                    .LoginSystem(ProjectBaseConfiguration.UserId, ProjectBaseConfiguration.UserPassword);
+            
+            DriverContext.Driver.WaitUntilPresentedUrl(PageTypes.Designs.ToString());
 
-            Thread.Sleep(3000);
-
-            Assert.IsTrue(userLogin.CheckAfterLoginPage(returnPage));
+            Assert.IsTrue(userLogin.CheckAfterLoginPage(PageTypes.Designs.ToString()));
         }
 
         private void CreateDocumentStep(string name, bool checkInvalidDescription = false)
@@ -266,10 +261,10 @@ namespace GenerateDocument.Test.PageTest.NewApp
             var countButtons = _oneDesign.GetDownloadDesignButtons().Count;
             Assert.IsTrue(countButtons >= 1, "Download options should be available");
 
-            FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.NewAppTestDir);
+            FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.DownloadFolder);
             _oneDesign.DownloadDesign(needToPublishFirst, ref _isShowSurveyInvitationModal);
 
-            var downloadedFilesCount = FilesHelper.CountFiles(ProjectBaseConfiguration.NewAppTestDir);
+            var downloadedFilesCount = FilesHelper.CountFiles(ProjectBaseConfiguration.DownloadFolder);
             Assert.IsTrue(downloadedFilesCount == countButtons, $"Files downloaded successfully; files count: {downloadedFilesCount}");
 
             var componentName = $"{_oneDesign.GetSelectedComponentName(isKit)}";
@@ -366,7 +361,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
         private bool VerifyDownloadFileNames(string[] expectedFileNames)
         {
-            var fileNames = new DirectoryInfo(ProjectBaseConfiguration.NewAppTestDir).GetFiles()
+            var fileNames = new DirectoryInfo(ProjectBaseConfiguration.DownloadFolder).GetFiles()
                 .Where(x => new[] { ".jpg", ".pdf" }.Contains(x.Extension.ToLower())).Select(x => Path.GetFileNameWithoutExtension(x.Name).Trim());
 
             var result = fileNames.All(x => expectedFileNames.Contains(x)) && expectedFileNames.All(x => fileNames.Contains(x));

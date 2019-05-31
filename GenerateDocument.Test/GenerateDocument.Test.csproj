@@ -77,17 +77,14 @@
     <Compile Include="PageObjects\BackEnd\AdminOptionSet.cs" />
     <Compile Include="PageObjects\BackEnd\AdminProjects.cs" />
     <Compile Include="Base\IAutoSave.cs" />
-    <Compile Include="PageObjects\FrontEnd\NavigationMenu.cs" />
-    <Compile Include="PageObjects\FrontEnd\UserCheckoutPayment.cs" />
-    <Compile Include="PageObjects\FrontEnd\UserCheckoutSubmit.cs" />
     <Compile Include="PageObjects\FrontEnd\UserContentApprovals.cs" />
     <Compile Include="PageObjects\FrontEnd\UserContentApprovalsReview.cs" />
     <Compile Include="PageObjects\NewApp\MyDesign.cs" />
     <Compile Include="PageObjects\NewApp\OneDesign.cs" />
     <Compile Include="PageObjects\PageBaseObject.cs" />
     <Compile Include="PageObjects\PageCommonAction.cs" />
-    <Compile Include="Base\AutoSaveContext.cs" />
     <Compile Include="PageTest\FrontEnd\AutoSaveTest.cs" />
+    <Compile Include="PageTest\NewApp\NewAppFilteringAndPagingTest.cs" />
     <Compile Include="PageTest\NewApp\NewAppHasApprovalWorkFlowTest.cs" />
     <Compile Include="PageTest\NewApp\NewAppHasNoApprovalWorkFlowTest.cs" />
     <Compile Include="PageTest\NewApp\NewAppMirrorTest.cs" />
@@ -112,17 +109,13 @@
     <Compile Include="PageObjects\BackEnd\LogOutPage.cs" />
     <Compile Include="PageObjects\BackEnd\AdminLogin.cs" />
     <Compile Include="PageObjects\FrontEnd\UserLogin.cs" />
-    <Compile Include="PageObjects\FrontEnd\UserContentOrders.cs" />
     <Compile Include="PageObjects\FrontEnd\UserEditFinish.cs" />
     <Compile Include="PageObjects\FrontEnd\UserEditFormFilling.cs" />
     <Compile Include="PageObjects\FrontEnd\UserEditPrinting.cs" />
     <Compile Include="PageObjects\PageObject.cs" />
     <Compile Include="PageTest\BackEnd\ManagedExtensionTest.cs" />
     <Compile Include="PageObjects\FrontEnd\UserContentStart.cs" />
-    <Compile Include="Reporting\ReportUtility.cs" />
-    <Compile Include="Reporting\TestResultUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reporting\PageScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
@@ -162,6 +155,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DataProviders\TestPlanSpecialCharacters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataProviders\TestPlanNewApp.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

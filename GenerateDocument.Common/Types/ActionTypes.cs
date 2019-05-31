@@ -10,6 +10,9 @@
         Upload,
         Delete,
         Clear,
+        Reset,
+        Add,
+        Edit,
         Remove,
         DragAndDrop
     }

@@ -3,11 +3,11 @@
 
   <testcases>
 
-    <testcase name="Migration_AddControl" description="Force user again place order when add new control " productname="[Test migration] [AUTOTEST][SWF] Invitation">
+    <testcase name="Migration_AddControl_[AUTOTEST][SWF] Invitation" description="Force user again place order when add new control ">
      
       <arguments>
         <argument name="productname" value="[AUTOTEST][SWF] Invitation"></argument>
-        <argument name="productdescription" value="[Test migration] [AUTOTEST][SWF] Invitation test {random()}"></argument>
+        <argument name="productdescription" value="[Test migration] [AddControl] Invitation {random()}"></argument>
       </arguments>
 
       <steps>
@@ -44,7 +44,6 @@
         </step>
         <step controltype="textarea" action="sendkeys" controlid="tbProductDescription">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
-          <mappingmodel propertyname="productname"></mappingmodel>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="tbSearchKeywords">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
@@ -63,37 +62,37 @@
         <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue=""></step>
         <step controltype="password" action="sendkeys" controlid="Password" controlvalue=""></step>
         <step controltype="button" action="click" controlid="Login" controlvalue="Login"></step>
-
-        <step controltype="browser" action="navigate" controlid="" controlvalue="UserContentStart"></step>
-        <step controltype="hyperlink" action="click" controlid="">
+        
+        <step controltype="browser" action="navigate" controlvalue="UserContentStart"></step>
+        <step controltype="hyperlink" action="click">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
         </step>
         <!---Text options-->
         <step controltype="container" action="click" controlid="div3" controlvalue="Text options"></step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_497" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_485" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="textarea" action="sendkeys" controlid="FIELD_473" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_488" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_503" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
@@ -102,10 +101,9 @@
 
         <!--Finished page-->
         <step controltype="textbox" action="sendkeys" controlid="DocDescription_box">
-          <customvaluecontrol formatype="expression" expression="{productdescription} {random()}"></customvaluecontrol>
-          <mappingmodel propertyname="designname"></mappingmodel>
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
@@ -114,10 +112,10 @@
 
         <!--First place order design-->
          <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step> 
-         <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step> 
+         <step controltype="hyperlink" action="click" controlid="go" controlvalue="go"></step> 
          <step controltype="button" action="published"> 
          <expectations> 
-         <expectation asserttype="compareoutputfile" expectedvalue="5"  assertmessage="The output files do not same"></expectation> 
+         <expectation asserttype="equalcompareoutputfile" expectedvalue="5"  assertmessage="The output files do not same"></expectation> 
          </expectations> 
          </step> 
 
@@ -169,24 +167,24 @@
 
         <!--START EDIT DESIGN-->
         <step controltype="browser" action="navigate" controlvalue="designs"></step>
-        <step controltype="hyperlink" action="click" controlid="Edit" controlvalue="Edit"></step>
+        <step controltype="hyperlink" action="click" controlid="edit" controlvalue="edit"></step>
         <step controltype="textbox" action="sendkeys" controlid="{GetSfFieldId(TestSinglelineText)}">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="{GetSfFieldId(TestMultilelineText)}">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <!--Again place order design-->
          <step controltype="browser" action="navigate" controlvalue="designs"></step> 
-         <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step> 
+         <step controltype="hyperlink" action="click" controlid="go" controlvalue="go"></step> 
          <step controltype="button" action="published"> 
          <expectations> 
-         <expectation asserttype="compareoutputfile" expectedvalue="5" assertmessage="The output files do not same"></expectation> 
+         <expectation asserttype="equalcompareoutputfile" expectedvalue="5" assertmessage="The output files do not same"></expectation> 
          </expectations> 
          </step> 
         <!--END EDIT DESIGN-->
@@ -195,11 +193,11 @@
 
     </testcase>
 
-    <testcase name="Migration_RemoveControl" description="Force user again place order when add new control " productname="[Test migration] [AUTOTEST][SWF] Invitation">
+    <testcase name="Migration_RemoveControl_[AUTOTEST][SWF] Invitation" description="Force user again place order when add new control ">
 
       <arguments>
         <argument name="productname" value="[AUTOTEST][SWF] Invitation"></argument>
-        <argument name="productdescription" value="[Test migration] [AUTOTEST][SWF] Invitation test {random()}"></argument>
+        <argument name="productdescription" value="[Test migration] [RemoveControl] Invitation {random()}"></argument>
       </arguments>
 
       <steps>
@@ -236,7 +234,6 @@
         </step>
         <step controltype="textarea" action="sendkeys" controlid="tbProductDescription">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
-          <mappingmodel propertyname="productname"></mappingmodel>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="tbSearchKeywords">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
@@ -264,28 +261,28 @@
         <step controltype="container" action="click" controlid="div3" controlvalue="Text options"></step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_497" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_485" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="textarea" action="sendkeys" controlid="FIELD_473" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_488" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_503" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
@@ -294,10 +291,9 @@
 
         <!--Finished page-->
         <step controltype="textbox" action="sendkeys" controlid="DocDescription_box">
-          <customvaluecontrol formatype="expression" expression="{productdescription} {random()}"></customvaluecontrol>
-          <mappingmodel propertyname="designname"></mappingmodel>
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
@@ -306,10 +302,10 @@
 
         <!--First place order design-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
-         <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step> 
+         <step controltype="hyperlink" action="click" controlid="go" controlvalue="go"></step> 
          <step controltype="button" action="published"> 
          <expectations> 
-         <expectation asserttype="compareoutputfile" expectedvalue="5"  assertmessage="The output files do not same"></expectation> 
+         <expectation asserttype="equalcompareoutputfile" expectedvalue="5"  assertmessage="The output files do not same"></expectation> 
          </expectations> 
          </step> 
 
@@ -352,20 +348,20 @@
 
         <!--START EDIT DESIGN-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
-        <step controltype="hyperlink" action="click" controlid="Edit" controlvalue="Edit"></step>
+        <step controltype="hyperlink" action="click" controlid="edit" controlvalue="edit"></step>
 
         <step controltype="textbox" action="sendkeys" controlid="{GetSfFieldId(TestRemoveSinglelineText)}">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <!--Again place order design-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
-         <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step> 
+         <step controltype="hyperlink" action="click" controlid="go" controlvalue="go"></step> 
          <step controltype="button" action="published"> 
          <expectations> 
-         <expectation asserttype="compareoutputfile" expectedvalue="5" assertmessage="The output files do not same"></expectation> 
+         <expectation asserttype="equalcompareoutputfile" expectedvalue="5" assertmessage="The output files do not same"></expectation> 
          </expectations> 
          </step> 
         <!--END EDIT DESIGN-->
@@ -379,12 +375,12 @@
         <step controltype="button" action="click" controlid="ButtonLogin" controlvalue=""></step>
 
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminProducts"></step>
-        <step controltype="hyperlink" action="click" controlid="" controlvalue="[Test migration] [AUTOTEST][SWF] Invitation">
+        <step controltype="hyperlink" action="click">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
         </step>
         <step controltype="hyperlink" action="click" controlid="Customise" controlvalue="Customise"></step>
 
-        <step controltype="image" action="draganddrop" controlid="TestSinglelineText"></step>
+        <step controltype="image" action="draganddrop" controlid="TestRemoveSinglelineText"></step>
         <step controltype="button" action="delete" controlid="btnDeleteSelected_spnActive"></step>
         <!--END REMOVE SINGLE CONTROL -->
 
@@ -394,11 +390,11 @@
 
     </testcase>
     
-    <testcase name="Migration_ChangeControlType" description="Force user again place order when add new control " productname="[AUTOTEST] Advert">
+    <testcase name="Migration_ChangeControlType_[AUTOTEST] Advert" description="Force user again place order when add new control">
 
       <arguments>
         <argument name="productname" value="[AUTOTEST] Advert"></argument>
-        <argument name="productdescription" value="[Test migration] Advert {random()}"></argument>
+        <argument name="productdescription" value="[Test migration] [ChangeControlType] Advert {random()}"></argument>
       </arguments>
 
       <steps>
@@ -435,7 +431,6 @@
         </step>
         <step controltype="textarea" action="sendkeys" controlid="tbProductDescription">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
-          <mappingmodel propertyname="productname"></mappingmodel>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="tbSearchKeywords">
           <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
@@ -464,12 +459,12 @@
         <step controltype="container" action="click" controlid="div1" controlvalue="Edit the text"></step>
         <step controltype="textbox" action="sendkeys" controlid="FIELD_1484" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_485" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
@@ -478,19 +473,19 @@
         <!--Edit printing page-->
         <step controltype="textarea" action="sendkeys" controlid="FIELD_550">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="textbox" action="sendkeys" controlid="FIELD_50" controlvalue="123456">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="textbox" action="sendkeys" controlid="FIELD_481">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
@@ -498,10 +493,9 @@
 
         <!--Finished page-->
         <step controltype="textbox" action="sendkeys" controlid="DocDescription_box">
-          <customvaluecontrol formatype="expression" expression="{productdescription} {random()}"></customvaluecontrol>
-          <mappingmodel propertyname="designname"></mappingmodel>
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
@@ -509,7 +503,7 @@
         <!--First place order design-->
         <step controltype="button" action="published">
           <expectations>
-            <expectation asserttype="compareoutputfile" expectedvalue="2"  assertmessage="The output files do not same"></expectation>
+            <expectation asserttype="equalcompareoutputfile" expectedvalue="2"  assertmessage="The output files do not same"></expectation>
           </expectations>
         </step>
 
@@ -551,25 +545,25 @@
 
         <!--START EDIT DESIGN-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
-        <step controltype="hyperlink" action="click" controlid="Edit" controlvalue="Edit"></step>
+        <step controltype="hyperlink" action="click" controlid="edit" controlvalue="edit"></step>
 
-        <step controltype="textbox" action="sendkeys" controlid="{GetSfFieldId(TestSinglelineControl)}">
+        <step controltype="textbox" action="sendkeys" controlid="{GetSfFieldId(TestSinglelineText)}">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <!--Again place order design-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
-        <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step>
+        <step controltype="hyperlink" action="click" controlid="go" controlvalue="go"></step>
         <step controltype="button" action="published">
           <expectations>
-            <expectation asserttype="compareoutputfile" expectedvalue="2" assertmessage="The output files do not same"></expectation>
+            <expectation asserttype="equalcompareoutputfile" expectedvalue="2" assertmessage="The output files do not same"></expectation>
           </expectations>
         </step>
         <!--END EDIT DESIGN-->
 
-        <!--START REMOVE SINGLE CONTROL -->
+        <!--START CHANGE TO MULTIPLE LINE TEXT CONTROL -->
         <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
 
         <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
@@ -596,22 +590,67 @@
         <!--AdminProductRetired-->
         <step controltype="radio" action="tick" controlid="radConvert" controlvalue="tick"></step>
         <step controltype="button" action="click" controlid="btnUpdate2" controlvalue=""></step>
+        <!--END CHANGE TO MULTIPLE LINE TEXT CONTROL -->
 
         <!--START EDIT DESIGN-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
-        <step controltype="hyperlink" action="click" controlid="Edit" controlvalue="Edit"></step>
+        <step controltype="hyperlink" action="click" controlid="edit" controlvalue="edit"></step>
 
         <step controltype="textarea" action="sendkeys" controlid="{GetSfFieldId(TestMultiplelineText)}">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <!--Again place order design-->
         <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
-        <step controltype="hyperlink" action="click" controlid="Download" controlvalue="Download"></step>
-      
+        <step controltype="hyperlink" action="click" controlid="go" controlvalue="go"></step>
         <!--END EDIT DESIGN-->
+        
+        
+
+        <!--START CHANGE TO IMAGE CHOICE CONTROL -->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="AdminLogin"></step>
+
+        <step controltype="hyperlink" action="click" controlid="Got it!" controlvalue=""></step>
+        <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue="RightMarket"></step>
+        <step controltype="password" action="sendkeys" controlid="Password" controlvalue="123"></step>
+        <step controltype="button" action="click" controlid="ButtonLogin" controlvalue=""></step>
+
+        <step controltype="browser" action="navigate" controlid="" controlvalue="AdminProducts"></step>
+        <step controltype="hyperlink" action="click">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        </step>
+        <step controltype="hyperlink" action="click" controlid="[Form Filling]" controlvalue="[Form Filling]"></step>
+
+        <step controltype="hyperlink" action="click" controlid="TestMultiplelineText" controlvalue="TestMultiplelineText"></step>
+
+        <step controltype="textbox" action="sendkeys" controlid="txtName" controlvalue="TestImageChoice"></step>
+        <step controltype="dropbox" action="select" controlid="comboType" controlvalue="IMG_CHC"></step>
+        <step controltype="textbox" action="sendkeys" controlid="txtDisplay" controlvalue="Test Image Choice"></step>
+        <step controltype="checkbox" action="tick" controlid="_chkImageUploadButton" controlvalue="true"></step>
+        <step controltype="checkbox" action="tick" controlid="_chkImageResetButton" controlvalue="true"></step>
+        <step controltype="checkbox" action="tick" controlid="_chkImageClearButton" controlvalue="true"></step>
+        <step controltype="button" action="click" controlid="btnUpdate1" controlvalue=""></step>
+
+        <step controltype="button" action="click" controlid="_GoBack" controlvalue="Go Back"></step>
+        <step controltype="button" action="click" controlid="btnRelease" controlvalue="Release"></step>
+
+        <!--AdminProductRetired-->
+        <step controltype="radio" action="tick" controlid="radConvert" controlvalue="tick"></step>
+        <step controltype="button" action="click" controlid="btnUpdate2" controlvalue=""></step>
+        <!--END CHANGE TO IMAGE CHOICE CONTROL -->
+
+        <!--START EDIT DESIGN-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <step controltype="hyperlink" action="click" controlid="edit" controlvalue="edit"></step>
+
+        <!--Again place order design-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="designs"></step>
+        <step controltype="hyperlink" action="click" controlid="go" controlvalue="go"></step>
+        <!--END EDIT DESIGN-->
+        
+
 
       </steps>
 

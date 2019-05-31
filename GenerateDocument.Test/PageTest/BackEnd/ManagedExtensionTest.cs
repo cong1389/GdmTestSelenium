@@ -69,7 +69,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
         [Test]
         public void Check_Exempt_RightMarket_Account_Using_Managed_Extension()
         {
-            AdminLoginStep(TestAccount);
+            AdminLoginStep(AdminAccount);
 
             _adminManagedConfiguration.Open();
 
@@ -151,7 +151,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
         [Test]
         public void Check_Customer_Admin_Access_UserAccount()
         {
-            AdminLoginStep(TestAccount);
+            AdminLoginStep(AdminAccount);
 
             _adminUserAccounts.Open();
 
@@ -191,7 +191,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
         [Test]
         public void Check_Hidding_RightMarket_Account_AdminPage()
         {
-            AdminLoginStep(TestAccount);
+            AdminLoginStep(AdminAccount);
 
             _adminUserAccounts.OpenAdminGroup();
 
@@ -201,7 +201,7 @@ namespace GenerateDocument.Test.PageTest.BackEnd
         [Test]
         public void Check_Hidding_RightMarket_Account_UserPage()
         {
-            AdminLoginStep(TestAccount);
+            AdminLoginStep(AdminAccount);
 
             _adminUserAccounts.Open();
 

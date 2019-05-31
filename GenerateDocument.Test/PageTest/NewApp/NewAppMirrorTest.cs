@@ -11,7 +11,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test, TestCaseSource(nameof(WorkflowTestResources), new object[] { true, true })]
         public void DesignName_DoNotAllowDuplicate_Or_ExceedMaxlength_WhenCreatingOrRenaming(string templateName, Dictionary<string, bool> settings)
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             CreateDocumentStep(templateName);
 
@@ -34,7 +34,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test, TestCaseSource(nameof(WorkflowTestResources), new object[] { true, true })]
         public void DesignName_SuccessfullyRenamed_IfValidName(string templateName, Dictionary<string, bool> settings)
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             CreateDocumentStep(templateName);
 
@@ -50,7 +50,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             ReviewDesignIfHasApprovalWorkflow(newDesignNameForSecondTimeRename, settings["IsApproved"]);
 
             _action.UserLogout();
-            LoginStep(_returnPage);
+            LoginStep();
             VerifyDesignStatus(newDesignNameForSecondTimeRename, ifApproved: settings["IsApproved"]);
 
             _myDesign.GoToActions(newDesignNameForSecondTimeRename);
@@ -68,7 +68,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test, TestCaseSource(nameof(WorkflowTestResources), new object[] { true, true })]
         public void DesignName_TruncatedAutomatically_And_AbleToShowFullOrLess_IfItIsLongText(string templateName, Dictionary<string, bool> settings)
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             CreateDocumentStep(templateName);
 

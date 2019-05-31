@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GenerateDocument.Common.Helpers;
+﻿using GenerateDocument.Common.Helpers;
 using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace GenerateDocument.Common.Extensions
 {

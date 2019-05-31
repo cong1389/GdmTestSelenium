@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using Convert = System.Convert;
 
 namespace GenerateDocument.Common
@@ -29,9 +26,18 @@ namespace GenerateDocument.Common
             get { return Convert.ToDouble(ConfigurationManager.AppSettings["shortTimeout"]); }
         }
 
-        public static string NewAppTestDir
+        public static string DownloadFolder
         {
-            get { return ConfigurationManager.AppSettings["newAppTestDir"]; }
+            get
+            {
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["downloadFolderName"]);
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                return path;
+            }
         }
     }
 }

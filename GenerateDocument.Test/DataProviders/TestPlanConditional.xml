@@ -3,114 +3,161 @@
 
   <testcases>
 
-    <testcase name="VerifySomeControlTypes" description="Verify some control type" productname="[AUTOTEST][SWF] A4 Poster">
+    <testcase name="VerifySomeControlTypes_[AUTOTEST][SWF] A4 Poster" description="Verify some control type">
+
+      <arguments>
+        <argument name="productname" value="[AUTOTEST][SWF] A4 Poster"></argument>
+        <argument name="productdescription" value="[Test Conditional] [AUTOTEST][SWF] A4 Poster {random()}"></argument>
+      </arguments>
+
       <steps>
-        
-    <!--Verify View design options-->
-    
+
+        <!--START CREATE NEW DESIGN-->
+        <!--User login-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="Login"></step>
+
+        <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue=""></step>
+        <step controltype="password" action="sendkeys" controlid="Password" controlvalue=""></step>
+        <step controltype="button" action="click" controlid="Login" controlvalue="Login"></step>
+
+        <step controltype="browser" action="navigate" controlid="" controlvalue="UserContentStart"></step>
+        <step controltype="hyperlink" action="click" controlid="">
+          <customvaluecontrol formatype="expression" expression="{productname}"></customvaluecontrol>
+        </step>
+
+        <!--Verify View design options-->
         <step controltype="container" action="click" controlid="div1" controlvalue="View design options"></step>
         <step controltype="radio" action="tick" controlid="FIELD_471" controlvalue="Circle"></step>
         <step controltype="radio" action="tick" controlid="FIELD_845" controlvalue="54,43,0,52"></step>
         <step controltype="radio" action="tick" controlid="FIELD_846" controlvalue="0,0,0,63"></step>
         <step controltype="image" action="upload" controlid="DIV_482" controlvalue="adidas.png">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
-            <expectation asserttype="equals" expectedvalue="adidas.png" assertmessage="Upload files before and after are not the same"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equallableimage" expectedvalue="adidas.png" assertmessage="Upload files before and after are not the same"></expectation>
           </expectations>
         </step>
 
-        
-    <!--Verify View Text options-->
-    
+
+        <!--Verify View Text options-->
         <step controltype="container" action="click" controlid="div2" controlvalue="View Text options"></step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_828">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_829">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_828">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_473">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="textarea" action="sendkeys" controlid="FIELD_488">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
-        
-    <!--Verify View footer options*-->
-    
+
+        <!--Verify View footer options*-->
         <step controltype="container" action="click" controlid="div3" controlvalue="View footer options*"></step>
         <step controltype="dropbox" action="select" controlid="FIELD_499" controlvalue="logos">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="dropbox" action="select" controlid="FIELD_836" controlvalue="2">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="image" action="upload" controlid="DIV_841" controlvalue="bg1.jpg">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
-            <expectation asserttype="equals" expectedvalue="bg1.jpg" assertmessage="Upload files before and after are not the same"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equallableimage" expectedvalue="bg1.jpg" assertmessage="Upload files before and after are not the same"></expectation>
           </expectations>
         </step>
 
         <step controltype="image" action="upload" controlid="DIV_842" controlvalue="bg2.jpg">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
-            <expectation asserttype="equals" expectedvalue="bg2.jpg" assertmessage="Upload files before and after are not the same"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equallableimage" expectedvalue="bg2.jpg" assertmessage="Upload files before and after are not the same"></expectation>
           </expectations>
         </step>
 
-        
-    <!--Verify View Image options-->
-    
+
+        <!--Verify View Image options-->
+
         <step controltype="container" action="click" controlid="div4" controlvalue="View Image options"></step>
         <step controltype="image" action="upload" controlid="DIV_837" controlvalue="bg2.jpg">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
-            <expectation asserttype="equals" expectedvalue="bg2.jpg" assertmessage="Upload files before and after are not the same"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equallableimage" expectedvalue="bg2.jpg" assertmessage="Upload files before and after are not the same"></expectation>
           </expectations>
         </step>
 
-        
-    <!--Add new control type-->
-    
+
+        <!--Add new control type-->
         <step controltype="multipleselectinclude" action="add" controlid="FIELD_1569" controlvalue="1,2"></step>
         <step controltype="multipleselectinclude" action="remove" controlid="FIELD_1569" controlvalue="1,2"></step>
 
         <step controltype="multipleselectcheckbox" action="tick" controlid="FIELD_1571" controlvalue="1,2"></step>
         <step controltype="multipleselectcheckbox" action="untick" controlid="FIELD_1571" controlvalue="1,2"></step>
 
-        <step controltype="multipleselectlistbox" action="selected" controlid="FIELD_1570" controlvalue="1,2"></step>
+        <step controltype="multipleselectlistbox" action="add" controlid="FIELD_1570" controlvalue="1,2"></step>
         <step controltype="password" action="sendkeys" controlid="FIELD_1572" controlvalue=""></step>
+
+        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
+        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
+
+        <!--Finished page-->
+        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+          <expectations>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
 
       </steps>
     </testcase>
 
-    <testcase name="DependenciesControl" description="Verify autoSave dependencies controls" productname="[AUTOTEST] Social Media Post">
+    <testcase name="DependenciesControl_[AUTOTEST] Social Media Post" description="Verify autoSave dependencies controls">
+
+      <arguments>
+        <argument name="productname" value="[AUTOTEST] Social Media Post"></argument>
+        <argument name="productdescription" value="[DependenciesControl] Social Media Post {random()}"></argument>
+      </arguments>
+
       <steps>
+
+        <!--START CREATE NEW DESIGN-->
+        <!--User login-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="Login"></step>
+
+        <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue=""></step>
+        <step controltype="password" action="sendkeys" controlid="Password" controlvalue=""></step>
+        <step controltype="button" action="click" controlid="Login" controlvalue="Login"></step>
+
+        <step controltype="browser" action="navigate" controlid="" controlvalue="UserContentStart"></step>
+        <step controltype="hyperlink" action="click" controlid="">
+          <customvaluecontrol formatype="expression" expression="{productname}"></customvaluecontrol>
+        </step>
+
 
         <step controltype="container" action="click" controlid="div1" controlvalue="Layout options"></step>
         <step controltype="dropbox" action="select" controlid="FIELD_1024" controlvalue="Fundraiser">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
@@ -118,55 +165,52 @@
 
         <step controltype="dropbox" action="select" controlid="FIELD_1045" controlvalue="Visit our Just Giving page:">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="textbox" action="sendkeys" controlid="FIELD_1046">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="textbox" action="sendkeys" controlid="FIELD_502">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
 
-        
-    <!--Edit printing page-->
-    
+
+        <!--Edit printing page-->
         <step controltype="textarea" action="sendkeys" controlid="FIELD_550">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="textbox" action="sendkeys" controlid="FIELD_50" controlvalue="123456">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="textbox" action="sendkeys" controlid="FIELD_481">
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
         <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
 
-        
-    <!--Finished page-->
-    
-        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box" controlvalue="">
-          <customvaluecontrol formatype="suffixes" length="5"></customvaluecontrol>
-          <mappingmodel propertyname="designname"></mappingmodel>
+
+        <!--Finished page-->
+        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
           <expectations>
-            <expectation asserttype="istrue" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
@@ -175,39 +219,73 @@
 
     </testcase>
 
-    <testcase name="BehaviousImage" description="Verify behavious of clear, reset, upload image control" productname="[AUTOTEST] Social Media - Advanced">
+    <testcase name="BehaviousImage_[AUTOTEST] Social Media - Advanced" description="Verify behavious of clear, reset, upload image control">
+     
+      <arguments>
+        <argument name="productname" value="[AUTOTEST] Social Media - Advanced"></argument>
+        <argument name="productdescription" value="[Test BehaviousImage] [AUTOTEST] Social Media - Advanced {random()}"></argument>
+      </arguments>
+
       <steps>
+
+        <!--START CREATE NEW DESIGN-->
+        <!--User login-->
+        <step controltype="browser" action="navigate" controlid="" controlvalue="Login"></step>
+
+        <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue=""></step>
+        <step controltype="password" action="sendkeys" controlid="Password" controlvalue=""></step>
+        <step controltype="button" action="click" controlid="Login" controlvalue="Login"></step>
+
+        <step controltype="browser" action="navigate" controlid="" controlvalue="UserContentStart"></step>
+        <step controltype="hyperlink" action="click" controlid="">
+          <customvaluecontrol formatype="expression" expression="{productname}"></customvaluecontrol>
+        </step>
+
 
         <step controltype="container" action="click" controlid="div1" controlvalue="View style options"></step>
         <step controltype="checkbox" action="tick" controlid="FIELD_871" controlvalue="true"></step>
 
         <step controltype="image" action="upload" controlid="DIV_482" controlvalue="adidas.png">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
-            <expectation asserttype="equals" expectedvalue="adidas.png" assertmessage="Upload files before and after are not the same"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equallableimage" expectedvalue="adidas.png" assertmessage="Upload files before and after are not the same"></expectation>
           </expectations>
         </step>
         <step controltype="image" action="clear" controlid="DIV_482" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="Do not display notification"></expectation>
-            <expectation asserttype="equals" expectedvalue="" assertmessage="Clear value is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="Do not display notification"></expectation>
+            <expectation asserttype="equallableimage" expectedvalue="" assertmessage="Clear value is wrong"></expectation>
           </expectations>
         </step>
         <step controltype="image" action="upload" controlid="DIV_482" controlvalue="starbucks.jpeg">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="Do not display notification"></expectation>
-            <expectation asserttype="equals" expectedvalue="starbucks.jpeg" assertmessage="Upload files before and after are not the same"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="Do not display notification"></expectation>
+            <expectation asserttype="equallableimage" expectedvalue="starbucks.jpeg" assertmessage="Upload files before and after are not the same"></expectation>
           </expectations>
         </step>
         <step controltype="image" action="reset" controlid="DIV_482" controlvalue="">
           <expectations>
-            <expectation asserttype="istrue" expectedvalue="" assertmessage="It is wrong"></expectation>
-            <expectation asserttype="equals" expectedvalue="green.pdf" assertmessage="Reset value is wrong"></expectation>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
+            <expectation asserttype="equallableimage" expectedvalue="green.pdf" assertmessage="Reset value is wrong"></expectation>
           </expectations>
         </step>
 
+        <step controltype="button" action="click" controlid="_StepNextN1_TheLabelButton" controlvalue="Next"></step>
+
+        <!--Finished page-->
+        <step controltype="textbox" action="sendkeys" controlid="DocDescription_box">
+          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+          <expectations>
+            <expectation asserttype="isdisplaynotification" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
+
       </steps>
+
     </testcase>
+
+    
 
   </testcases>
 

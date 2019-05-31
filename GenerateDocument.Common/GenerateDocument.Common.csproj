@@ -69,6 +69,7 @@
     <Compile Include="Types\ControlTypes.cs" />
     <Compile Include="Types\ElementLocator.cs" />
     <Compile Include="Types\PageTypes.cs" />
+    <Compile Include="Types\ValidationTypes.cs" />
     <Compile Include="WebElements\Checkbox.cs" />
     <Compile Include="WebElements\ImageUpload.cs" />
     <Compile Include="WebElements\MultipleSelectCheckbox.cs" />
@@ -77,10 +78,13 @@
     <Compile Include="WebElements\Radio.cs" />
     <Compile Include="WebElements\Select.cs" />
     <Compile Include="WebElements\Button.cs" />
+    <Compile Include="WebElements\Label.cs" />
     <Compile Include="WebElements\Textbox.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

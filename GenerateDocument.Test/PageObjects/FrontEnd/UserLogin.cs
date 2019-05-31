@@ -1,15 +1,13 @@
 ﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
-using System.Reflection;
 using GenerateDocument.Common.WebElements;
 using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
-using log4net;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
 using static GenerateDocument.Test.Utilities.PageCommon;
 
 namespace GenerateDocument.Test.PageObjects.FrontEnd
@@ -44,7 +42,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
         public UserLogin NavigateTo()
         {
             Driver.NavigateTo(UserLoginPage);
-            Driver.IsUrlEndsWith(PageTypes.Login.ToString());
+            Driver.WaitUntilPresentedUrl(PageTypes.Login.ToString());
 
             return this;
         }
@@ -77,16 +75,10 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
             }
         }
 
-        private bool NeedToLogin()
-        {
-            return Driver.IsUrlEndsWith("login.aspx") || Driver.IsUrlEndsWith("restrictlogin");
-        }
-
         public void PerformToControlType(Step step, DesignModel designModel)
         {
             string text;
-            string controlType = step.ControlType;
-            Enum.TryParse(controlType, true, out ControlTypes controlTypeValue);
+            Enum.TryParse(step.ControlType, true, out ControlTypes controlTypeValue);
 
             switch (controlTypeValue)
             {
@@ -109,7 +101,10 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                     break;
 
                 case ControlTypes.Button:
+                    CookieConfirmation();
                     Driver.GetElement<Button>(_loginButtonLocator.Format(step.ControlId)).ClickTo();
+
+                    Driver.WaitUntilPresentedUrl(PageTypes.Designs.ToString());
                     break;
             }
         }

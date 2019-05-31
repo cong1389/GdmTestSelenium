@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using GenerateDocument.Common.Helpers;
+using GenerateDocument.Common.WebElements;
 using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
@@ -130,14 +131,14 @@ namespace GenerateDocument.Test.PageObjects.NewApp
         private void WaitToClosedCompletedModal()
         {
             bool.TryParse(Driver.GetSessionStorage("hasShowedFeedback"), out bool hasShowedFeedback);
-           
+
             if (hasShowedFeedback)
             {
                 var modalEle = Driver.WaitUntilPresentedElement(_modalOpen, e => e.Displayed, BaseConfiguration.LongTimeout);
                 if (modalEle != null)
                 {
                     var closedLink = Driver.WaitUntilPresentedElement(_completedModalCloseBtn, e => e.Displayed, BaseConfiguration.LongTimeout);
-                    
+
                     closedLink.OnClickJavaScript();
 
                     //Driver.SwitchToParent();
@@ -179,13 +180,13 @@ namespace GenerateDocument.Test.PageObjects.NewApp
                     if (surveyWindowEle != null)
                     {
                         Driver.SwitchTo().Frame(surveyWindowEle);
-                        Driver.GetElement(_surveySubmitBtn).Click();
+                        Driver.GetElement(_surveySubmitBtn).OnClickJavaScript();
 
-                        Driver.GetElement(_closeModalBtn).Click();
+                        Driver.GetElement(_closeModalBtn).OnClickJavaScript();
 
                         Driver.SwitchToParent();
 
-                        Driver.WaitUntilElementIsNoLongerFound(_mopinionActiveClass, BaseConfiguration.ShortTimeout);
+                        Driver.WaitUntilElementIsNoLongerFound(_mopinionActiveClass, BaseConfiguration.MiddleTimeout);
                     }
                 }
             }
@@ -299,7 +300,7 @@ namespace GenerateDocument.Test.PageObjects.NewApp
             switch (actionResult)
             {
                 case ActionTypes.Published:
-                    FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.NewAppTestDir);
+                    FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.DownloadFolder);
 
                     bool isShowSurveyInvitationModal = true;
                     DownloadDesign(true, ref isShowSurveyInvitationModal);

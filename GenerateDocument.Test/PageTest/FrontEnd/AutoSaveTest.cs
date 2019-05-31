@@ -17,18 +17,9 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 {
     [TestFixture("Chrome")]
     [TestFixture("Firefox")]
+    [NonParallelizable]
     public class AutoSaveTest : PageTestBase
     {
-        private PageCommonAction _action;
-        private UserContentStart _userContentStart;
-        private UserEditFormFilling _userEditFormFilling;
-        private UserEditPrinting _userEditPrinting;
-        private UserEditFinish _userEditFinish;
-
-        private AdminLogin _adminLogin;
-
-        private MyDesign _myDesign;
-
         private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public AutoSaveTest(string environment) : base(environment)
@@ -36,36 +27,14 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
 
         }
 
-        [SetUp]
-        public void SetUpOneTestCase()
-        {
-            _action = new PageCommonAction(DriverContext.Driver);
-            _userContentStart = new UserContentStart(DriverContext);
-            _userEditFormFilling = new UserEditFormFilling(DriverContext);
-            _userEditPrinting = new UserEditPrinting(DriverContext);
-            _userEditFinish = new UserEditFinish(DriverContext);
-
-            _adminLogin = new AdminLogin(DriverContext);
-
-            _myDesign = new MyDesign(DriverContext);
-        }
-
         [Test]
         [TestCaseSource(typeof(DataDriven), "ConditionalControl")]
         public void TestConditionalControlOfDataDriven(TestCase testcase)
         {
-            UserSiteLoginStep();
-
-            _myDesign.CreateDesign();
-
-            var documentBefore = _userContentStart.SearchDocument(testcase.ProductName);
-            Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
-            _userContentStart.SelectDocument(documentBefore.Id);
-
             foreach (var step in testcase.Steps)
             {
                 PerformToPageType(step, testcase.DesignModel);
-                ValidateExpectation(step);
+                ValidationStep(step);
             }
         }
 
@@ -73,18 +42,10 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
         [TestCaseSource(typeof(DataDriven), "SpecialCharacters")]
         public void SpecialCharactersOfDataDriven(TestCase testcase)
         {
-            UserSiteLoginStep();
-
-            _myDesign.CreateDesign();
-
-            var documentBefore = _userContentStart.SearchDocument(testcase.ProductName);
-            Assert.IsTrue(!string.IsNullOrEmpty(documentBefore.Id));
-            _userContentStart.SelectDocument(documentBefore.Id);
-
             foreach (var step in testcase.Steps)
             {
                 PerformToPageType(step, testcase.DesignModel);
-                ValidateExpectation(step);
+                ValidationStep(step);
             }
         }
 
@@ -95,13 +56,24 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
             foreach (var step in testcase.Steps)
             {
                 PerformToPageType(step, testcase.DesignModel);
-                ValidateExpectation(step);
+                ValidationStep(step);
+            }
+        }
+
+        [Test]
+        [TestCaseSource(typeof(DataDriven), "NewAppWorkFlow")]
+        public void NewAppWorkFlow(TestCase testcase)
+        {
+            foreach (var step in testcase.Steps)
+            {
+                PerformToPageType(step, testcase.DesignModel);
+                ValidationStep(step);
             }
         }
 
         private void PerformToPageType(Step step, DesignModel designModel)
         {
-            var currentPage = step.Action.Equals("navigate") ? step.ControlValue : DriverContext.Driver.GetCurrentPage();
+            var currentPage = step.ControlType.Equals(ControlTypes.Browser.ToString(), StringComparison.OrdinalIgnoreCase) ? step.ControlValue : DriverContext.Driver.GetCurrentPage();
 
             Enum.TryParse(currentPage, true, out PageTypes pageTypes);
 
@@ -114,23 +86,23 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                     break;
 
                 case PageTypes.UserContentStart:
-                    _userContentStart.PerformToControlType(step, designModel);
+                    new UserContentStart(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.UserEditFormFilling:
-                    _userEditFormFilling.PerformToControlType(step, designModel);
+                    new UserEditFormFilling(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.UserEditPrinting:
-                    _userEditPrinting.PerformToControlType(step, designModel);
+                    new UserEditPrinting(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.UserEditFinish:
-                    _userEditFinish.PerformToControlType(step, designModel);
+                    new UserEditFinish(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminLogin:
-                    _adminLogin.PerformToControlType(step, designModel);
+                    new AdminLogin(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminProducts:
@@ -138,73 +110,60 @@ namespace GenerateDocument.Test.PageTest.FrontEnd
                     break;
 
                 case PageTypes.AdminProductDetails:
-                    new AdminProductDetails(DriverContext)
-                        .PerformToControlType(step, designModel);
+                    new AdminProductDetails(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminOptionSet:
-                    new AdminOptionSet(DriverContext)
-                        .PerformToControlType(step, designModel);
+                    new AdminOptionSet(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminOptionField:
-                    new AdminOptionField(DriverContext)
-                        .PerformToControlType(step, designModel);   
+                    new AdminOptionField(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.AdminProductRetired:
-                    new AdminProductRetired(DriverContext)
-                        .PerformToControlType(step, designModel);
+                    new AdminProductRetired(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.Designs:
-                    new MyDesign(DriverContext)
-                        .PerformToControlType(step, designModel);
+                    new MyDesign(DriverContext).PerformToControlType(step, designModel);
                     break;
 
                 case PageTypes.OneDesign:
-                    new OneDesign(DriverContext)
-                        .PerformToControlType(step, designModel);
+                    new OneDesign(DriverContext).PerformToControlType(step, designModel);
                     break;
             }
         }
 
-        private void ValidateExpectation(Step step)
+        private void ValidationStep(Step step)
         {
             step.Expectations.ForEach(x =>
             {
-                switch (x.AssertType)
+                Enum.TryParse(x.AssertType, true, out ValidationTypes validationType);
+
+                switch (validationType)
                 {
-                    case "istrue":
-                        Assert.IsTrue(_action.GetNotifyMessage, x.AssertMessage);
+                    case ValidationTypes.IsDisplayNotification:
+                        Console.WriteLine($"Validation by contronlId: {step.ControlId}; controlValue: {step.ControlValue}");
+                        Assert.IsTrue(new PageCommonAction(DriverContext).GetNotifyMessage(), x.AssertMessage);
                         break;
 
-                    case "equals":
-                        if (step.ControlType.Equals("image"))
+                    case ValidationTypes.EqualLableImage:
+                        if (step.ControlType.Equals(ControlTypes.Image.ToString(), StringComparison.OrdinalIgnoreCase))
                         {
-                            var actualValue = _userEditFormFilling.GetImageNameAfterUploaded(step.ControlId);
+                            var actualValue = new UserEditFormFilling(DriverContext).GetImageNameAfterUploaded(step.ControlId);
                             Assert.AreEqual(actualValue, x.ExpectedValue, x.AssertMessage);
                         }
                         break;
 
-                    case "compareoutputfile":
-                        var downloadedFilesCount = FilesHelper.CountFiles(ProjectBaseConfiguration.NewAppTestDir);
-                        Console.WriteLine($"downloadedFilesCount: {downloadedFilesCount}; ExpectedValue: {x.ExpectedValue}");
+                    case ValidationTypes.EqualCompareOutputFile:
+                        var downloadedFilesCount = FilesHelper.CountFiles(ProjectBaseConfiguration.DownloadFolder);
+                        Console.WriteLine($"DownloadedFilesCount: {downloadedFilesCount}; ExpectedValue: {x.ExpectedValue}");
                         Assert.IsTrue(int.Parse(x.ExpectedValue) == downloadedFilesCount, x.AssertMessage);
                         break;
 
                 }
             });
         }
-
-        private void UserSiteLoginStep()
-        {
-            _userContentStart.NavigateTo();
-
-            new UserLogin(DriverContext)
-                .NavigateTo()
-               .LoginSystem(ProjectBaseConfiguration.UserId, ProjectBaseConfiguration.UserPassword);
-        }
-
     }
 }

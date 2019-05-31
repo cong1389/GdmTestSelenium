@@ -1,4 +1,6 @@
-﻿namespace GenerateDocument.Common.Types
+﻿using System.Linq;
+
+namespace GenerateDocument.Common.Types
 {
     public class ElementLocator
     {
@@ -13,7 +15,10 @@
         }
         public ElementLocator Format(params object[] paramters)
         {
-            return new ElementLocator(this.Kind, string.Format(Value, paramters));
+            var newValue = paramters.Any(x=>x.ToString().StartsWith("//")) ? paramters.FirstOrDefault()?.ToString() : string.Format(Value, paramters);
+            var newKind= paramters.Any(x => x.ToString().StartsWith("//")) ? Locator.XPath : Kind;
+
+            return new ElementLocator(newKind, newValue);
         }
     }
 }

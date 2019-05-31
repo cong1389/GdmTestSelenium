@@ -13,7 +13,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             try
             {
-                LoginStep(_returnPage);
+                LoginStep();
 
                 CreateDocumentStep(templateName);
 
@@ -26,7 +26,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             }
             finally
             {
-                var dir = new DirectoryInfo(ProjectBaseConfiguration.NewAppTestDir);
+                var dir = new DirectoryInfo(ProjectBaseConfiguration.DownloadFolder);
                 foreach (var file in dir.GetFiles())
                 {
                     file.Delete();
@@ -40,7 +40,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             try
             {
-                LoginStep(_returnPage);
+                LoginStep();
 
                 CreateDocumentStep(templateName);
 
@@ -55,7 +55,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             }
             finally
             {
-                var dir = new DirectoryInfo(ProjectBaseConfiguration.NewAppTestDir);
+                var dir = new DirectoryInfo(ProjectBaseConfiguration.DownloadFolder);
                 foreach (var file in dir.GetFiles())
                 {
                     file.Delete();
@@ -72,7 +72,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _adminProducts.CloneToNewProduct(templateName, RetiredPrefix);
 
             //step 2: user create design
-            LoginStep(_returnPage);
+            LoginStep();
             CreateDocumentStep($"{RetiredPrefix}{templateName}");
 
             //step 3: admin retired this product
@@ -81,7 +81,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _adminProducts.RetireProduct($"{RetiredPrefix}{templateName}");
 
             //step 4: verify design actions
-            LoginStep(_returnPage);
+            LoginStep();
 
             var label = _myDesign.GetRetiredOrDeletedLabel($"{RetiredPrefix}{templateName}_{_designNamePrefix}");
 
@@ -108,7 +108,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _adminProducts.CloneToNewProduct(templateName, DeletedPrefix);
 
             //step 2: user create design
-            LoginStep(_returnPage);
+            LoginStep();
             CreateDocumentStep($"{DeletedPrefix}{templateName}");
 
             //step 3: admin retired this product
@@ -116,7 +116,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             _adminProducts.NavigateTo();
             _adminProducts.DeleteProduct($"{DeletedPrefix}{templateName}");
 
-            LoginStep(_returnPage);
+            LoginStep();
 
             var label = _myDesign.GetRetiredOrDeletedLabel($"{DeletedPrefix}{templateName}_{_designNamePrefix}");
             Assert.IsTrue(label.IsEquals("product deleted"), "This design must be mark as Product Deleted");
@@ -137,7 +137,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test, TestCaseSource(nameof(WorkflowTestResources), new object[] { false, null })]
         public void Design_CopyAction_IsAbleToDo_WhenItIsSingleDocumentOrKitDocument(string templateName, Dictionary<string, bool> settings)
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             CreateDocumentStep(templateName);
 
@@ -157,7 +157,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [TestCaseSource(nameof(WorkflowTestResources), new object[] { false, null })]
         public void DesignOutputs_SuccessfullyDownloaded_WithoutConfirm_WhenProductHadNewReleaseWithMaintainOriginalOption(string templateName, Dictionary<string, bool> settings)
         {
-            LoginStep(_returnPage);
+            LoginStep();
             
             CreateDocumentStep(templateName);
 
@@ -186,7 +186,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
             _adminProductDetails.UpdateSettings(true);
 
-            LoginStep(_returnPage);
+            LoginStep();
 
             VerifyDesignStatus($"{templateName}_{_designNamePrefix}");
 
@@ -200,7 +200,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             try
             {
-                LoginStep(_returnPage);
+                LoginStep();
 
                 CreateDocumentStep(templateName);
 
@@ -231,7 +231,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
 
                 //_adminLogout.ClickLogOutButton();
 
-                LoginStep(_returnPage);
+                LoginStep();
 
                 VerifyDesignStatus($"{templateName}_{_designNamePrefix}");
 
@@ -241,7 +241,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             }
             finally
             {
-                var dir = new DirectoryInfo(ProjectBaseConfiguration.NewAppTestDir);
+                var dir = new DirectoryInfo(ProjectBaseConfiguration.DownloadFolder);
                 foreach (var file in dir.GetFiles())
                 {
                     file.Delete();

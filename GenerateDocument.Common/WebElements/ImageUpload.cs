@@ -45,10 +45,11 @@ namespace GenerateDocument.Common.WebElements
             Driver.WaitUntilElementIsNoLongerFound(_modalOverlayLocator, BaseConfiguration.ShortTimeout);
 
             //Check display upload new image button
-            var isDisplayNewImageBtn = Driver.IsElementPresent(_chooseNewImageLocator, BaseConfiguration.ShortTimeout);
+          
+            var isDisplayNewImageBtn = Driver.IsElementPresent(_chooseNewImageLocator, BaseConfiguration.LongTimeout);
             if (isDisplayNewImageBtn)
             {
-                Driver.GetElement(_chooseNewImageLocator).Click();
+                Driver.GetElement<Button>(_chooseNewImageLocator).ClickTo();
             }
 
             //choose file

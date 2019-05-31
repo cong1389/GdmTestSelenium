@@ -17,7 +17,6 @@
         public static readonly string AdminContentCollectionsPage = $"{ProjectBaseConfiguration.HostUrl}/AdminContentCollections.aspx";
         public static readonly string UserContentStartPage = $"{ProjectBaseConfiguration.HostUrl}/UserContentStart.aspx";
         public static readonly string UserLoginPage = $"{ProjectBaseConfiguration.HostUrl}/Login.aspx";
-        public static readonly string UserContentOrdersPage = $"{ProjectBaseConfiguration.HostUrl}/UserContentOrders.aspx";
         public static readonly string UserContentApprovalsPage = $"{ProjectBaseConfiguration.HostUrl}/UserContentApprovals.aspx";
         public static readonly string AdminExtensionsPage = $"{ProjectBaseConfiguration.HostUrl}/AdminExtensions.aspx";
         public static readonly string MyDesignPage = $"{ProjectBaseConfiguration.NewAppUrl}/#/designs";
@@ -26,7 +25,6 @@
         public static readonly string DeletedPrefix = "[DELETED]";
 
         public static readonly Account CustomerAdminAccount = new Account { UserName = ProjectBaseConfiguration.CustomerAdminUserName, Password = ProjectBaseConfiguration.CustomerAdminPassword };
-        public static readonly Account TestAccount = new Account { UserName = "RightMarket", Password = "123" };
         public static readonly Account AdminAccount = new Account { UserName = ProjectBaseConfiguration.AdminId, Password = ProjectBaseConfiguration.AdminPassword };
     }
 
@@ -40,12 +38,5 @@
     {
         public string Id;
         public string Name;
-    }
-
-    public struct AutoSaveField
-    {
-        public string Type { get; set; }
-        public string Value { get; set; }
-        public string Id { get; set; }
     }
 }

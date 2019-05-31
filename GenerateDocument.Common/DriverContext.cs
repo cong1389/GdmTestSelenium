@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GenerateDocument.Common.Extensions;
+﻿using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -12,6 +6,8 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.IO;
 
 namespace GenerateDocument.Common
 {
@@ -35,7 +31,7 @@ namespace GenerateDocument.Common
             {
                 case BrowserTypes.Firefox:
                     var firefoxOptions = new FirefoxOptions();
-                    firefoxOptions.SetPreference("browser.download.dir", BaseConfiguration.NewAppTestDir);
+                    firefoxOptions.SetPreference("browser.download.dir", BaseConfiguration.DownloadFolder);
                     firefoxOptions.SetPreference("browser.download.folderList", 2);
                     firefoxOptions.SetPreference("pdfjs.disabled", true);
                     firefoxOptions.SetPreference("browser.helperApps.neverAsk.saveToDisk", "image/png,image/jpeg,application/pdf");
@@ -59,7 +55,7 @@ namespace GenerateDocument.Common
 
                 default:
                     var options = new ChromeOptions();
-                    options.AddUserProfilePreference("download.default_directory", BaseConfiguration.NewAppTestDir);
+                    options.AddUserProfilePreference("download.default_directory", BaseConfiguration.DownloadFolder);
                     options.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
 
                     Driver = new ChromeDriver(options);
@@ -74,7 +70,7 @@ namespace GenerateDocument.Common
                 Driver.DeleteAllCookies();
                 Driver.Dispose();
 
-                var dir = new DirectoryInfo(BaseConfiguration.NewAppTestDir);
+                var dir = new DirectoryInfo(BaseConfiguration.DownloadFolder);
                 foreach (FileInfo file in dir.GetFiles())
                 {
                     file.Delete();

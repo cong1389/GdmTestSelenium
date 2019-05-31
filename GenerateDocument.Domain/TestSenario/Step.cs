@@ -23,7 +23,7 @@ namespace GenerateDocument.Domain.TestSenario
                 _controlValue = CustomControlValue(CustomValueStep, _controlValue);
                 return _controlValue;
             }
-            set { _controlValue = value; }
+            set => _controlValue = value;
         }
 
         public string ControlType { get; set; }
@@ -91,11 +91,11 @@ namespace GenerateDocument.Domain.TestSenario
             set => _mappingModel = value;
         }
 
-        public List<Expectation> Expectations { get; }
+        public List<ValidationModel> Expectations { get; }
 
         public Step()
         {
-            Expectations = new List<Expectation>();
+            Expectations = new List<ValidationModel>();
         }
 
         private enum FormatTypes

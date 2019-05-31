@@ -17,6 +17,7 @@
         MultipleSelectListbox,
         Hyperlink,
         Browser,
-        Popup
+        Popup,
+        Label
     }
 }

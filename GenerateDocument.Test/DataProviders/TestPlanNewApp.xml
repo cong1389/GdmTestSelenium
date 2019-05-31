@@ -1,59 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<testplan name="AutoSaveWithSpecialCharacters">
+<testplan name="NewAppFllow">
 
   <testcases>
 
-    <testcase name="SendSpecialCharacters_[AUTOTEST][SWF] Invitation" description="Send keys to textbox with special characters">
+    <testcase name="NewAppFllow_[AUTOTEST][SWF] Invitation">
 
       <arguments>
         <argument name="productname" value="[AUTOTEST][SWF] Invitation"></argument>
-        <argument name="productdescription" value="&lt;script&gt;alert(&apos;lll&apos; ttribute=&quot;)&lt;/script&gt; valid attribute=&quot; &lt;valid&gt;&lt;!-- &quot;&apos;&lt;&gt;&amp; --&gt;&lt;/valid&gt;&lt;valid&gt; {random()}"></argument>
+        <argument name="productdescription" value="[TestClone] [AUTOTEST][SWF] Invitation {random()}"></argument>
+        <argument name="designnameofdestination" value="[TestClone] [AUTOTEST][SWF] Invitation {random()} toDestination {random()}"></argument>
       </arguments>
 
       <steps>
 
         <!--START CREATE NEW DESIGN-->
         <!--User login-->
-        <step controltype="browser" action="navigate" controlid="" controlvalue="Login"></step>
-
-        <step controltype="textbox" action="sendkeys" controlid="Username" controlvalue=""></step>
-        <step controltype="password" action="sendkeys" controlid="Password" controlvalue=""></step>
+        <step controltype="browser" action="navigate"  controlvalue="Login"></step>
+        <step controltype="textbox" action="sendkeys" controlid="Username" ></step>
+        <step controltype="password" action="sendkeys" controlid="Password" ></step>
         <step controltype="button" action="click" controlid="Login" controlvalue="Login"></step>
 
-        <step controltype="browser" action="navigate" controlid="" controlvalue="UserContentStart"></step>
-        <step controltype="hyperlink" action="click" controlid="">
+        <step controltype="browser" action="navigate" controlvalue="UserContentStart"></step>
+        <step controltype="hyperlink" action="click">
           <customvaluecontrol formatype="expression" expression="{productname}"></customvaluecontrol>
         </step>
-
         <!---Text options-->
         <step controltype="container" action="click" controlid="div3" controlvalue="Text options"></step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_497">
-          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_497" >
           <expectations>
             <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_485">
-          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_485" >
           <expectations>
             <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
 
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_473">
-          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_473" >
           <expectations>
             <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_488">
-          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_488" >
           <expectations>
             <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
         </step>
-        <step controltype="textarea" action="sendkeys" controlid="FIELD_503">
-          <customvaluecontrol formatype="expression" expression="{productdescription}"></customvaluecontrol>
+        <step controltype="textarea" action="sendkeys" controlid="FIELD_503" >
           <expectations>
             <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
           </expectations>
@@ -70,6 +64,23 @@
           </expectations>
         </step>
         <step controltype="button" action="click" controlid="UserAddToCartButtons2_GoToDesignsButton" controlvalue="Finish Design"></step>
+        <!--END CREATE NEW DESIGN-->
+
+
+
+        <!--START CLONE DESIGN-->
+        <step controltype="browser" action="navigate"  controlvalue="Designs"></step>
+        <step controltype="hyperlink" action="click"  controlid="copy" controlvalue="copy"></step>
+        <step controltype="textbox" action="sendkeys" controlid="//form[@name='frmCloneDesign']//input[@name='designName']">
+          <customvaluecontrol formatype="expression" expression="{designnameofdestination}"></customvaluecontrol>
+        </step>
+        <step controltype="button" action="click"  controlid="//form[@name='frmCloneDesign']//button[contains(text(),'OK')]">
+          <expectations>
+            <expectation asserttype="isdisplaynotification" expectedvalue="" assertmessage="It is wrong"></expectation>
+          </expectations>
+        </step>
+        <step controltype="label" action="getvalue" controlid="design-name"></step>
+        <!--END CLONE DESIGN-->
 
       </steps>
     </testcase>

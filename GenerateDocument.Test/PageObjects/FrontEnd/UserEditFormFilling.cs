@@ -186,7 +186,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
 
         private UserEditFormFilling UploadImageControl(string containerId, string fileName)
         {
-            var imagePath = Path.Combine(ProjectBaseConfiguration.Contents, fileName);
+            var imagePath = Path.Combine(ProjectBaseConfiguration.ContentsFolder, fileName);
             Driver.GetElement<ImageUpload>(_imageContainerLocator.Format(containerId)).Upload(imagePath);
 
             return this;
@@ -265,19 +265,16 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                     break;
 
                 case ControlTypes.Image:
-                    if (step.Action.Equals("upload"))
+                    if (step.Action.Equals(ActionTypes.Upload.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine($"Image click to upload with value: {step.ControlValue}");
                         UploadImageControl(step.ControlId, step.ControlValue);
                     }
-                    else if (step.Action.Equals("clear"))
+                    else if (step.Action.Equals(ActionTypes.Clear.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine("Image click to clear");
                         ClearImageControl(step.ControlId);
                     }
-                    else if (step.Action.Equals("reset"))
+                    else if (step.Action.Equals(ActionTypes.Reset.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine("Image click to reset");
                         ResetImageControl(step.ControlId);
                     }
                     break;
@@ -291,11 +288,11 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                     break;
 
                 case ControlTypes.MultipleSelectInclude:
-                    if (step.Action.Equals("add"))
+                    if (step.Action.Equals(ActionTypes.Add.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
                         AddItemsToListboxInclude(step.ControlId, step.ControlValue);
                     }
-                    else if (step.Action.Equals("remove"))
+                    else if (step.Action.Equals(ActionTypes.Remove.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
                         RemoveItemsToListboxInclude(step.ControlId, step.ControlValue);
                     }
@@ -303,11 +300,11 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                     break;
 
                 case ControlTypes.MultipleSelectCheckbox:
-                    if (step.Action.Equals("tick"))
+                    if (step.Action.Equals(ActionTypes.Tick.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
                         TickItemsToListCheckbox(step.ControlId, step.ControlValue);
                     }
-                    else if (step.Action.Equals("untick"))
+                    else if (step.Action.Equals(ActionTypes.UnTick.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
                         UnTickItemsToCheckListbox(step.ControlId, step.ControlValue);
                     }
@@ -315,7 +312,7 @@ namespace GenerateDocument.Test.PageObjects.FrontEnd
                     break;
 
                 case ControlTypes.MultipleSelectListbox:
-                    if (step.Action.Equals("selected"))
+                    if (step.Action.Equals(ActionTypes.Add.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
                         SelectItemsToListbox(step.ControlId, step.ControlValue);
                     }

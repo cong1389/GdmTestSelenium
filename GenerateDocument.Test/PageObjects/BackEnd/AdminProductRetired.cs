@@ -1,15 +1,14 @@
-﻿using System;
-using System.Linq;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
-using System.Collections.Generic;
-using GenerateDocument.Common;
+﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using GenerateDocument.Common.WebElements;
 using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.PageObjects;
+using System;
+using System.Linq;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {

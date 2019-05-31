@@ -1,14 +1,13 @@
-﻿using System;
-using GenerateDocument.Common;
+﻿using GenerateDocument.Common;
 using GenerateDocument.Common.Extensions;
 using GenerateDocument.Common.Types;
 using GenerateDocument.Common.WebElements;
 using GenerateDocument.Domain.Designs;
 using GenerateDocument.Domain.TestSenario;
 using GenerateDocument.Test.Base;
-using GenerateDocument.Test.PageObjects.FrontEnd;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace GenerateDocument.Test.PageObjects.BackEnd
 {

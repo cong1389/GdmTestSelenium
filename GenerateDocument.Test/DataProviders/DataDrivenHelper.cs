@@ -73,7 +73,7 @@ namespace GenerateDocument.Test.DataProviders
                                     while (expectationChildNode.MoveNext())//Read each expectation node
                                     {
                                         var expectaionCurrentNode = expectationChildNode.Current;
-                                        var expectation = new Expectation()
+                                        var expectation = new ValidationModel()
                                         {
                                             AssertType = expectaionCurrentNode.GetAttribute("asserttype", xpn.NamespaceURI),
                                             AssertMessage = expectaionCurrentNode.GetAttribute("assertmessage", xpn.NamespaceURI),
@@ -96,16 +96,6 @@ namespace GenerateDocument.Test.DataProviders
                                         Value = currentNode.GetAttribute("value", xpn.NamespaceURI),
                                         ArgumentName = currentNode.GetAttribute("argumentname", xpn.NamespaceURI),
                                         Expression = currentNode.GetAttribute("expression", xpn.NamespaceURI)
-                                    };
-                                }
-
-                                var mappingModelChildNode = stepChild.Current.SelectChildren("mappingmodel", xpn.NamespaceURI);
-                                while (mappingModelChildNode.MoveNext())
-                                {
-                                    var currentNode = mappingModelChildNode.Current;
-                                    step.MappingModel = new MappingModel<DesignModel>()
-                                    {
-                                        PropertyName = currentNode.GetAttribute("propertyname", xpn.NamespaceURI)
                                     };
                                 }
 

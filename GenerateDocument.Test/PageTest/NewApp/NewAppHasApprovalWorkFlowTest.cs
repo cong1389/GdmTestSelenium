@@ -10,7 +10,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test, TestCaseSource(nameof(WorkflowTestResources), new object[] { true, null })]
         public void Design_SuccessfullyCreated_FromDocumentHasApprovalWorkflow(string templateName, Dictionary<string, bool> settings)
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             CreateDocumentStep(templateName);
 
@@ -28,7 +28,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         {
             try
             {
-                LoginStep(_returnPage);
+                LoginStep();
 
                 CreateDocumentStep(templateName);
 
@@ -41,7 +41,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
                 ReviewDesignIfHasApprovalWorkflow($"{templateName}_{_designNamePrefix}", settings["IsApproved"]);
 
                 _action.UserLogout();
-                LoginStep(_returnPage);
+                LoginStep();
 
                 VerifyDesignStatus($"{templateName}_{_designNamePrefix}", ifApproved: settings["IsApproved"]);
 
@@ -51,7 +51,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
             }
             finally
             {
-                FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.NewAppTestDir);
+                FilesHelper.DeleteAllFiles(ProjectBaseConfiguration.DownloadFolder);
             }
 
         }
@@ -59,7 +59,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test, TestCaseSource(nameof(WorkflowTestResources), new object[] { true, false })]
         public void DesignStatus_IsRejected_IfHasBeenRejected(string templateName, Dictionary<string, bool> settings)
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             CreateDocumentStep(templateName);
 
@@ -77,7 +77,7 @@ namespace GenerateDocument.Test.PageTest.NewApp
         [Test, TestCaseSource(nameof(WorkflowTestResources), new object[] { true, null })]
         public void Design_CopyAction_IsAbleToDo_FromDocumentHasApprovalWorkflow(string templateName, Dictionary<string, bool> settings)
         {
-            LoginStep(_returnPage);
+            LoginStep();
 
             CreateDocumentStep(templateName);
 
